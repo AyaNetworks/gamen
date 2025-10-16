@@ -2,7 +2,6 @@ import { useState } from 'react'
 import './DocumentPanel.css'
 
 function DocumentPanel({ documents, libraries, onUploadLibrary }) {
-  const [activeTab, setActiveTab] = useState('documents')
   const [selectedItem, setSelectedItem] = useState(null)
   const [showPreview, setShowPreview] = useState(false)
 
@@ -25,27 +24,17 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
 
   return (
     <div className="document-panel">
-      <div className="document-tabs">
-        <button
-          className={`tab ${activeTab === 'documents' ? 'active' : ''}`}
-          onClick={() => setActiveTab('documents')}
-        >
-          ドキュメント
-        </button>
-        <button
-          className={`tab ${activeTab === 'library' ? 'active' : ''}`}
-          onClick={() => setActiveTab('library')}
-        >
-          ライブラリ
-        </button>
+      <div className="panel-header">
+        <h2>ライブラリ</h2>
       </div>
 
       <div className="document-content">
-        {activeTab === 'documents' && (
+        {/* 関連するアプリ登録ドキュメント */}
+        <div className="document-section">
+          <div className="list-header">
+            <h3>関連するアプリ登録ドキュメント</h3>
+          </div>
           <div className="document-list">
-            <div className="list-header">
-              <h3>ベクトル検索で収集</h3>
-            </div>
             {documents.map((doc) => (
               <div
                 key={doc.id}
@@ -57,21 +46,22 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
               </div>
             ))}
           </div>
-        )}
+        </div>
 
-        {activeTab === 'library' && (
+        {/* アップロードしたドキュメント */}
+        <div className="document-section">
+          <div className="list-header">
+            <h3>アップロードしたドキュメント</h3>
+            <label className="upload-button">
+              <input
+                type="file"
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+              />
+              + アップロード
+            </label>
+          </div>
           <div className="library-list">
-            <div className="list-header">
-              <h3>アップロードしたファイル</h3>
-              <label className="upload-button">
-                <input
-                  type="file"
-                  onChange={handleFileUpload}
-                  style={{ display: 'none' }}
-                />
-                + アップロード
-              </label>
-            </div>
             {libraries.map((lib) => (
               <div
                 key={lib.id}
@@ -83,7 +73,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
               </div>
             ))}
           </div>
-        )}
+        </div>
       </div>
 
       {showPreview && selectedItem && (
