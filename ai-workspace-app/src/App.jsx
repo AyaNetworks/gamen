@@ -8,11 +8,26 @@ function App() {
   const [messages, setMessages] = useState([])
   const [scratchpadContent, setScratchpadContent] = useState('')
   const [documents, setDocuments] = useState([
-    { id: 1, name: 'React Documentation', type: 'document', content: 'React is a JavaScript library for building user interfaces.' },
-    { id: 2, name: 'API Reference', type: 'document', content: 'API endpoints and usage guide for the application.' },
+    {
+      id: 1,
+      name: 'React Documentation.md',
+      type: 'document',
+      content: '# React Documentation\n\nReact is a **JavaScript library** for building user interfaces.\n\n## Key Features\n\n- Component-Based\n- Declarative\n- Learn Once, Write Anywhere\n\n```javascript\nfunction Welcome(props) {\n  return <h1>Hello, {props.name}</h1>;\n}\n```'
+    },
+    {
+      id: 2,
+      name: 'API Reference.md',
+      type: 'document',
+      content: '# API Reference\n\n## Endpoints\n\n### GET /api/users\n\nReturns a list of users.\n\n**Response:**\n```json\n{\n  "users": [\n    { "id": 1, "name": "John" }\n  ]\n}\n```'
+    },
   ])
   const [libraries, setLibraries] = useState([
-    { id: 1, name: 'utility-functions.js', type: 'library', content: 'export const formatDate = (date) => {\n  return new Date(date).toLocaleDateString();\n}' },
+    {
+      id: 1,
+      name: 'utility-functions.js',
+      type: 'library',
+      content: 'export const formatDate = (date) => {\n  return new Date(date).toLocaleDateString();\n}\n\nexport const formatCurrency = (amount) => {\n  return new Intl.NumberFormat("ja-JP", {\n    style: "currency",\n    currency: "JPY"\n  }).format(amount);\n}'
+    },
   ])
 
   const handleSendMessage = (userMessage) => {
@@ -38,13 +53,34 @@ function App() {
   }
 
   const handleUploadLibrary = (file) => {
-    const newLibrary = {
-      id: libraries.length + 1,
-      name: file.name,
-      type: 'library',
-      content: `// Uploaded file: ${file.name}\n// File content would be here`
+    const reader = new FileReader()
+
+    reader.onload = (e) => {
+      const newLibrary = {
+        id: Date.now(),
+        name: file.name,
+        type: 'library',
+        content: e.target.result,
+        file: file
+      }
+      setLibraries([...libraries, newLibrary])
     }
-    setLibraries([...libraries, newLibrary])
+
+    // Read as text for most files, but handle binary files differently
+    const fileType = file.name.split('.').pop().toLowerCase()
+    if (['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(fileType)) {
+      // For binary files, store the file object directly
+      const newLibrary = {
+        id: Date.now(),
+        name: file.name,
+        type: 'library',
+        content: '',
+        file: file
+      }
+      setLibraries([...libraries, newLibrary])
+    } else {
+      reader.readAsText(file)
+    }
   }
 
   return (

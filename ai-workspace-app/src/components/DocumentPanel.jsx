@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import FilePreview from './FilePreview'
+import { getFileIcon } from '../utils/fileTypeDetector'
 import './DocumentPanel.css'
 
 function DocumentPanel({ documents, libraries, onUploadLibrary }) {
@@ -41,7 +43,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
                 className="document-item"
                 onClick={() => handleItemClick(doc)}
               >
-                <span className="document-icon">📄</span>
+                <span className="document-icon">{getFileIcon(doc.name)}</span>
                 <span className="document-name">{doc.name}</span>
               </div>
             ))}
@@ -68,7 +70,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
                 className="library-item"
                 onClick={() => handleItemClick(lib)}
               >
-                <span className="library-icon">📚</span>
+                <span className="library-icon">{getFileIcon(lib.name)}</span>
                 <span className="library-name">{lib.name}</span>
               </div>
             ))}
@@ -84,7 +86,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
               <button className="close-button" onClick={closePreview}>×</button>
             </div>
             <div className="preview-body">
-              <pre>{selectedItem.content}</pre>
+              <FilePreview item={selectedItem} />
             </div>
           </div>
         </div>
