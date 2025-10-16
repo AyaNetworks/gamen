@@ -22,6 +22,14 @@ export const getFileType = (fileName) => {
     'ppt': 'powerpoint',
     'pptx': 'powerpoint',
 
+    // Images
+    'png': 'image',
+    'jpg': 'image',
+    'jpeg': 'image',
+    'gif': 'image',
+    'svg': 'image',
+    'webp': 'image',
+
     // Text
     'txt': 'text',
 
@@ -51,6 +59,7 @@ export const getFileIcon = (fileName) => {
     'word': '📘',
     'excel': '📊',
     'powerpoint': '📽️',
+    'image': '🖼️',
     'text': '📃',
     'code': '💻',
     'unknown': '📎',

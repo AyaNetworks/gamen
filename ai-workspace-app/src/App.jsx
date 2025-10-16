@@ -28,6 +28,38 @@ function App() {
       type: 'library',
       content: 'export const formatDate = (date) => {\n  return new Date(date).toLocaleDateString();\n}\n\nexport const formatCurrency = (amount) => {\n  return new Intl.NumberFormat("ja-JP", {\n    style: "currency",\n    currency: "JPY"\n  }).format(amount);\n}'
     },
+    {
+      id: 2,
+      name: '22365_3_Prompt Engineering_v7 (1).pdf',
+      type: 'library',
+      content: '',
+      file: null,
+      filePath: '/sample_assets/22365_3_Prompt Engineering_v7 (1).pdf'
+    },
+    {
+      id: 3,
+      name: 'template.pptx',
+      type: 'library',
+      content: '',
+      file: null,
+      filePath: '/sample_assets/template.pptx'
+    },
+    {
+      id: 4,
+      name: '４コマ.pptx',
+      type: 'library',
+      content: '',
+      file: null,
+      filePath: '/sample_assets/４コマ.pptx'
+    },
+    {
+      id: 5,
+      name: 'laughing-man_mark_01.png',
+      type: 'library',
+      content: '',
+      file: null,
+      filePath: '/sample_assets/laughing-man_mark_01.png'
+    },
   ])
 
   const handleSendMessage = (userMessage) => {

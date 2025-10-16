@@ -1,41 +1,72 @@
 import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
-import { Document, Page, pdfjs } from 'react-pdf'
 import * as XLSX from 'xlsx'
 import mammoth from 'mammoth'
 import { getFileType } from '../utils/fileTypeDetector'
 import 'highlight.js/styles/github-dark.css'
 import './FilePreview.css'
 
-// Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
-
 function FilePreview({ item }) {
-  const [numPages, setNumPages] = useState(null)
   const [parsedContent, setParsedContent] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [fileData, setFileData] = useState(null)
+  const [pdfUrl, setPdfUrl] = useState(null)
+  const [error, setError] = useState(null)
   const fileType = getFileType(item.name)
 
   useEffect(() => {
     const parseFile = async () => {
-      if (!item.file) return
+      let file = item.file
+      setError(null)
+
+      // If filePath is provided, fetch the file from the path
+      if (!file && item.filePath) {
+        setLoading(true)
+        try {
+          const response = await fetch(item.filePath)
+          if (!response.ok) throw new Error('Failed to fetch file')
+          const blob = await response.blob()
+          file = new File([blob], item.name, { type: blob.type || 'application/pdf' })
+          setFileData(file)
+
+          // Create URL for PDF
+          if (fileType === 'pdf') {
+            const url = URL.createObjectURL(blob)
+            setPdfUrl(url)
+          }
+        } catch (error) {
+          console.error('Error fetching file:', error)
+          setError('ファイルの読み込みに失敗しました。')
+          setLoading(false)
+          return
+        }
+      } else {
+        setFileData(file)
+        if (file && fileType === 'pdf') {
+          const url = URL.createObjectURL(file)
+          setPdfUrl(url)
+        }
+      }
+
+      if (!file) return
 
       setLoading(true)
       try {
         if (fileType === 'excel') {
-          const data = await item.file.arrayBuffer()
+          const data = await file.arrayBuffer()
           const workbook = XLSX.read(data)
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]]
           const htmlString = XLSX.utils.sheet_to_html(firstSheet)
           setParsedContent(htmlString)
         } else if (fileType === 'word') {
-          const arrayBuffer = await item.file.arrayBuffer()
+          const arrayBuffer = await file.arrayBuffer()
           const result = await mammoth.convertToHtml({ arrayBuffer })
           setParsedContent(result.value)
         }
       } catch (error) {
         console.error('Error parsing file:', error)
+        setError('ファイルの解析に失敗しました。')
         setParsedContent('<p>ファイルの解析に失敗しました。</p>')
       } finally {
         setLoading(false)
@@ -43,11 +74,22 @@ function FilePreview({ item }) {
     }
 
     parseFile()
+
+    // Cleanup PDF URL on unmount
+    return () => {
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl)
+      }
+    }
   }, [item, fileType])
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages)
-  }
+  useEffect(() => {
+    return () => {
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl)
+      }
+    }
+  }, [pdfUrl])
 
   if (fileType === 'markdown') {
     return (
@@ -59,31 +101,31 @@ function FilePreview({ item }) {
     )
   }
 
-  if (fileType === 'pdf' && item.file) {
-    return (
-      <div className="preview-pdf">
-        <Document
-          file={item.file}
-          onLoadSuccess={onDocumentLoadSuccess}
-          loading={<div className="preview-loading">PDFを読み込んでいます...</div>}
-        >
-          {Array.from(new Array(numPages), (el, index) => (
-            <Page
-              key={`page_${index + 1}`}
-              pageNumber={index + 1}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-              width={600}
-            />
-          ))}
-        </Document>
-        {numPages && (
-          <div className="pdf-info">
-            総ページ数: {numPages}
-          </div>
-        )}
-      </div>
-    )
+  if (fileType === 'pdf') {
+    if (error) {
+      return (
+        <div className="preview-error">
+          <p>{error}</p>
+          <p className="error-detail">ファイル名: {item.name}</p>
+        </div>
+      )
+    }
+
+    if (loading) {
+      return <div className="preview-loading">PDFを読み込んでいます...</div>
+    }
+
+    if (pdfUrl || item.filePath) {
+      return (
+        <div className="preview-pdf-container">
+          <iframe
+            src={pdfUrl || item.filePath}
+            className="pdf-iframe"
+            title={item.name}
+          />
+        </div>
+      )
+    }
   }
 
   if (fileType === 'excel') {
@@ -104,11 +146,31 @@ function FilePreview({ item }) {
     )
   }
 
+  if (fileType === 'image') {
+    const imageSrc = item.filePath || (item.file ? URL.createObjectURL(item.file) : null)
+    if (imageSrc) {
+      return (
+        <div className="preview-image">
+          <img src={imageSrc} alt={item.name} />
+        </div>
+      )
+    }
+  }
+
   if (fileType === 'powerpoint') {
+    const file = fileData || item.file
     return (
       <div className="preview-unsupported">
-        <p>PowerPointファイルのプレビューは現在サポートされていません。</p>
-        <p>ファイル名: {item.name}</p>
+        <div className="unsupported-icon">📽️</div>
+        <h3>PowerPointファイル</h3>
+        <p className="unsupported-message">PowerPointファイルのプレビューは現在対応していません。</p>
+        <div className="file-info">
+          <p><strong>ファイル名:</strong> {item.name}</p>
+          {file && <p><strong>サイズ:</strong> {(file.size / 1024).toFixed(2)} KB</p>}
+        </div>
+        <p className="unsupported-note">
+          ファイルをダウンロードして、PowerPointアプリで開いてください。
+        </p>
       </div>
     )
   }
