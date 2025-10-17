@@ -376,6 +376,13 @@
   flex-shrink: 0;
 }
 
+.message-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
 .message-bubble {
   display: flex;
   flex-direction: column;
@@ -384,6 +391,17 @@
   border-radius: 8px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+.message-timestamp {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0 0.25rem;
+  align-self: flex-start;
+}
+
+.message.user .message-timestamp {
+  align-self: flex-end;
 }
 
 .message.user .message-bubble {
@@ -589,6 +607,10 @@
 
 .light-theme .message-content {
   color: #333;
+}
+
+.light-theme .message-timestamp {
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .light-theme .chat-input-form {

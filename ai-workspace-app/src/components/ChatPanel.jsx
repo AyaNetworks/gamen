@@ -101,7 +101,7 @@ function ChatPanel({
   }
 
   const getMessageLabel = (message) => {
-    if (message.role === 'user') return 'User'
+    if (message.role === 'user') return null // No label for user messages
 
     const messageType = message.type || 'dione'
 
@@ -113,6 +113,34 @@ function ChatPanel({
       case 'dione':
       default:
         return 'DIONE'
+    }
+  }
+
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return ''
+
+    const date = new Date(timestamp)
+    const now = new Date()
+
+    // Check if the message is from today
+    const isToday = date.toDateString() === now.toDateString()
+
+    // Format time as HH:MM
+    const timeString = date.toLocaleTimeString('ja-JP', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    })
+
+    if (isToday) {
+      return timeString
+    } else {
+      // Show date and time for older messages
+      const dateString = date.toLocaleDateString('ja-JP', {
+        month: 'numeric',
+        day: 'numeric'
+      })
+      return `${dateString} ${timeString}`
     }
   }
 
@@ -189,9 +217,14 @@ function ChatPanel({
                   }}
                 />
               )}
-              <div className="message-bubble">
-                <div className="message-role">{getMessageLabel(message)}</div>
-                <div className="message-content">{message.content}</div>
+              <div className="message-content-wrapper">
+                <div className="message-bubble">
+                  {getMessageLabel(message) && (
+                    <div className="message-role">{getMessageLabel(message)}</div>
+                  )}
+                  <div className="message-content">{message.content}</div>
+                </div>
+                <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
               </div>
             </div>
           ))}
@@ -202,7 +235,7 @@ function ChatPanel({
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Dioneに指示してください"
+            placeholder="Dioneと何をしますか？"
             className="chat-input"
           />
           <button type="submit" className="chat-send-button">送信</button>

@@ -12,16 +12,16 @@ function App() {
       id: 1,
       title: 'Dioneメッセージタイプテスト',
       messages: [
-        { role: 'user', content: '通常のDione回答をテストします' },
-        { role: 'ai', type: 'dione', status: 'success', content: 'こちらが通常のDioneの回答です。すべてが正常に動作しています。' },
-        { role: 'user', content: 'Dioneエラーを見せてください' },
-        { role: 'ai', type: 'dione', status: 'error', content: 'エラーが発生しました。処理を完了できませんでした。' },
-        { role: 'user', content: '思考プロセスを見せてください' },
-        { role: 'ai', type: 'thinking', status: 'success', content: '考えています... 最適なアプローチを検討中です。複数の可能性を分析しています。' },
-        { role: 'user', content: 'ツールを使用してください' },
-        { role: 'ai', type: 'tool', status: 'success', content: 'ファイルシステムを検索しています... 3つのファイルが見つかりました。' },
-        { role: 'user', content: 'ツールエラーを見せてください' },
-        { role: 'ai', type: 'tool', status: 'error', content: 'ツールの実行に失敗しました。APIエンドポイントに接続できません。' },
+        { role: 'user', content: '通常のDione回答をテストします', timestamp: new Date(Date.now() - 300000).toISOString() },
+        { role: 'ai', type: 'dione', status: 'success', content: 'こちらが通常のDioneの回答です。すべてが正常に動作しています。', timestamp: new Date(Date.now() - 290000).toISOString() },
+        { role: 'user', content: 'Dioneエラーを見せてください', timestamp: new Date(Date.now() - 240000).toISOString() },
+        { role: 'ai', type: 'dione', status: 'error', content: 'エラーが発生しました。処理を完了できませんでした。', timestamp: new Date(Date.now() - 230000).toISOString() },
+        { role: 'user', content: '思考プロセスを見せてください', timestamp: new Date(Date.now() - 180000).toISOString() },
+        { role: 'ai', type: 'thinking', status: 'success', content: '考えています... 最適なアプローチを検討中です。複数の可能性を分析しています。', timestamp: new Date(Date.now() - 170000).toISOString() },
+        { role: 'user', content: 'ツールを使用してください', timestamp: new Date(Date.now() - 120000).toISOString() },
+        { role: 'ai', type: 'tool', status: 'success', content: 'ファイルシステムを検索しています... 3つのファイルが見つかりました。', timestamp: new Date(Date.now() - 110000).toISOString() },
+        { role: 'user', content: 'ツールエラーを見せてください', timestamp: new Date(Date.now() - 60000).toISOString() },
+        { role: 'ai', type: 'tool', status: 'error', content: 'ツールの実行に失敗しました。APIエンドポイントに接続できません。', timestamp: new Date(Date.now() - 50000).toISOString() },
       ],
       createdAt: new Date().toISOString()
     }
@@ -101,7 +101,7 @@ function App() {
   const handleSendMessage = (userMessage) => {
     const updatedSessions = chatSessions.map(chat => {
       if (chat.id === currentChatId) {
-        const newMessages = [...chat.messages, { role: 'user', content: userMessage }]
+        const newMessages = [...chat.messages, { role: 'user', content: userMessage, timestamp: new Date().toISOString() }]
 
         // Update title if this is the first message
         const title = chat.messages.length === 0
@@ -137,7 +137,7 @@ function App() {
           if (chat.id === currentChatId) {
             return {
               ...chat,
-              messages: [...chat.messages, { role: 'ai', type: 'dione', status: 'success', content: aiResponse }]
+              messages: [...chat.messages, { role: 'ai', type: 'dione', status: 'success', content: aiResponse, timestamp: new Date().toISOString() }]
             }
           }
           return chat
