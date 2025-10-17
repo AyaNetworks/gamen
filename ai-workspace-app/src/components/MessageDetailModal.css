@@ -1,0 +1,223 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-container {
+  background-color: rgba(36, 36, 36, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(100, 108, 255, 0.3);
+  background-color: rgba(42, 42, 42, 0.8);
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modal-close-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background-color: rgba(255, 80, 80, 0.2);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  color: #ff8080;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.modal-close-button:hover {
+  background-color: rgba(255, 80, 80, 0.4);
+  border-color: rgba(255, 80, 80, 0.6);
+  transform: scale(1.05);
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.modal-content-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(100, 108, 255, 0.9);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-code-block {
+  background-color: rgba(26, 26, 26, 0.8);
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  color: #e0e0e0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.modal-code-block.modal-error {
+  background-color: rgba(80, 30, 30, 0.4);
+  border-color: rgba(255, 80, 80, 0.3);
+  color: #ffb3b3;
+}
+
+.modal-no-details {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  padding: 2rem;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(26, 26, 26, 0.5);
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(100, 108, 255, 0.4);
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 108, 255, 0.6);
+}
+
+/* Light Theme Styles */
+.modal-overlay.light-theme {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-overlay.light-theme .modal-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(100, 108, 255, 0.4);
+}
+
+.modal-overlay.light-theme .modal-header {
+  background-color: rgba(240, 245, 255, 0.9);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.4);
+}
+
+.modal-overlay.light-theme .modal-title {
+  color: #333;
+}
+
+.modal-overlay.light-theme .modal-close-button {
+  background-color: rgba(255, 80, 80, 0.15);
+  color: #e63946;
+}
+
+.modal-overlay.light-theme .modal-close-button:hover {
+  background-color: rgba(255, 80, 80, 0.3);
+}
+
+.modal-overlay.light-theme .modal-section-title {
+  color: rgba(83, 91, 242, 0.9);
+}
+
+.modal-overlay.light-theme .modal-code-block {
+  background-color: rgba(240, 245, 255, 0.8);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  color: #333;
+}
+
+.modal-overlay.light-theme .modal-code-block.modal-error {
+  background-color: rgba(255, 220, 220, 0.8);
+  border-color: rgba(255, 100, 100, 0.4);
+  color: #b71c1c;
+}
+
+.modal-overlay.light-theme .modal-no-details {
+  color: #666;
+}
+
+.modal-overlay.light-theme .modal-body::-webkit-scrollbar-track {
+  background: rgba(240, 245, 255, 0.5);
+}
+
+.modal-overlay.light-theme .modal-body::-webkit-scrollbar-thumb {
+  background: rgba(100, 108, 255, 0.4);
+}
+
+.modal-overlay.light-theme .modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 108, 255, 0.6);
+}

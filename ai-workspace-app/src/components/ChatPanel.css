@@ -404,6 +404,24 @@
   align-self: flex-end;
 }
 
+.message-clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.message-clickable:hover {
+  transform: translateY(-2px);
+}
+
+.message-clickable:hover .message-bubble {
+  box-shadow: 0 4px 20px rgba(100, 108, 255, 0.4);
+  border-color: rgba(100, 108, 255, 0.6);
+}
+
+.message-clickable:active {
+  transform: translateY(0);
+}
+
 .message.user .message-bubble {
   background-color: rgba(100, 108, 255, 0.5);
   border: 1px solid rgba(100, 108, 255, 0.4);
@@ -611,6 +629,11 @@
 
 .light-theme .message-timestamp {
   color: rgba(0, 0, 0, 0.5);
+}
+
+.light-theme .message-clickable:hover .message-bubble {
+  box-shadow: 0 4px 20px rgba(100, 108, 255, 0.3);
+  border-color: rgba(100, 108, 255, 0.7);
 }
 
 .light-theme .chat-input-form {

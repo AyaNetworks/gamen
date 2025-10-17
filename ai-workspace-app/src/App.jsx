@@ -13,15 +13,52 @@ function App() {
       title: 'Dioneメッセージタイプテスト',
       messages: [
         { role: 'user', content: '通常のDione回答をテストします', timestamp: new Date(Date.now() - 300000).toISOString() },
-        { role: 'ai', type: 'dione', status: 'success', content: 'こちらが通常のDioneの回答です。すべてが正常に動作しています。', timestamp: new Date(Date.now() - 290000).toISOString() },
+        {
+          role: 'ai',
+          type: 'dione',
+          status: 'success',
+          content: 'こちらが通常のDioneの回答です。すべてが正常に動作しています。',
+          timestamp: new Date(Date.now() - 290000).toISOString(),
+          trace: 'Step 1: Parse user input\nStep 2: Analyze request context\nStep 3: Generate response\nStep 4: Validate output\nStep 5: Return response'
+        },
         { role: 'user', content: 'Dioneエラーを見せてください', timestamp: new Date(Date.now() - 240000).toISOString() },
-        { role: 'ai', type: 'dione', status: 'error', content: 'エラーが発生しました。処理を完了できませんでした。', timestamp: new Date(Date.now() - 230000).toISOString() },
+        {
+          role: 'ai',
+          type: 'dione',
+          status: 'error',
+          content: 'エラーが発生しました。処理を完了できませんでした。',
+          timestamp: new Date(Date.now() - 230000).toISOString(),
+          traceback: 'Traceback (most recent call last):\n  File "dione/core.py", line 142, in process_request\n    result = self.execute_task(task)\n  File "dione/executor.py", line 89, in execute_task\n    raise ProcessingError("Failed to complete task")\nProcessingError: Failed to complete task'
+        },
         { role: 'user', content: '思考プロセスを見せてください', timestamp: new Date(Date.now() - 180000).toISOString() },
-        { role: 'ai', type: 'thinking', status: 'success', content: '考えています... 最適なアプローチを検討中です。複数の可能性を分析しています。', timestamp: new Date(Date.now() - 170000).toISOString() },
+        {
+          role: 'ai',
+          type: 'thinking',
+          status: 'success',
+          content: '考えています... 最適なアプローチを検討中です。複数の可能性を分析しています。',
+          timestamp: new Date(Date.now() - 170000).toISOString(),
+          trace: 'Thought 1: Analyzing user request pattern\nThought 2: Considering multiple solution approaches\nThought 3: Evaluating approach A - complexity O(n)\nThought 4: Evaluating approach B - complexity O(log n)\nThought 5: Selected approach B as optimal\nThought 6: Formulating response strategy'
+        },
         { role: 'user', content: 'ツールを使用してください', timestamp: new Date(Date.now() - 120000).toISOString() },
-        { role: 'ai', type: 'tool', status: 'success', content: 'ファイルシステムを検索しています... 3つのファイルが見つかりました。', timestamp: new Date(Date.now() - 110000).toISOString() },
+        {
+          role: 'ai',
+          type: 'tool',
+          status: 'success',
+          content: 'ファイルシステムを検索しています... 3つのファイルが見つかりました。',
+          timestamp: new Date(Date.now() - 110000).toISOString(),
+          toolArgs: '{\n  "command": "search",\n  "path": "/workspace",\n  "pattern": "*.jsx",\n  "recursive": true,\n  "maxDepth": 5\n}',
+          toolResults: '{\n  "status": "success",\n  "filesFound": 3,\n  "results": [\n    "/workspace/src/App.jsx",\n    "/workspace/src/components/ChatPanel.jsx",\n    "/workspace/src/components/Scratchpad.jsx"\n  ],\n  "executionTime": "24ms"\n}'
+        },
         { role: 'user', content: 'ツールエラーを見せてください', timestamp: new Date(Date.now() - 60000).toISOString() },
-        { role: 'ai', type: 'tool', status: 'error', content: 'ツールの実行に失敗しました。APIエンドポイントに接続できません。', timestamp: new Date(Date.now() - 50000).toISOString() },
+        {
+          role: 'ai',
+          type: 'tool',
+          status: 'error',
+          content: 'ツールの実行に失敗しました。APIエンドポイントに接続できません。',
+          timestamp: new Date(Date.now() - 50000).toISOString(),
+          toolArgs: '{\n  "endpoint": "https://api.example.com/v1/search",\n  "method": "POST",\n  "headers": {\n    "Content-Type": "application/json",\n    "Authorization": "Bearer ***"\n  },\n  "body": {\n    "query": "test"\n  }\n}',
+          traceback: 'Error: Connection timeout\n  at APIClient.request (api-client.js:156)\n  at ToolExecutor.callAPI (tool-executor.js:89)\n  at async ToolExecutor.execute (tool-executor.js:45)\nCaused by: ETIMEDOUT\n  errno: -110\n  code: "ETIMEDOUT"\n  syscall: "connect"'
+        },
       ],
       createdAt: new Date().toISOString()
     }

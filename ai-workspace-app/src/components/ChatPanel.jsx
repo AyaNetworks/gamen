@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import MessageDetailModal from './MessageDetailModal'
 import './ChatPanel.css'
 
 function ChatPanel({
@@ -13,6 +14,7 @@ function ChatPanel({
   onToggleTheme
 }) {
   const [inputValue, setInputValue] = useState('')
+  const [selectedMessage, setSelectedMessage] = useState(null)
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -144,6 +146,17 @@ function ChatPanel({
     }
   }
 
+  const handleMessageClick = (message) => {
+    // Only show modal for AI messages that have detailed info
+    if (message.role === 'ai' && (message.trace || message.traceback || message.toolArgs || message.toolResults)) {
+      setSelectedMessage(message)
+    }
+  }
+
+  const handleCloseModal = () => {
+    setSelectedMessage(null)
+  }
+
   return (
     <div className="chat-panel">
       {/* Chat History Sidebar */}
@@ -204,30 +217,37 @@ function ChatPanel({
           </button>
         </div>
         <div className="chat-messages">
-          {currentMessages.map((message, index) => (
-            <div key={index} className={`message ${message.role} ${message.role === 'ai' ? `message-${message.type || 'dione'}` : ''} ${message.role === 'ai' ? `message-${message.status || 'success'}` : ''}`}>
-              {message.role === 'ai' && (
-                <img
-                  src={getDioneIcon(message)}
-                  alt="Dione"
-                  className="message-avatar"
-                  onError={(e) => {
-                    // Fallback to default dark icon if image fails to load
-                    e.target.src = '/sample_assets/dione/dione_dark.png'
-                  }}
-                />
-              )}
-              <div className="message-content-wrapper">
-                <div className="message-bubble">
-                  {getMessageLabel(message) && (
-                    <div className="message-role">{getMessageLabel(message)}</div>
-                  )}
-                  <div className="message-content">{message.content}</div>
+          {currentMessages.map((message, index) => {
+            const hasDetails = message.role === 'ai' && (message.trace || message.traceback || message.toolArgs || message.toolResults)
+            return (
+              <div
+                key={index}
+                className={`message ${message.role} ${message.role === 'ai' ? `message-${message.type || 'dione'}` : ''} ${message.role === 'ai' ? `message-${message.status || 'success'}` : ''} ${hasDetails ? 'message-clickable' : ''}`}
+                onClick={() => handleMessageClick(message)}
+              >
+                {message.role === 'ai' && (
+                  <img
+                    src={getDioneIcon(message)}
+                    alt="Dione"
+                    className="message-avatar"
+                    onError={(e) => {
+                      // Fallback to default dark icon if image fails to load
+                      e.target.src = '/sample_assets/dione/dione_dark.png'
+                    }}
+                  />
+                )}
+                <div className="message-content-wrapper">
+                  <div className="message-bubble">
+                    {getMessageLabel(message) && (
+                      <div className="message-role">{getMessageLabel(message)}</div>
+                    )}
+                    <div className="message-content">{message.content}</div>
+                  </div>
+                  <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
                 </div>
-                <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
               </div>
-            </div>
-          ))}
+            )
+          })}
           <div ref={messagesEndRef} />
         </div>
         <form className="chat-input-form" onSubmit={handleSubmit}>
@@ -241,6 +261,15 @@ function ChatPanel({
           <button type="submit" className="chat-send-button">送信</button>
         </form>
       </div>
+
+      {/* Message Detail Modal */}
+      {selectedMessage && (
+        <MessageDetailModal
+          message={selectedMessage}
+          onClose={handleCloseModal}
+          theme={theme}
+        />
+      )}
     </div>
   )
 }
