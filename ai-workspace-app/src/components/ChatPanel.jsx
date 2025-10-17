@@ -45,6 +45,22 @@ function ChatPanel({
     return date.toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' })
   }
 
+  const formatDateCompact = (dateString) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffMs = now - date
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMs / 3600000)
+    const diffDays = Math.floor(diffMs / 86400000)
+
+    if (diffMins < 1) return '今'
+    if (diffMins < 60) return `${diffMins}m`
+    if (diffHours < 24) return `${diffHours}h`
+    if (diffDays < 7) return `${diffDays}d`
+
+    return date.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' })
+  }
+
   return (
     <div className="chat-panel">
       {/* Chat History Sidebar */}
@@ -62,6 +78,14 @@ function ChatPanel({
               className={`chat-history-item ${chat.id === currentChatId ? 'active' : ''}`}
               onClick={() => onSelectChat(chat.id)}
             >
+              {/* Compact view (shown when sidebar is collapsed) */}
+              <div className="chat-history-compact">
+                <div className="chat-compact-time">{formatDateCompact(chat.createdAt)}</div>
+                <div className="chat-compact-icon">💬</div>
+                <div className="chat-compact-count">{chat.messages.length}</div>
+              </div>
+
+              {/* Expanded view (shown when sidebar is hovered) */}
               <div className="chat-history-content">
                 <div className="chat-history-title">{chat.title}</div>
                 <div className="chat-history-meta">
