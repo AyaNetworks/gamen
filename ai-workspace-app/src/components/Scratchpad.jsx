@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import ReactMarkdown from 'react-markdown'
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/github-dark.css'
 import './Scratchpad.css'
 
 function Scratchpad({
@@ -15,6 +18,9 @@ function Scratchpad({
 }) {
   const [editingTabId, setEditingTabId] = useState(null)
   const [editingTitle, setEditingTitle] = useState('')
+  const [isPreviewMode, setIsPreviewMode] = useState(true)
+  const [controllerPosition, setControllerPosition] = useState(null)
+  const editorRef = useRef(null)
 
   const handleEditorChange = (e) => {
     onUpdate(e.target.value)
@@ -46,6 +52,29 @@ function Scratchpad({
 
   const canUndo = currentTab && currentTab.historyIndex > 0
   const canRedo = currentTab && currentTab.historyIndex < currentTab.history.length - 1
+
+  const handleEditorClick = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setControllerPosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    })
+  }
+
+  const handleCloseController = () => {
+    setControllerPosition(null)
+  }
+
+  const handleToggleMode = () => {
+    setIsPreviewMode(!isPreviewMode)
+    setControllerPosition(null)
+  }
+
+  const handleDirectionAction = (direction) => {
+    // Placeholder actions for directional buttons
+    console.log(`Action for direction: ${direction}`)
+    setControllerPosition(null)
+  }
 
   return (
     <div className="scratchpad">
@@ -124,13 +153,77 @@ function Scratchpad({
         </button>
       </div>
 
-      {/* Editor */}
-      <textarea
-        className="scratchpad-editor"
-        value={currentTab?.content || ''}
-        onChange={handleEditorChange}
-        placeholder="AIがここに内容を生成します..."
-      />
+      {/* Editor / Preview */}
+      <div className="scratchpad-content" ref={editorRef}>
+        {isPreviewMode ? (
+          <div className="scratchpad-preview" onClick={handleEditorClick}>
+            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+              {currentTab?.content || '*Markdown content will appear here...*'}
+            </ReactMarkdown>
+          </div>
+        ) : (
+          <textarea
+            className="scratchpad-editor"
+            value={currentTab?.content || ''}
+            onChange={handleEditorChange}
+            onClick={handleEditorClick}
+            placeholder="AIがここに内容を生成します..."
+          />
+        )}
+
+        {/* Circular Controller */}
+        {controllerPosition && (
+          <>
+            <div className="controller-overlay" onClick={handleCloseController} />
+            <div
+              className="circular-controller"
+              style={{
+                left: `${controllerPosition.x}px`,
+                top: `${controllerPosition.y}px`
+              }}
+            >
+              {/* Center Button */}
+              <button
+                className="controller-center"
+                onClick={handleToggleMode}
+                title={isPreviewMode ? '編集モードに切り替え' : 'プレビューモードに切り替え'}
+              >
+                {isPreviewMode ? '✏️' : '👁️'}
+              </button>
+
+              {/* Directional Buttons */}
+              <button
+                className="controller-button controller-top"
+                onClick={() => handleDirectionAction('top')}
+                title="上"
+              >
+                ⬆️
+              </button>
+              <button
+                className="controller-button controller-right"
+                onClick={() => handleDirectionAction('right')}
+                title="右"
+              >
+                ➡️
+              </button>
+              <button
+                className="controller-button controller-bottom"
+                onClick={() => handleDirectionAction('bottom')}
+                title="下"
+              >
+                ⬇️
+              </button>
+              <button
+                className="controller-button controller-left"
+                onClick={() => handleDirectionAction('left')}
+                title="左"
+              >
+                ⬅️
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }
