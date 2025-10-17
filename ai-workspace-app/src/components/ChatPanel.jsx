@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import { BsSun, BsMoon } from 'react-icons/bs'
 import './ChatPanel.css'
 
 function ChatPanel({
@@ -99,7 +98,6 @@ function ChatPanel({
         : '/sample_assets/dione/dione_light.png'
     }
 
-    console.log('Theme:', theme, 'Content:', messageContent.substring(0, 20), 'Icon:', iconPath)
     return iconPath
   }
 
@@ -159,7 +157,7 @@ function ChatPanel({
             onClick={onToggleTheme}
             title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
           >
-            {theme === 'dark' ? <BsSun /> : <BsMoon />}
+            {theme === 'dark' ? '☀️' : '🌙'}
           </button>
         </div>
         <div className="chat-messages">
@@ -171,12 +169,8 @@ function ChatPanel({
                   alt="Dione"
                   className="message-avatar"
                   onError={(e) => {
-                    console.error('Image failed to load:', e.target.src)
-                    // Fallback to default dark icon
+                    // Fallback to default dark icon if image fails to load
                     e.target.src = '/sample_assets/dione/dione_dark.png'
-                  }}
-                  onLoad={() => {
-                    console.log('Image loaded successfully')
                   }}
                 />
               )}
