@@ -475,6 +475,55 @@
   background: #555;
 }
 
+/* Message Type Styling - Dark Theme */
+
+/* Dione Messages (Normal AI Response) */
+.message.ai.message-dione.message-success .message-bubble {
+  background-color: rgba(51, 51, 51, 0.5);
+  border: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+.message.ai.message-dione.message-error .message-bubble {
+  background-color: rgba(80, 30, 30, 0.5);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  box-shadow: 0 0 10px rgba(255, 80, 80, 0.2);
+}
+
+/* Thinking Messages */
+.message.ai.message-thinking .message-bubble {
+  background-color: rgba(60, 50, 80, 0.5);
+  border: 1px solid rgba(150, 120, 200, 0.3);
+  box-shadow: 0 0 10px rgba(150, 120, 200, 0.15);
+}
+
+.message.ai.message-thinking .message-avatar {
+  border: 2px solid rgba(150, 120, 200, 0.4);
+  box-shadow: 0 0 10px rgba(150, 120, 200, 0.3);
+}
+
+/* Tool Messages */
+.message.ai.message-tool.message-success .message-bubble {
+  background-color: rgba(30, 60, 60, 0.5);
+  border: 1px solid rgba(80, 200, 200, 0.3);
+  box-shadow: 0 0 10px rgba(80, 200, 200, 0.15);
+}
+
+.message.ai.message-tool.message-success .message-avatar {
+  border: 2px solid rgba(80, 200, 200, 0.4);
+  box-shadow: 0 0 10px rgba(80, 200, 200, 0.3);
+}
+
+.message.ai.message-tool.message-error .message-bubble {
+  background-color: rgba(80, 40, 30, 0.5);
+  border: 1px solid rgba(255, 120, 80, 0.4);
+  box-shadow: 0 0 10px rgba(255, 120, 80, 0.2);
+}
+
+.message.ai.message-tool.message-error .message-avatar {
+  border: 2px solid rgba(255, 120, 80, 0.5);
+  box-shadow: 0 0 10px rgba(255, 120, 80, 0.3);
+}
+
 /* Light Theme Styles */
 .light-theme .chat-panel {
   background-color: rgba(255, 255, 255, 0.75);
@@ -566,4 +615,53 @@
 .light-theme .chat-send-button:hover {
   background-color: rgba(83, 91, 242, 1);
   border-color: rgba(83, 91, 242, 1);
+}
+
+/* Message Type Styling - Light Theme */
+
+/* Dione Messages (Normal AI Response) */
+.light-theme .message.ai.message-dione.message-success .message-bubble {
+  background-color: rgba(240, 245, 255, 0.8);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .message.ai.message-dione.message-error .message-bubble {
+  background-color: rgba(255, 220, 220, 0.9);
+  border: 1px solid rgba(255, 100, 100, 0.5);
+  box-shadow: 0 0 10px rgba(255, 100, 100, 0.2);
+}
+
+/* Thinking Messages */
+.light-theme .message.ai.message-thinking .message-bubble {
+  background-color: rgba(245, 240, 255, 0.9);
+  border: 1px solid rgba(150, 120, 200, 0.4);
+  box-shadow: 0 0 10px rgba(150, 120, 200, 0.15);
+}
+
+.light-theme .message.ai.message-thinking .message-avatar {
+  border: 2px solid rgba(150, 120, 200, 0.5);
+  box-shadow: 0 0 10px rgba(150, 120, 200, 0.3);
+}
+
+/* Tool Messages */
+.light-theme .message.ai.message-tool.message-success .message-bubble {
+  background-color: rgba(230, 250, 250, 0.9);
+  border: 1px solid rgba(80, 200, 200, 0.4);
+  box-shadow: 0 0 10px rgba(80, 200, 200, 0.15);
+}
+
+.light-theme .message.ai.message-tool.message-success .message-avatar {
+  border: 2px solid rgba(80, 200, 200, 0.5);
+  box-shadow: 0 0 10px rgba(80, 200, 200, 0.3);
+}
+
+.light-theme .message.ai.message-tool.message-error .message-bubble {
+  background-color: rgba(255, 235, 230, 0.9);
+  border: 1px solid rgba(255, 120, 80, 0.5);
+  box-shadow: 0 0 10px rgba(255, 120, 80, 0.2);
+}
+
+.light-theme .message.ai.message-tool.message-error .message-avatar {
+  border: 2px solid rgba(255, 120, 80, 0.6);
+  box-shadow: 0 0 10px rgba(255, 120, 80, 0.3);
 }

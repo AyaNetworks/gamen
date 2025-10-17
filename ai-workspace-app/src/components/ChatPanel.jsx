@@ -63,42 +63,57 @@ function ChatPanel({
     return date.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' })
   }
 
-  const getDioneIcon = (messageContent) => {
-    const content = messageContent.toLowerCase()
-    const isError = content.includes('error') || content.includes('エラー')
-    const isThinking = content.includes('thinking') || content.includes('考えて') || content.includes('思考')
-    const isTool = content.includes('tool') || content.includes('ツール')
+  const getDioneIcon = (message) => {
+    const messageType = message.type || 'dione' // Default to 'dione' if not specified
+    const messageStatus = message.status || 'success' // Default to 'success' if not specified
 
     let iconPath = ''
 
-    if (isError) {
-      if (isTool) {
+    if (messageType === 'tool') {
+      if (messageStatus === 'error') {
         // Tool error - use tool_error.png (same for both themes)
         iconPath = '/sample_assets/dione/tool_error.png'
       } else {
-        // Dione error
+        // Tool success
         iconPath = theme === 'dark'
-          ? '/sample_assets/dione/dione_error_dark.png'
-          : '/sample_assets/dione/dione_error_light.png'
+          ? '/sample_assets/dione/tool_dark.png'
+          : '/sample_assets/dione/tool_light.png'
       }
-    } else if (isThinking) {
-      // Thinking
+    } else if (messageType === 'thinking') {
+      // Thinking (usually success state)
       iconPath = theme === 'dark'
         ? '/sample_assets/dione/dione_thinking_dark.png'
         : '/sample_assets/dione/dione_thinking_light.png'
-    } else if (isTool) {
-      // Tool usage (normal)
-      iconPath = theme === 'dark'
-        ? '/sample_assets/dione/tool_dark.png'
-        : '/sample_assets/dione/tool_light.png'
     } else {
-      // Normal Dione answer
-      iconPath = theme === 'dark'
-        ? '/sample_assets/dione/dione_dark.png'
-        : '/sample_assets/dione/dione_light.png'
+      // Dione type (normal AI response)
+      if (messageStatus === 'error') {
+        iconPath = theme === 'dark'
+          ? '/sample_assets/dione/dione_error_dark.png'
+          : '/sample_assets/dione/dione_error_light.png'
+      } else {
+        iconPath = theme === 'dark'
+          ? '/sample_assets/dione/dione_dark.png'
+          : '/sample_assets/dione/dione_light.png'
+      }
     }
 
     return iconPath
+  }
+
+  const getMessageLabel = (message) => {
+    if (message.role === 'user') return 'User'
+
+    const messageType = message.type || 'dione'
+
+    switch (messageType) {
+      case 'tool':
+        return 'TOOL'
+      case 'thinking':
+        return 'THINKING'
+      case 'dione':
+      default:
+        return 'DIONE'
+    }
   }
 
   return (
@@ -162,10 +177,10 @@ function ChatPanel({
         </div>
         <div className="chat-messages">
           {currentMessages.map((message, index) => (
-            <div key={index} className={`message ${message.role}`}>
+            <div key={index} className={`message ${message.role} ${message.role === 'ai' ? `message-${message.type || 'dione'}` : ''} ${message.role === 'ai' ? `message-${message.status || 'success'}` : ''}`}>
               {message.role === 'ai' && (
                 <img
-                  src={getDioneIcon(message.content)}
+                  src={getDioneIcon(message)}
                   alt="Dione"
                   className="message-avatar"
                   onError={(e) => {
@@ -175,7 +190,7 @@ function ChatPanel({
                 />
               )}
               <div className="message-bubble">
-                <div className="message-role">{message.role === 'user' ? 'User' : 'Dione'}</div>
+                <div className="message-role">{getMessageLabel(message)}</div>
                 <div className="message-content">{message.content}</div>
               </div>
             </div>

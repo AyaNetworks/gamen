@@ -10,18 +10,18 @@ function App() {
   const [chatSessions, setChatSessions] = useState([
     {
       id: 1,
-      title: 'Dioneアイコンテスト',
+      title: 'Dioneメッセージタイプテスト',
       messages: [
-        { role: 'user', content: '通常のメッセージをテストします' },
-        { role: 'ai', content: 'こちらが通常のDioneの回答です。' },
-        { role: 'user', content: '思考中のアイコンを見せてください' },
-        { role: 'ai', content: 'Thinking... 今考えています...' },
+        { role: 'user', content: '通常のDione回答をテストします' },
+        { role: 'ai', type: 'dione', status: 'success', content: 'こちらが通常のDioneの回答です。すべてが正常に動作しています。' },
+        { role: 'user', content: 'Dioneエラーを見せてください' },
+        { role: 'ai', type: 'dione', status: 'error', content: 'エラーが発生しました。処理を完了できませんでした。' },
+        { role: 'user', content: '思考プロセスを見せてください' },
+        { role: 'ai', type: 'thinking', status: 'success', content: '考えています... 最適なアプローチを検討中です。複数の可能性を分析しています。' },
         { role: 'user', content: 'ツールを使用してください' },
-        { role: 'ai', content: 'Tool: ファイルを検索しています...' },
-        { role: 'user', content: 'エラーを発生させてください' },
-        { role: 'ai', content: 'Error: ファイルが見つかりませんでした。' },
+        { role: 'ai', type: 'tool', status: 'success', content: 'ファイルシステムを検索しています... 3つのファイルが見つかりました。' },
         { role: 'user', content: 'ツールエラーを見せてください' },
-        { role: 'ai', content: 'Tool Error: APIリクエストに失敗しました。' },
+        { role: 'ai', type: 'tool', status: 'error', content: 'ツールの実行に失敗しました。APIエンドポイントに接続できません。' },
       ],
       createdAt: new Date().toISOString()
     }
@@ -137,7 +137,7 @@ function App() {
           if (chat.id === currentChatId) {
             return {
               ...chat,
-              messages: [...chat.messages, { role: 'ai', content: aiResponse }]
+              messages: [...chat.messages, { role: 'ai', type: 'dione', status: 'success', content: aiResponse }]
             }
           }
           return chat
