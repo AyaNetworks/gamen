@@ -5,7 +5,15 @@ import DocumentPanel from './components/DocumentPanel'
 import './App.css'
 
 function App() {
-  const [messages, setMessages] = useState([])
+  const [chatSessions, setChatSessions] = useState([
+    {
+      id: 1,
+      title: '新しいチャット',
+      messages: [],
+      createdAt: new Date().toISOString()
+    }
+  ])
+  const [currentChatId, setCurrentChatId] = useState(1)
   const [scratchpadContent, setScratchpadContent] = useState('')
   const [documents, setDocuments] = useState([
     {
@@ -62,9 +70,24 @@ function App() {
     },
   ])
 
+  const currentChat = chatSessions.find(chat => chat.id === currentChatId)
+
   const handleSendMessage = (userMessage) => {
-    const newMessages = [...messages, { role: 'user', content: userMessage }]
-    setMessages(newMessages)
+    const updatedSessions = chatSessions.map(chat => {
+      if (chat.id === currentChatId) {
+        const newMessages = [...chat.messages, { role: 'user', content: userMessage }]
+
+        // Update title if this is the first message
+        const title = chat.messages.length === 0
+          ? userMessage.substring(0, 30) + (userMessage.length > 30 ? '...' : '')
+          : chat.title
+
+        return { ...chat, messages: newMessages, title }
+      }
+      return chat
+    })
+
+    setChatSessions(updatedSessions)
 
     // Simple AI response logic
     setTimeout(() => {
@@ -80,8 +103,54 @@ function App() {
         aiResponse = 'ご質問ありがとうございます。シンプルなAIとして、基本的な応答のみ可能です。'
       }
 
-      setMessages([...newMessages, { role: 'ai', content: aiResponse }])
+      setChatSessions(prevSessions =>
+        prevSessions.map(chat => {
+          if (chat.id === currentChatId) {
+            return {
+              ...chat,
+              messages: [...chat.messages, { role: 'ai', content: aiResponse }]
+            }
+          }
+          return chat
+        })
+      )
     }, 500)
+  }
+
+  const handleNewChat = () => {
+    const newChat = {
+      id: Date.now(),
+      title: '新しいチャット',
+      messages: [],
+      createdAt: new Date().toISOString()
+    }
+    setChatSessions([newChat, ...chatSessions])
+    setCurrentChatId(newChat.id)
+  }
+
+  const handleSelectChat = (chatId) => {
+    setCurrentChatId(chatId)
+  }
+
+  const handleDeleteChat = (chatId) => {
+    const filteredSessions = chatSessions.filter(chat => chat.id !== chatId)
+
+    if (filteredSessions.length === 0) {
+      // Create a new empty chat if all are deleted
+      const newChat = {
+        id: Date.now(),
+        title: '新しいチャット',
+        messages: [],
+        createdAt: new Date().toISOString()
+      }
+      setChatSessions([newChat])
+      setCurrentChatId(newChat.id)
+    } else {
+      setChatSessions(filteredSessions)
+      if (currentChatId === chatId) {
+        setCurrentChatId(filteredSessions[0].id)
+      }
+    }
   }
 
   const handleUploadLibrary = (file) => {
@@ -117,7 +186,15 @@ function App() {
 
   return (
     <div className="app-container">
-      <ChatPanel messages={messages} onSendMessage={handleSendMessage} />
+      <ChatPanel
+        chatSessions={chatSessions}
+        currentChatId={currentChatId}
+        currentMessages={currentChat?.messages || []}
+        onSendMessage={handleSendMessage}
+        onNewChat={handleNewChat}
+        onSelectChat={handleSelectChat}
+        onDeleteChat={handleDeleteChat}
+      />
       <Scratchpad content={scratchpadContent} onChange={setScratchpadContent} />
       <DocumentPanel
         documents={documents}
