@@ -84,8 +84,8 @@ function Scratchpad({
       {/* Header */}
       <div className="scratchpad-header">
         <div className="scratchpad-title-section">
-          <h2>Scratchpad</h2>
-          <span className="scratchpad-subtitle">AIが作成するワークスペース</span>
+          <h2>Dione Workspaces</h2>
+          <span className="scratchpad-subtitle">Dioneと作業するワークスペース</span>
         </div>
       </div>
 
@@ -175,7 +175,7 @@ function Scratchpad({
             value={currentTab?.content || ''}
             onChange={handleEditorChange}
             onContextMenu={handleEditorContextMenu}
-            placeholder="AIがここに内容を生成します..."
+            placeholder="Dioneがここに内容を生成します..."
           />
         )}
 

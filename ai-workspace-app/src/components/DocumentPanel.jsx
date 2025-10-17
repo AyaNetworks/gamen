@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BiLinkExternal } from 'react-icons/bi'
 import FilePreview from './FilePreview'
 import { getFileIcon } from '../utils/fileTypeDetector'
 import './DocumentPanel.css'
@@ -28,13 +29,22 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
     <div className="document-panel">
       <div className="panel-header">
         <h2>ライブラリ</h2>
+        <a
+          href="https://portal.example.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="portal-link"
+          title="Portalへ移動"
+        >
+          <BiLinkExternal />
+        </a>
       </div>
 
       <div className="document-content">
-        {/* 関連するアプリ登録ドキュメント */}
+        {/* Dioneナレッジ */}
         <div className="document-section">
           <div className="list-header">
-            <h3>関連するアプリ登録ドキュメント</h3>
+            <h3>Dioneナレッジ</h3>
           </div>
           <div className="document-list">
             {documents.map((doc) => {

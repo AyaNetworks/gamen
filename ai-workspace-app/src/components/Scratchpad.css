@@ -501,3 +501,94 @@
   border-radius: 50% 0 0 50% / 100% 0 0 100%;
   clip-path: ellipse(48% 45% at 55% 50%);
 }
+
+/* Light Theme Styles */
+.light-theme .scratchpad {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.light-theme .scratchpad-header {
+  background-color: rgba(240, 245, 255, 0.7);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .scratchpad-header h2 {
+  color: #333;
+}
+
+.light-theme .scratchpad-subtitle {
+  color: #666;
+}
+
+.light-theme .scratchpad-tabs {
+  background-color: rgba(240, 245, 255, 0.7);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .tab {
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .tab:hover {
+  background-color: rgba(240, 245, 255, 0.8);
+}
+
+.light-theme .tab.active {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(100, 108, 255, 0.6);
+}
+
+.light-theme .tab-title {
+  color: #555;
+}
+
+.light-theme .tab.active .tab-title {
+  color: #333;
+}
+
+.light-theme .scratchpad-editor,
+.light-theme .scratchpad-preview {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #333;
+}
+
+.light-theme .scratchpad-preview h1,
+.light-theme .scratchpad-preview h2,
+.light-theme .scratchpad-preview h3,
+.light-theme .scratchpad-preview h4,
+.light-theme .scratchpad-preview h5,
+.light-theme .scratchpad-preview h6 {
+  color: #222;
+}
+
+.light-theme .scratchpad-preview code {
+  background-color: rgba(240, 245, 255, 0.8);
+  color: #333;
+}
+
+.light-theme .scratchpad-preview pre {
+  background-color: rgba(240, 245, 255, 0.8);
+}
+
+.light-theme .scratchpad-preview table {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .scratchpad-preview th,
+.light-theme .scratchpad-preview td {
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .scratchpad-preview th {
+  background-color: rgba(240, 245, 255, 0.9);
+  color: #333;
+}
+
+.light-theme .version-button,
+.light-theme .new-tab-button {
+  background-color: rgba(100, 108, 255, 0.6);
+  border: 1px solid rgba(100, 108, 255, 0.6);
+  color: white;
+}

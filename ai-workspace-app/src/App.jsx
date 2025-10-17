@@ -6,11 +6,23 @@ import DocumentPanel from './components/DocumentPanel'
 import './App.css'
 
 function App() {
+  const [theme, setTheme] = useState('dark') // 'light' or 'dark'
   const [chatSessions, setChatSessions] = useState([
     {
       id: 1,
-      title: '新しいチャット',
-      messages: [],
+      title: 'Dioneアイコンテスト',
+      messages: [
+        { role: 'user', content: '通常のメッセージをテストします' },
+        { role: 'ai', content: 'こちらが通常のDioneの回答です。' },
+        { role: 'user', content: '思考中のアイコンを見せてください' },
+        { role: 'ai', content: 'Thinking... 今考えています...' },
+        { role: 'user', content: 'ツールを使用してください' },
+        { role: 'ai', content: 'Tool: ファイルを検索しています...' },
+        { role: 'user', content: 'エラーを発生させてください' },
+        { role: 'ai', content: 'Error: ファイルが見つかりませんでした。' },
+        { role: 'user', content: 'ツールエラーを見せてください' },
+        { role: 'ai', content: 'Tool Error: APIリクエストに失敗しました。' },
+      ],
       createdAt: new Date().toISOString()
     }
   ])
@@ -307,8 +319,12 @@ function App() {
 
   const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
 
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark')
+  }
+
   return (
-    <div className="app-container">
+    <div className={`app-container ${theme}-theme`}>
       <PanelGroup direction="horizontal">
         <Panel defaultSize={25} minSize={15} maxSize={40}>
           <ChatPanel
@@ -319,6 +335,8 @@ function App() {
             onNewChat={handleNewChat}
             onSelectChat={handleSelectChat}
             onDeleteChat={handleDeleteChat}
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
         </Panel>
         <PanelResizeHandle className="resize-handle" />

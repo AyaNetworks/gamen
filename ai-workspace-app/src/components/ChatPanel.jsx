@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { BsSun, BsMoon } from 'react-icons/bs'
 import './ChatPanel.css'
 
 function ChatPanel({
@@ -8,7 +9,9 @@ function ChatPanel({
   onSendMessage,
   onNewChat,
   onSelectChat,
-  onDeleteChat
+  onDeleteChat,
+  theme,
+  onToggleTheme
 }) {
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef(null)
@@ -61,6 +64,45 @@ function ChatPanel({
     return date.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' })
   }
 
+  const getDioneIcon = (messageContent) => {
+    const content = messageContent.toLowerCase()
+    const isError = content.includes('error') || content.includes('エラー')
+    const isThinking = content.includes('thinking') || content.includes('考えて') || content.includes('思考')
+    const isTool = content.includes('tool') || content.includes('ツール')
+
+    let iconPath = ''
+
+    if (isError) {
+      if (isTool) {
+        // Tool error - use tool_error.png (same for both themes)
+        iconPath = '/sample_assets/dione/tool_error.png'
+      } else {
+        // Dione error
+        iconPath = theme === 'dark'
+          ? '/sample_assets/dione/dione_error_dark.png'
+          : '/sample_assets/dione/dione_error_light.png'
+      }
+    } else if (isThinking) {
+      // Thinking
+      iconPath = theme === 'dark'
+        ? '/sample_assets/dione/dione_thinking_dark.png'
+        : '/sample_assets/dione/dione_thinking_light.png'
+    } else if (isTool) {
+      // Tool usage (normal)
+      iconPath = theme === 'dark'
+        ? '/sample_assets/dione/tool_dark.png'
+        : '/sample_assets/dione/tool_light.png'
+    } else {
+      // Normal Dione answer
+      iconPath = theme === 'dark'
+        ? '/sample_assets/dione/dione_dark.png'
+        : '/sample_assets/dione/dione_light.png'
+    }
+
+    console.log('Theme:', theme, 'Content:', messageContent.substring(0, 20), 'Icon:', iconPath)
+    return iconPath
+  }
+
   return (
     <div className="chat-panel">
       {/* Chat History Sidebar */}
@@ -111,13 +153,37 @@ function ChatPanel({
       {/* Main Chat Area */}
       <div className="chat-main">
         <div className="chat-header">
-          <h2>AI Chat</h2>
+          <h2>チャット</h2>
+          <button
+            className="theme-toggle-button"
+            onClick={onToggleTheme}
+            title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+          >
+            {theme === 'dark' ? <BsSun /> : <BsMoon />}
+          </button>
         </div>
         <div className="chat-messages">
           {currentMessages.map((message, index) => (
             <div key={index} className={`message ${message.role}`}>
-              <div className="message-role">{message.role === 'user' ? 'User' : 'AI'}</div>
-              <div className="message-content">{message.content}</div>
+              {message.role === 'ai' && (
+                <img
+                  src={getDioneIcon(message.content)}
+                  alt="Dione"
+                  className="message-avatar"
+                  onError={(e) => {
+                    console.error('Image failed to load:', e.target.src)
+                    // Fallback to default dark icon
+                    e.target.src = '/sample_assets/dione/dione_dark.png'
+                  }}
+                  onLoad={() => {
+                    console.log('Image loaded successfully')
+                  }}
+                />
+              )}
+              <div className="message-bubble">
+                <div className="message-role">{message.role === 'user' ? 'User' : 'Dione'}</div>
+                <div className="message-content">{message.content}</div>
+              </div>
             </div>
           ))}
           <div ref={messagesEndRef} />
@@ -127,7 +193,7 @@ function ChatPanel({
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="メッセージを入力..."
+            placeholder="Dioneに指示してください"
             className="chat-input"
           />
           <button type="submit" className="chat-send-button">送信</button>

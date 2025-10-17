@@ -11,8 +11,8 @@
   position: relative;
 }
 
-/* Nebula Background */
-#root::before {
+/* Dark Theme - Nebula Background */
+.dark-theme #root::before {
   content: '';
   position: fixed;
   top: 0;
@@ -81,6 +81,50 @@
 }
 
 
+/* Light Theme - Sky Background */
+.light-theme #root::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 120%;
+  background:
+    /* Soft clouds */
+    radial-gradient(ellipse 800px 600px at 20% 30%, rgba(255, 255, 255, 0.6) 0%, rgba(240, 248, 255, 0.4) 30%, transparent 70%),
+    radial-gradient(ellipse 700px 500px at 80% 70%, rgba(255, 255, 255, 0.5) 0%, rgba(230, 240, 255, 0.3) 35%, transparent 65%),
+    radial-gradient(ellipse 600px 450px at 50% 80%, rgba(255, 250, 240, 0.4) 0%, rgba(255, 245, 235, 0.2) 40%, transparent 60%),
+    radial-gradient(ellipse 500px 400px at 70% 20%, rgba(240, 248, 255, 0.5) 0%, rgba(220, 235, 255, 0.3) 30%, transparent 55%),
+
+    /* Sky gradient */
+    linear-gradient(180deg,
+      #87CEEB 0%,
+      #B0E0E6 20%,
+      #E0F6FF 50%,
+      #F0F8FF 70%,
+      #FFF8DC 100%
+    );
+  background-size: 100% 100%;
+  background-position: 0% 0%;
+  animation: cloud-drift 90s ease-in-out infinite;
+  z-index: -2;
+}
+
+@keyframes cloud-drift {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-1%, 1%);
+  }
+  50% {
+    transform: translate(-2%, -1%);
+  }
+  75% {
+    transform: translate(-1%, -1.5%);
+  }
+}
+
 .app-container {
   height: 100vh;
   position: relative;
@@ -124,4 +168,17 @@
 
 .resize-handle:hover::after {
   opacity: 1;
+}
+
+/* Light Theme Resize Handle */
+.light-theme .resize-handle {
+  background-color: rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .resize-handle:hover {
+  background-color: rgba(100, 108, 255, 0.5);
+}
+
+.light-theme .resize-handle:active {
+  background-color: rgba(83, 91, 242, 0.7);
 }
