@@ -347,6 +347,31 @@
   margin-bottom: 0.5rem;
 }
 
+.scratchpad-preview table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: rgba(42, 42, 42, 0.5);
+  border: 1px solid #444;
+}
+
+.scratchpad-preview th,
+.scratchpad-preview td {
+  border: 1px solid #444;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.scratchpad-preview th {
+  background-color: rgba(51, 51, 51, 0.7);
+  font-weight: 600;
+  color: #fff;
+}
+
+.scratchpad-preview tr:hover {
+  background-color: rgba(51, 51, 51, 0.3);
+}
+
 .scratchpad-preview::-webkit-scrollbar {
   width: 10px;
 }
