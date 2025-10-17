@@ -14,7 +14,16 @@ function App() {
     }
   ])
   const [currentChatId, setCurrentChatId] = useState(1)
-  const [scratchpadContent, setScratchpadContent] = useState('')
+  const [scratchpadTabs, setScratchpadTabs] = useState([
+    {
+      id: 1,
+      title: 'Untitled 1',
+      content: '',
+      history: [''],
+      historyIndex: 0
+    }
+  ])
+  const [currentScratchpadTabId, setCurrentScratchpadTabId] = useState(1)
   const [documents, setDocuments] = useState([
     {
       id: 1,
@@ -96,7 +105,10 @@ function App() {
 
       if (lowerMessage.includes('スクラッチパッド') || lowerMessage.includes('scratchpad')) {
         aiResponse = 'スクラッチパッドを更新しました。'
-        setScratchpadContent(prev => prev + '\n' + '// AI generated content\n' + userMessage)
+        handleScratchpadUpdate(
+          scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)?.content +
+          '\n// AI generated content\n' + userMessage
+        )
       } else if (lowerMessage.includes('こんにちは') || lowerMessage.includes('hello')) {
         aiResponse = 'こんにちは！どのようにお手伝いできますか？'
       } else {
@@ -153,6 +165,102 @@ function App() {
     }
   }
 
+  // Scratchpad handlers
+  const handleScratchpadUpdate = (newContent) => {
+    setScratchpadTabs(prevTabs =>
+      prevTabs.map(tab => {
+        if (tab.id === currentScratchpadTabId) {
+          const newHistory = tab.history.slice(0, tab.historyIndex + 1)
+          newHistory.push(newContent)
+          return {
+            ...tab,
+            content: newContent,
+            history: newHistory,
+            historyIndex: newHistory.length - 1
+          }
+        }
+        return tab
+      })
+    )
+  }
+
+  const handleScratchpadUndo = () => {
+    setScratchpadTabs(prevTabs =>
+      prevTabs.map(tab => {
+        if (tab.id === currentScratchpadTabId && tab.historyIndex > 0) {
+          const newIndex = tab.historyIndex - 1
+          return {
+            ...tab,
+            content: tab.history[newIndex],
+            historyIndex: newIndex
+          }
+        }
+        return tab
+      })
+    )
+  }
+
+  const handleScratchpadRedo = () => {
+    setScratchpadTabs(prevTabs =>
+      prevTabs.map(tab => {
+        if (tab.id === currentScratchpadTabId && tab.historyIndex < tab.history.length - 1) {
+          const newIndex = tab.historyIndex + 1
+          return {
+            ...tab,
+            content: tab.history[newIndex],
+            historyIndex: newIndex
+          }
+        }
+        return tab
+      })
+    )
+  }
+
+  const handleNewScratchpadTab = () => {
+    const newTab = {
+      id: Date.now(),
+      title: `Untitled ${scratchpadTabs.length + 1}`,
+      content: '',
+      history: [''],
+      historyIndex: 0
+    }
+    setScratchpadTabs([...scratchpadTabs, newTab])
+    setCurrentScratchpadTabId(newTab.id)
+  }
+
+  const handleSelectScratchpadTab = (tabId) => {
+    setCurrentScratchpadTabId(tabId)
+  }
+
+  const handleCloseScratchpadTab = (tabId) => {
+    const filteredTabs = scratchpadTabs.filter(tab => tab.id !== tabId)
+
+    if (filteredTabs.length === 0) {
+      const newTab = {
+        id: Date.now(),
+        title: 'Untitled 1',
+        content: '',
+        history: [''],
+        historyIndex: 0
+      }
+      setScratchpadTabs([newTab])
+      setCurrentScratchpadTabId(newTab.id)
+    } else {
+      setScratchpadTabs(filteredTabs)
+      if (currentScratchpadTabId === tabId) {
+        setCurrentScratchpadTabId(filteredTabs[0].id)
+      }
+    }
+  }
+
+  const handleRenameScratchpadTab = (tabId, newTitle) => {
+    setScratchpadTabs(prevTabs =>
+      prevTabs.map(tab =>
+        tab.id === tabId ? { ...tab, title: newTitle } : tab
+      )
+    )
+  }
+
   const handleUploadLibrary = (file) => {
     const reader = new FileReader()
 
@@ -184,6 +292,8 @@ function App() {
     }
   }
 
+  const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
+
   return (
     <div className="app-container">
       <ChatPanel
@@ -195,7 +305,18 @@ function App() {
         onSelectChat={handleSelectChat}
         onDeleteChat={handleDeleteChat}
       />
-      <Scratchpad content={scratchpadContent} onChange={setScratchpadContent} />
+      <Scratchpad
+        tabs={scratchpadTabs}
+        currentTabId={currentScratchpadTabId}
+        currentTab={currentScratchpadTab}
+        onUpdate={handleScratchpadUpdate}
+        onUndo={handleScratchpadUndo}
+        onRedo={handleScratchpadRedo}
+        onNewTab={handleNewScratchpadTab}
+        onSelectTab={handleSelectScratchpadTab}
+        onCloseTab={handleCloseScratchpadTab}
+        onRenameTab={handleRenameScratchpadTab}
+      />
       <DocumentPanel
         documents={documents}
         libraries={libraries}
