@@ -3,7 +3,7 @@ import FilePreview from './FilePreview'
 import { getFileIcon } from '../utils/fileTypeDetector'
 import './DocumentPanel.css'
 
-function DocumentPanel({ documents, libraries, onUploadLibrary }) {
+function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary, onDeleteDocument }) {
   const [selectedItem, setSelectedItem] = useState(null)
   const [showPreview, setShowPreview] = useState(false)
 
@@ -37,16 +37,50 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
             <h3>関連するアプリ登録ドキュメント</h3>
           </div>
           <div className="document-list">
-            {documents.map((doc) => (
-              <div
-                key={doc.id}
-                className="document-item"
-                onClick={() => handleItemClick(doc)}
-              >
-                <span className="document-icon">{getFileIcon(doc.name)}</span>
-                <span className="document-name">{doc.name}</span>
-              </div>
-            ))}
+            {documents.map((doc) => {
+              const IconComponent = getFileIcon(doc.name)
+              return (
+                <div
+                  key={doc.id}
+                  className="document-item"
+                >
+                  <div className="document-item-main">
+                    <div className="document-item-content" onClick={() => handleItemClick(doc)}>
+                      <span className="document-icon">
+                        <IconComponent />
+                      </span>
+                      <span className="document-name">{doc.name}</span>
+                    </div>
+                    <button
+                      className="document-delete-button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onDeleteDocument(doc.id)
+                      }}
+                      title="削除"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div className="document-item-details">
+                    {doc.filePath && (
+                      <div className="document-filepath">
+                        <span className="detail-label">Path:</span> {doc.filePath}
+                      </div>
+                    )}
+                    {doc.tags && Object.keys(doc.tags).length > 0 && (
+                      <div className="document-tags">
+                        {Object.entries(doc.tags).map(([key, value]) => (
+                          <span key={key} className="tag">
+                            {key}: {value}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
 
@@ -64,16 +98,32 @@ function DocumentPanel({ documents, libraries, onUploadLibrary }) {
             </label>
           </div>
           <div className="library-list">
-            {libraries.map((lib) => (
-              <div
-                key={lib.id}
-                className="library-item"
-                onClick={() => handleItemClick(lib)}
-              >
-                <span className="library-icon">{getFileIcon(lib.name)}</span>
-                <span className="library-name">{lib.name}</span>
-              </div>
-            ))}
+            {libraries.map((lib) => {
+              const IconComponent = getFileIcon(lib.name)
+              return (
+                <div
+                  key={lib.id}
+                  className="library-item"
+                >
+                  <div className="library-item-content" onClick={() => handleItemClick(lib)}>
+                    <span className="library-icon">
+                      <IconComponent />
+                    </span>
+                    <span className="library-name">{lib.name}</span>
+                  </div>
+                  <button
+                    className="library-delete-button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onDeleteLibrary(lib.id)
+                    }}
+                    title="削除"
+                  >
+                    ×
+                  </button>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

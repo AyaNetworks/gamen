@@ -1,3 +1,16 @@
+import {
+  BsFiletypeDocx,
+  BsFiletypePdf,
+  BsFiletypePptx,
+  BsFiletypeXlsx,
+  BsFileEarmarkImage,
+  BsFileEarmarkText,
+  BsFileEarmarkCode,
+  BsFileEarmark,
+  BsFiletypeMd,
+  BsFiletypeCsv
+} from 'react-icons/bs'
+
 export const getFileType = (fileName) => {
   const extension = fileName.split('.').pop().toLowerCase()
 
@@ -16,7 +29,7 @@ export const getFileType = (fileName) => {
     // Excel
     'xls': 'excel',
     'xlsx': 'excel',
-    'csv': 'excel',
+    'csv': 'csv',
 
     // PowerPoint
     'ppt': 'powerpoint',
@@ -54,16 +67,17 @@ export const getFileIcon = (fileName) => {
   const fileType = getFileType(fileName)
 
   const iconMap = {
-    'markdown': '📝',
-    'pdf': '📄',
-    'word': '📘',
-    'excel': '📊',
-    'powerpoint': '📽️',
-    'image': '🖼️',
-    'text': '📃',
-    'code': '💻',
-    'unknown': '📎',
+    'markdown': BsFiletypeMd,
+    'pdf': BsFiletypePdf,
+    'word': BsFiletypeDocx,
+    'excel': BsFiletypeXlsx,
+    'csv': BsFiletypeCsv,
+    'powerpoint': BsFiletypePptx,
+    'image': BsFileEarmarkImage,
+    'text': BsFileEarmarkText,
+    'code': BsFileEarmarkCode,
+    'unknown': BsFileEarmark,
   }
 
-  return iconMap[fileType] || '📎'
+  return iconMap[fileType] || BsFileEarmark
 }

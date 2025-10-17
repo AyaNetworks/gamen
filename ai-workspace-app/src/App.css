@@ -11,22 +11,41 @@
 }
 
 .app-container {
-  display: grid;
-  grid-template-columns: 300px 1fr 350px;
   height: 100vh;
-  gap: 0;
   background-color: #1a1a1a;
 }
 
-@media (max-width: 1200px) {
-  .app-container {
-    grid-template-columns: 250px 1fr 300px;
-  }
+.resize-handle {
+  width: 4px;
+  background-color: #333;
+  cursor: col-resize;
+  transition: background-color 0.2s;
+  position: relative;
 }
 
-@media (max-width: 900px) {
-  .app-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 300px 1fr 300px;
-  }
+.resize-handle:hover {
+  background-color: #646cff;
+}
+
+.resize-handle:active {
+  background-color: #535bf2;
+}
+
+/* Add a visual indicator on hover */
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px;
+  height: 40px;
+  background-color: #666;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.resize-handle:hover::after {
+  opacity: 1;
 }

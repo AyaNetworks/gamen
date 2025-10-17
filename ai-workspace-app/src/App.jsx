@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels'
 import ChatPanel from './components/ChatPanel'
 import Scratchpad from './components/Scratchpad'
 import DocumentPanel from './components/DocumentPanel'
@@ -29,13 +30,17 @@ function App() {
       id: 1,
       name: 'React Documentation.md',
       type: 'document',
-      content: '# React Documentation\n\nReact is a **JavaScript library** for building user interfaces.\n\n## Key Features\n\n- Component-Based\n- Declarative\n- Learn Once, Write Anywhere\n\n```javascript\nfunction Welcome(props) {\n  return <h1>Hello, {props.name}</h1>;\n}\n```'
+      content: '# React Documentation\n\nReact is a **JavaScript library** for building user interfaces.\n\n## Key Features\n\n- Component-Based\n- Declarative\n- Learn Once, Write Anywhere\n\n```javascript\nfunction Welcome(props) {\n  return <h1>Hello, {props.name}</h1>;\n}\n```',
+      filePath: '/docs/react/getting-started.md',
+      tags: { category: 'tutorial', framework: 'react', level: 'beginner' }
     },
     {
       id: 2,
       name: 'API Reference.md',
       type: 'document',
-      content: '# API Reference\n\n## Endpoints\n\n### GET /api/users\n\nReturns a list of users.\n\n**Response:**\n```json\n{\n  "users": [\n    { "id": 1, "name": "John" }\n  ]\n}\n```'
+      content: '# API Reference\n\n## Endpoints\n\n### GET /api/users\n\nReturns a list of users.\n\n**Response:**\n```json\n{\n  "users": [\n    { "id": 1, "name": "John" }\n  ]\n}\n```',
+      filePath: '/docs/api/reference.md',
+      tags: { category: 'reference', type: 'api', version: 'v1' }
     },
   ])
   const [libraries, setLibraries] = useState([
@@ -292,36 +297,56 @@ function App() {
     }
   }
 
+  const handleDeleteLibrary = (libraryId) => {
+    setLibraries(libraries.filter(lib => lib.id !== libraryId))
+  }
+
+  const handleDeleteDocument = (documentId) => {
+    setDocuments(documents.filter(doc => doc.id !== documentId))
+  }
+
   const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
 
   return (
     <div className="app-container">
-      <ChatPanel
-        chatSessions={chatSessions}
-        currentChatId={currentChatId}
-        currentMessages={currentChat?.messages || []}
-        onSendMessage={handleSendMessage}
-        onNewChat={handleNewChat}
-        onSelectChat={handleSelectChat}
-        onDeleteChat={handleDeleteChat}
-      />
-      <Scratchpad
-        tabs={scratchpadTabs}
-        currentTabId={currentScratchpadTabId}
-        currentTab={currentScratchpadTab}
-        onUpdate={handleScratchpadUpdate}
-        onUndo={handleScratchpadUndo}
-        onRedo={handleScratchpadRedo}
-        onNewTab={handleNewScratchpadTab}
-        onSelectTab={handleSelectScratchpadTab}
-        onCloseTab={handleCloseScratchpadTab}
-        onRenameTab={handleRenameScratchpadTab}
-      />
-      <DocumentPanel
-        documents={documents}
-        libraries={libraries}
-        onUploadLibrary={handleUploadLibrary}
-      />
+      <PanelGroup direction="horizontal">
+        <Panel defaultSize={25} minSize={15} maxSize={40}>
+          <ChatPanel
+            chatSessions={chatSessions}
+            currentChatId={currentChatId}
+            currentMessages={currentChat?.messages || []}
+            onSendMessage={handleSendMessage}
+            onNewChat={handleNewChat}
+            onSelectChat={handleSelectChat}
+            onDeleteChat={handleDeleteChat}
+          />
+        </Panel>
+        <PanelResizeHandle className="resize-handle" />
+        <Panel defaultSize={50} minSize={30}>
+          <Scratchpad
+            tabs={scratchpadTabs}
+            currentTabId={currentScratchpadTabId}
+            currentTab={currentScratchpadTab}
+            onUpdate={handleScratchpadUpdate}
+            onUndo={handleScratchpadUndo}
+            onRedo={handleScratchpadRedo}
+            onNewTab={handleNewScratchpadTab}
+            onSelectTab={handleSelectScratchpadTab}
+            onCloseTab={handleCloseScratchpadTab}
+            onRenameTab={handleRenameScratchpadTab}
+          />
+        </Panel>
+        <PanelResizeHandle className="resize-handle" />
+        <Panel defaultSize={25} minSize={15} maxSize={40}>
+          <DocumentPanel
+            documents={documents}
+            libraries={libraries}
+            onUploadLibrary={handleUploadLibrary}
+            onDeleteLibrary={handleDeleteLibrary}
+            onDeleteDocument={handleDeleteDocument}
+          />
+        </Panel>
+      </PanelGroup>
     </div>
   )
 }
