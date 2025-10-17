@@ -45,19 +45,23 @@
   color: #888;
 }
 
-/* Version Control Buttons */
-.version-control {
+/* Version Control Buttons - Inside Content Area */
+.version-control-inline {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   display: flex;
   gap: 0.5rem;
+  z-index: 5;
 }
 
 .version-button {
   width: 36px;
   height: 36px;
   border-radius: 6px;
-  background-color: rgba(51, 51, 51, 0.6);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba(51, 51, 51, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #fff;
   border: 1px solid rgba(100, 108, 255, 0.3);
   font-size: 1.5rem;
@@ -66,12 +70,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .version-button:hover:not(.disabled) {
-  background-color: rgba(100, 108, 255, 0.7);
+  background-color: rgba(100, 108, 255, 0.8);
   border-color: rgba(100, 108, 255, 0.6);
-  box-shadow: 0 0 10px rgba(100, 108, 255, 0.4);
+  box-shadow: 0 0 15px rgba(100, 108, 255, 0.5);
 }
 
 .version-button.disabled {

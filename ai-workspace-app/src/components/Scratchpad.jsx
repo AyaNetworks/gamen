@@ -79,29 +79,11 @@ function Scratchpad({
 
   return (
     <div className="scratchpad">
-      {/* Header with version control */}
+      {/* Header */}
       <div className="scratchpad-header">
         <div className="scratchpad-title-section">
           <h2>Scratchpad</h2>
           <span className="scratchpad-subtitle">AIが作成するワークスペース</span>
-        </div>
-        <div className="version-control">
-          <button
-            className={`version-button ${!canUndo ? 'disabled' : ''}`}
-            onClick={onUndo}
-            disabled={!canUndo}
-            title="元に戻す (Undo)"
-          >
-            ↶
-          </button>
-          <button
-            className={`version-button ${!canRedo ? 'disabled' : ''}`}
-            onClick={onRedo}
-            disabled={!canRedo}
-            title="やり直す (Redo)"
-          >
-            ↷
-          </button>
         </div>
       </div>
 
@@ -156,6 +138,26 @@ function Scratchpad({
 
       {/* Editor / Preview */}
       <div className="scratchpad-content" ref={editorRef}>
+        {/* Version Control Inside Content */}
+        <div className="version-control-inline">
+          <button
+            className={`version-button ${!canUndo ? 'disabled' : ''}`}
+            onClick={onUndo}
+            disabled={!canUndo}
+            title="元に戻す (Undo)"
+          >
+            ↶
+          </button>
+          <button
+            className={`version-button ${!canRedo ? 'disabled' : ''}`}
+            onClick={onRedo}
+            disabled={!canRedo}
+            title="やり直す (Redo)"
+          >
+            ↷
+          </button>
+        </div>
+
         {isPreviewMode ? (
           <div className="scratchpad-preview" onContextMenu={handleEditorContextMenu}>
             <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
