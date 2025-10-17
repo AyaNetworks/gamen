@@ -10,9 +10,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 0 1.5rem;
   border-bottom: 1px solid #333;
   background-color: #252525;
+  height: 64px;
+  min-height: 64px;
+  flex-shrink: 0;
 }
 
 .scratchpad-title-section {
