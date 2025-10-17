@@ -15,7 +15,9 @@ function ChatPanel({
 }) {
   const [inputValue, setInputValue] = useState('')
   const [selectedMessage, setSelectedMessage] = useState(null)
+  const [attachedFiles, setAttachedFiles] = useState([])
   const messagesEndRef = useRef(null)
+  const fileInputRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -27,10 +29,58 @@ function ChatPanel({
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (inputValue.trim()) {
-      onSendMessage(inputValue)
+    if (inputValue.trim() || attachedFiles.length > 0) {
+      onSendMessage(inputValue, attachedFiles)
       setInputValue('')
+      setAttachedFiles([])
     }
+  }
+
+  const handleFileSelect = (e) => {
+    const files = Array.from(e.target.files)
+    if (files.length > 0) {
+      const fileData = files.map(file => ({
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        file: file,
+        preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null
+      }))
+      setAttachedFiles([...attachedFiles, ...fileData])
+    }
+  }
+
+  const handleRemoveFile = (index) => {
+    const newFiles = [...attachedFiles]
+    if (newFiles[index].preview) {
+      URL.revokeObjectURL(newFiles[index].preview)
+    }
+    newFiles.splice(index, 1)
+    setAttachedFiles(newFiles)
+  }
+
+  const handleAttachClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
+  }
+
+  const getFileIcon = (fileType) => {
+    if (fileType.startsWith('image/')) return '🖼️'
+    if (fileType.startsWith('video/')) return '🎥'
+    if (fileType.startsWith('audio/')) return '🎵'
+    if (fileType.includes('pdf')) return '📄'
+    if (fileType.includes('word') || fileType.includes('document')) return '📝'
+    if (fileType.includes('excel') || fileType.includes('spreadsheet')) return '📊'
+    if (fileType.includes('powerpoint') || fileType.includes('presentation')) return '📊'
+    if (fileType.includes('zip') || fileType.includes('rar') || fileType.includes('7z')) return '📦'
+    return '📎'
   }
 
   const formatDate = (dateString) => {
@@ -157,6 +207,30 @@ function ChatPanel({
     setSelectedMessage(null)
   }
 
+  const renderAttachments = (attachments) => {
+    if (!attachments || attachments.length === 0) return null
+
+    return (
+      <div className="message-attachments">
+        {attachments.map((file, index) => (
+          <div key={index} className="message-attachment">
+            {file.preview ? (
+              <img src={file.preview} alt={file.name} className="message-attachment-image" />
+            ) : (
+              <div className="message-attachment-file">
+                <div className="message-attachment-icon">{getFileIcon(file.type)}</div>
+                <div className="message-attachment-info">
+                  <div className="message-attachment-name">{file.name}</div>
+                  <div className="message-attachment-size">{formatFileSize(file.size)}</div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="chat-panel">
       {/* Chat History Sidebar */}
@@ -241,7 +315,10 @@ function ChatPanel({
                     {getMessageLabel(message) && (
                       <div className="message-role">{getMessageLabel(message)}</div>
                     )}
-                    <div className="message-content">{message.content}</div>
+                    {message.content && (
+                      <div className="message-content">{message.content}</div>
+                    )}
+                    {renderAttachments(message.attachments)}
                   </div>
                   <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
                 </div>
@@ -251,14 +328,59 @@ function ChatPanel({
           <div ref={messagesEndRef} />
         </div>
         <form className="chat-input-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Dioneと何をしますか？"
-            className="chat-input"
-          />
-          <button type="submit" className="chat-send-button">送信</button>
+          {/* File Attachments Preview */}
+          {attachedFiles.length > 0 && (
+            <div className="attached-files-preview">
+              {attachedFiles.map((file, index) => (
+                <div key={index} className="attached-file-item">
+                  {file.preview ? (
+                    <img src={file.preview} alt={file.name} className="attached-file-image" />
+                  ) : (
+                    <div className="attached-file-icon">{getFileIcon(file.type)}</div>
+                  )}
+                  <div className="attached-file-info">
+                    <div className="attached-file-name">{file.name}</div>
+                    <div className="attached-file-size">{formatFileSize(file.size)}</div>
+                  </div>
+                  <button
+                    type="button"
+                    className="attached-file-remove"
+                    onClick={() => handleRemoveFile(index)}
+                    title="削除"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="chat-input-container">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              multiple
+              accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar"
+              style={{ display: 'none' }}
+            />
+            <button
+              type="button"
+              className="chat-attach-button"
+              onClick={handleAttachClick}
+              title="ファイルを添付"
+            >
+              📎
+            </button>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Dioneと何をしますか？"
+              className="chat-input"
+            />
+            <button type="submit" className="chat-send-button">送信</button>
+          </div>
         </form>
       </div>
 

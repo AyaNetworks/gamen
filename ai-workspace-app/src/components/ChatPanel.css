@@ -450,6 +450,7 @@
 
 .chat-input-form {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
   border-top: 1px solid rgba(100, 108, 255, 0.2);
@@ -457,6 +458,33 @@
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   transition: opacity 0.3s ease;
+}
+
+.chat-input-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.chat-attach-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background-color: rgba(100, 108, 255, 0.5);
+  border: 1px solid rgba(100, 108, 255, 0.4);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chat-attach-button:hover {
+  background-color: rgba(100, 108, 255, 0.7);
+  border-color: rgba(100, 108, 255, 0.6);
+  transform: scale(1.05);
 }
 
 .chat-input {
@@ -486,12 +514,167 @@
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 0 10px rgba(100, 108, 255, 0.3);
+  flex-shrink: 0;
 }
 
 .chat-send-button:hover {
   background-color: rgba(83, 91, 242, 0.8);
   border-color: rgba(100, 108, 255, 0.8);
   box-shadow: 0 0 15px rgba(100, 108, 255, 0.5);
+}
+
+/* File Attachments Preview (before sending) */
+.attached-files-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background-color: rgba(26, 26, 26, 0.4);
+  border-radius: 6px;
+  border: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+.attached-file-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(51, 51, 51, 0.6);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  border-radius: 6px;
+  max-width: 200px;
+}
+
+.attached-file-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.attached-file-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background-color: rgba(100, 108, 255, 0.2);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.attached-file-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.attached-file-name {
+  font-size: 0.85rem;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attached-file-size {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.attached-file-remove {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: rgba(255, 80, 80, 0.3);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  color: #ff8080;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.attached-file-remove:hover {
+  background-color: rgba(255, 80, 80, 0.5);
+  transform: scale(1.1);
+}
+
+/* Message Attachments (in chat) */
+.message-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.message-attachment {
+  max-width: 200px;
+}
+
+.message-attachment-image {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.message-attachment-image:hover {
+  transform: scale(1.05);
+}
+
+.message-attachment-file {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  border-radius: 6px;
+}
+
+.message-attachment-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background-color: rgba(100, 108, 255, 0.2);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.message-attachment-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.message-attachment-name {
+  font-size: 0.8rem;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-attachment-size {
+  font-size: 0.7rem;
+  color: #888;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -647,6 +830,15 @@
   border: 1px solid rgba(100, 108, 255, 0.4);
 }
 
+.light-theme .chat-attach-button {
+  background-color: rgba(100, 108, 255, 0.6);
+  border: 1px solid rgba(100, 108, 255, 0.5);
+}
+
+.light-theme .chat-attach-button:hover {
+  background-color: rgba(100, 108, 255, 0.8);
+}
+
 .light-theme .theme-toggle-button,
 .light-theme .new-chat-button,
 .light-theme .chat-send-button {
@@ -660,6 +852,59 @@
 .light-theme .chat-send-button:hover {
   background-color: rgba(83, 91, 242, 1);
   border-color: rgba(83, 91, 242, 1);
+}
+
+/* Light Theme - File Attachments */
+.light-theme .attached-files-preview {
+  background-color: rgba(240, 245, 255, 0.6);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .attached-file-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(100, 108, 255, 0.4);
+}
+
+.light-theme .attached-file-icon {
+  background-color: rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .attached-file-name {
+  color: #333;
+}
+
+.light-theme .attached-file-size {
+  color: #666;
+}
+
+.light-theme .attached-file-remove {
+  background-color: rgba(255, 80, 80, 0.2);
+  color: #d32f2f;
+}
+
+.light-theme .attached-file-remove:hover {
+  background-color: rgba(255, 80, 80, 0.4);
+}
+
+.light-theme .message-attachment-image {
+  border: 1px solid rgba(100, 108, 255, 0.4);
+}
+
+.light-theme .message-attachment-file {
+  background-color: rgba(240, 245, 255, 0.6);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .message-attachment-icon {
+  background-color: rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .message-attachment-name {
+  color: #333;
+}
+
+.light-theme .message-attachment-size {
+  color: #666;
 }
 
 /* Message Type Styling - Light Theme */

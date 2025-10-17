@@ -135,14 +135,47 @@ function App() {
 
   const currentChat = chatSessions.find(chat => chat.id === currentChatId)
 
-  const handleSendMessage = (userMessage) => {
+  const handleSendMessage = (userMessage, attachments = []) => {
     const updatedSessions = chatSessions.map(chat => {
       if (chat.id === currentChatId) {
-        const newMessages = [...chat.messages, { role: 'user', content: userMessage, timestamp: new Date().toISOString() }]
+        const newMessage = {
+          role: 'user',
+          content: userMessage,
+          timestamp: new Date().toISOString()
+        }
+
+        // Add attachments if any
+        if (attachments.length > 0) {
+          newMessage.attachments = attachments.map(file => ({
+            name: file.name,
+            size: file.size,
+            type: file.type,
+            preview: file.preview
+          }))
+
+          // Add attachments to documents for Dione knowledge base
+          const newDocuments = attachments.map(file => ({
+            id: Date.now() + Math.random(),
+            name: file.name,
+            type: 'document',
+            content: '',
+            file: file.file,
+            filePath: `Uploaded from chat at ${new Date().toLocaleString('ja-JP')}`,
+            tags: {
+              source: 'chat',
+              uploadedAt: new Date().toISOString(),
+              fileType: file.type
+            }
+          }))
+
+          setDocuments(prevDocs => [...prevDocs, ...newDocuments])
+        }
+
+        const newMessages = [...chat.messages, newMessage]
 
         // Update title if this is the first message
         const title = chat.messages.length === 0
-          ? userMessage.substring(0, 30) + (userMessage.length > 30 ? '...' : '')
+          ? (userMessage || 'ファイル添付').substring(0, 30) + ((userMessage || 'ファイル添付').length > 30 ? '...' : '')
           : chat.title
 
         return { ...chat, messages: newMessages, title }
