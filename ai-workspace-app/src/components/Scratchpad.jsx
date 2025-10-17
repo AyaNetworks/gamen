@@ -79,6 +79,28 @@ function Scratchpad({
     setControllerPosition(null)
   }
 
+  const handleDownload = () => {
+    if (!currentTab) return
+
+    // Create blob with the content
+    const content = currentTab.content || ''
+    const filename = `${currentTab.title || 'untitled'}.md`
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' })
+
+    // Create download link
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', filename)
+    link.style.visibility = 'hidden'
+
+    // Trigger download
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="scratchpad">
       {/* Header */}
@@ -157,6 +179,13 @@ function Scratchpad({
             title="やり直す (Redo)"
           >
             ↷
+          </button>
+          <button
+            className="version-button download-button"
+            onClick={handleDownload}
+            title="ダウンロード (Download)"
+          >
+            ⬇️
           </button>
         </div>
 

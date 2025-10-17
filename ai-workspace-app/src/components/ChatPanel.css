@@ -470,21 +470,23 @@
   width: 40px;
   height: 40px;
   border-radius: 6px;
-  background-color: rgba(100, 108, 255, 0.5);
-  border: 1px solid rgba(100, 108, 255, 0.4);
-  font-size: 1.2rem;
+  background-color: rgba(100, 150, 255, 0.7);
+  border: 2px solid rgba(100, 130, 255, 0.6);
+  font-size: 1.3rem;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(100, 130, 255, 0.3);
 }
 
 .chat-attach-button:hover {
-  background-color: rgba(100, 108, 255, 0.7);
-  border-color: rgba(100, 108, 255, 0.6);
-  transform: scale(1.05);
+  background-color: rgba(100, 150, 255, 0.9);
+  border-color: rgba(100, 150, 255, 0.8);
+  box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
+  transform: scale(1.1);
 }
 
 .chat-input {
@@ -831,12 +833,17 @@
 }
 
 .light-theme .chat-attach-button {
-  background-color: rgba(100, 108, 255, 0.6);
-  border: 1px solid rgba(100, 108, 255, 0.5);
+  background-color: rgba(83, 91, 242, 0.9);
+  border: 2px solid rgba(83, 91, 242, 0.9);
+  color: white;
+  box-shadow: 0 0 12px rgba(83, 91, 242, 0.4);
 }
 
 .light-theme .chat-attach-button:hover {
-  background-color: rgba(100, 108, 255, 0.8);
+  background-color: rgba(66, 71, 217, 1);
+  border-color: rgba(66, 71, 217, 1);
+  box-shadow: 0 0 18px rgba(83, 91, 242, 0.6);
+  transform: scale(1.1);
 }
 
 .light-theme .theme-toggle-button,

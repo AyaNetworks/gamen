@@ -370,7 +370,7 @@ function ChatPanel({
               onClick={handleAttachClick}
               title="ファイルを添付"
             >
-              📎
+              📁
             </button>
             <input
               type="text"

@@ -85,6 +85,18 @@
   border-color: rgba(100, 108, 255, 0.1);
 }
 
+/* Download Button - Always Enabled */
+.download-button {
+  background-color: rgba(51, 100, 100, 0.8);
+  border-color: rgba(80, 200, 200, 0.4);
+}
+
+.download-button:hover {
+  background-color: rgba(80, 150, 150, 0.9);
+  border-color: rgba(100, 220, 220, 0.6);
+  box-shadow: 0 0 15px rgba(100, 220, 220, 0.5);
+}
+
 /* Tabs */
 .scratchpad-tabs {
   display: flex;
@@ -591,4 +603,20 @@
   background-color: rgba(100, 108, 255, 0.6);
   border: 1px solid rgba(100, 108, 255, 0.6);
   color: white;
+}
+
+.light-theme .version-button:hover:not(.disabled) {
+  background-color: rgba(100, 108, 255, 0.8);
+  border-color: rgba(100, 108, 255, 0.8);
+}
+
+.light-theme .download-button {
+  background-color: rgba(80, 180, 180, 0.7);
+  border-color: rgba(100, 200, 200, 0.6);
+}
+
+.light-theme .download-button:hover {
+  background-color: rgba(100, 200, 200, 0.85);
+  border-color: rgba(120, 220, 220, 0.7);
+  box-shadow: 0 0 15px rgba(100, 200, 200, 0.4);
 }
