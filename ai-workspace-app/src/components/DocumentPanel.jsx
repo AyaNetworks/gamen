@@ -51,16 +51,37 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                       </span>
                       <span className="document-name">{doc.name}</span>
                     </div>
-                    <button
-                      className="document-delete-button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onDeleteDocument(doc.id)
-                      }}
-                      title="削除"
-                    >
-                      ×
-                    </button>
+                    <div className="document-actions">
+                      <button
+                        className="document-download-button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          // ダウンロード機能
+                          const blob = new Blob([doc.content || ''], { type: 'text/plain' })
+                          const url = URL.createObjectURL(blob)
+                          const a = document.createElement('a')
+                          a.href = url
+                          a.download = doc.name
+                          document.body.appendChild(a)
+                          a.click()
+                          document.body.removeChild(a)
+                          URL.revokeObjectURL(url)
+                        }}
+                        title="ダウンロード"
+                      >
+                        ⬇
+                      </button>
+                      <button
+                        className="document-delete-button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onDeleteDocument(doc.id)
+                        }}
+                        title="削除"
+                      >
+                        ×
+                      </button>
+                    </div>
                   </div>
                   <div className="document-item-details">
                     {doc.filePath && (

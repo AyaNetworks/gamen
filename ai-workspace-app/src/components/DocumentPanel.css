@@ -123,6 +123,13 @@
   cursor: pointer;
 }
 
+.document-actions {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.document-download-button,
 .document-delete-button {
   width: 24px;
   height: 24px;
@@ -140,8 +147,14 @@
   opacity: 0;
 }
 
+.document-item:hover .document-download-button,
 .document-item:hover .document-delete-button {
   opacity: 1;
+}
+
+.document-download-button:hover {
+  background-color: rgba(100, 108, 255, 0.7);
+  color: white;
 }
 
 .document-delete-button:hover {
