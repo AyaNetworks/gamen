@@ -53,7 +53,8 @@ function Scratchpad({
   const canUndo = currentTab && currentTab.historyIndex > 0
   const canRedo = currentTab && currentTab.historyIndex < currentTab.history.length - 1
 
-  const handleEditorClick = (e) => {
+  const handleEditorContextMenu = (e) => {
+    e.preventDefault() // Prevent default context menu
     const rect = e.currentTarget.getBoundingClientRect()
     setControllerPosition({
       x: e.clientX - rect.left,
@@ -156,7 +157,7 @@ function Scratchpad({
       {/* Editor / Preview */}
       <div className="scratchpad-content" ref={editorRef}>
         {isPreviewMode ? (
-          <div className="scratchpad-preview" onClick={handleEditorClick}>
+          <div className="scratchpad-preview" onContextMenu={handleEditorContextMenu}>
             <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
               {currentTab?.content || '*Markdown content will appear here...*'}
             </ReactMarkdown>
@@ -166,7 +167,7 @@ function Scratchpad({
             className="scratchpad-editor"
             value={currentTab?.content || ''}
             onChange={handleEditorChange}
-            onClick={handleEditorClick}
+            onContextMenu={handleEditorContextMenu}
             placeholder="AIがここに内容を生成します..."
           />
         )}
