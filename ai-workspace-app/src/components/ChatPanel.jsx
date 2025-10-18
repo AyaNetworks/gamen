@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare } from 'react-icons/fi'
+import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend } from 'react-icons/fi'
 import MessageDetailModal from './MessageDetailModal'
 import ConfigurationModal from './ConfigurationModal'
 import './ChatPanel.css'
@@ -24,6 +24,7 @@ function ChatPanel({
   const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
   const [shouldAnimateNewChatBtn, setShouldAnimateNewChatBtn] = useState(false)
+  const [shouldAnimateSendBtn, setShouldAnimateSendBtn] = useState(false)
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
 
@@ -57,6 +58,29 @@ function ChatPanel({
       transition: {
         duration: 0.35,
         ease: 'easeInOut',
+      },
+    },
+  }
+
+  const planeIconVariants = {
+    normal: {
+      x: 0,
+      y: 0,
+      rotate: 0,
+      scale: 1,
+      opacity: 1,
+    },
+    launch: {
+      // Path: Start → Flies up-right off-screen → Returns from bottom-left → Lands
+      x: [0, 60, 160, 100, -120, -40, 0],
+      y: [0, -80, -160, 80, 140, 40, 0],
+      rotate: [0, -25, -50, -20, 30, 10, 0],
+      scale: [1, 1.05, 0.8, 0.7, 0.9, 1, 1],
+      opacity: [1, 1, 0.3, 0.4, 0.8, 1, 1],
+      transition: {
+        duration: 1.5,
+        ease: 'easeInOut',
+        times: [0, 0.15, 0.4, 0.5, 0.75, 0.9, 1],
       },
     },
   }
@@ -185,6 +209,8 @@ function ChatPanel({
   const handleSubmit = (e) => {
     e.preventDefault()
     if (inputValue.trim() || attachedFiles.length > 0) {
+      setShouldAnimateSendBtn(true)
+      setTimeout(() => setShouldAnimateSendBtn(false), 1500)
       onSendMessage(inputValue, attachedFiles)
       setInputValue('')
       setAttachedFiles([])
@@ -614,7 +640,16 @@ function ChatPanel({
               placeholder="Dioneと何をしますか？"
               className="chat-input"
             />
-            <button type="submit" className="chat-send-button">送信</button>
+            <button type="submit" className="chat-send-button">
+              <motion.div
+                variants={planeIconVariants}
+                initial="normal"
+                animate={shouldAnimateSendBtn ? 'launch' : 'normal'}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <FiSend size={20} />
+              </motion.div>
+            </button>
           </div>
         </form>
       </div>
