@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool } from 'react-icons/fi'
 import MessageDetailModal from './MessageDetailModal'
 import './ChatPanel.css'
 
@@ -168,6 +169,22 @@ function ChatPanel({
     }
   }
 
+  const getMessageTypeIcon = (message) => {
+    if (message.role === 'user') return null // No icon for user messages
+
+    const messageType = message.type || 'dione'
+
+    switch (messageType) {
+      case 'tool':
+        return <FiTool size={16} />
+      case 'thinking':
+        return <FiZap size={16} />
+      case 'dione':
+      default:
+        return <FiMessageSquare size={16} />
+    }
+  }
+
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return ''
 
@@ -251,7 +268,7 @@ function ChatPanel({
               {/* Compact view (shown when sidebar is collapsed) */}
               <div className="chat-history-compact">
                 <div className="chat-compact-time">{formatDateCompact(chat.createdAt)}</div>
-                <div className="chat-compact-icon">💬</div>
+                <div className="chat-compact-icon"><FiMessageSquare size={20} /></div>
                 <div className="chat-compact-count">{chat.messages.length}</div>
               </div>
 
@@ -287,7 +304,7 @@ function ChatPanel({
             onClick={onToggleTheme}
             title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
           >
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         </div>
         <div className="chat-messages">
@@ -313,7 +330,10 @@ function ChatPanel({
                 <div className="message-content-wrapper">
                   <div className="message-bubble">
                     {getMessageLabel(message) && (
-                      <div className="message-role">{getMessageLabel(message)}</div>
+                      <div className="message-role">
+                        <span className="message-type-icon">{getMessageTypeIcon(message)}</span>
+                        <span>{getMessageLabel(message)}</span>
+                      </div>
                     )}
                     {message.content && (
                       <div className="message-content">{message.content}</div>
@@ -370,7 +390,7 @@ function ChatPanel({
               onClick={handleAttachClick}
               title="ファイルを添付"
             >
-              📁
+              <FiPaperclip size={20} />
             </button>
             <input
               type="text"

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BiLinkExternal } from 'react-icons/bi'
+import { FiDownload } from 'react-icons/fi'
 import FilePreview from './FilePreview'
 import { getFileIcon } from '../utils/fileTypeDetector'
 import './DocumentPanel.css'
@@ -79,7 +80,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                         }}
                         title="ダウンロード"
                       >
-                        ⬇
+                        <FiDownload size={18} />
                       </button>
                       <button
                         className="document-delete-button"

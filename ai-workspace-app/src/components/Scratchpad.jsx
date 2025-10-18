@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { FiDownload, FiRotateCcw, FiRotateCw } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
@@ -170,7 +171,7 @@ function Scratchpad({
             disabled={!canUndo}
             title="元に戻す (Undo)"
           >
-            ↶
+            <FiRotateCcw size={18} />
           </button>
           <button
             className={`version-button ${!canRedo ? 'disabled' : ''}`}
@@ -178,14 +179,14 @@ function Scratchpad({
             disabled={!canRedo}
             title="やり直す (Redo)"
           >
-            ↷
+            <FiRotateCw size={18} />
           </button>
           <button
             className="version-button download-button"
             onClick={handleDownload}
             title="ダウンロード (Download)"
           >
-            ⬇️
+            <FiDownload size={18} />
           </button>
         </div>
 

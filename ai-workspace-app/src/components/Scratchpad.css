@@ -64,13 +64,13 @@
   -webkit-backdrop-filter: blur(8px);
   color: #fff;
   border: 1px solid rgba(100, 108, 255, 0.3);
-  font-size: 1.5rem;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  padding: 0;
 }
 
 .version-button:hover:not(.disabled) {
@@ -83,6 +83,11 @@
   opacity: 0.3;
   cursor: not-allowed;
   border-color: rgba(100, 108, 255, 0.1);
+}
+
+.version-button svg {
+  color: inherit;
+  stroke-width: 2;
 }
 
 /* Download Button - Always Enabled */
@@ -600,23 +605,28 @@
 
 .light-theme .version-button,
 .light-theme .new-tab-button {
-  background-color: rgba(100, 108, 255, 0.6);
-  border: 1px solid rgba(100, 108, 255, 0.6);
+  background-color: rgba(100, 108, 255, 0.8);
+  border: 2px solid rgba(100, 108, 255, 0.8);
   color: white;
 }
 
 .light-theme .version-button:hover:not(.disabled) {
-  background-color: rgba(100, 108, 255, 0.8);
-  border-color: rgba(100, 108, 255, 0.8);
+  background-color: rgba(83, 91, 242, 1);
+  border-color: rgba(83, 91, 242, 1);
+  box-shadow: 0 0 15px rgba(100, 108, 255, 0.4);
+}
+
+.light-theme .version-button svg {
+  color: white;
 }
 
 .light-theme .download-button {
-  background-color: rgba(80, 180, 180, 0.7);
-  border-color: rgba(100, 200, 200, 0.6);
+  background-color: rgba(100, 180, 180, 0.85);
+  border-color: rgba(100, 180, 180, 0.85);
 }
 
 .light-theme .download-button:hover {
-  background-color: rgba(100, 200, 200, 0.85);
-  border-color: rgba(120, 220, 220, 0.7);
-  box-shadow: 0 0 15px rgba(100, 200, 200, 0.4);
+  background-color: rgba(80, 160, 160, 1);
+  border-color: rgba(80, 160, 160, 1);
+  box-shadow: 0 0 15px rgba(100, 180, 180, 0.5);
 }
