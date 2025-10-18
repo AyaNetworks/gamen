@@ -397,7 +397,7 @@ function App() {
   return (
     <div className={`app-container ${theme}-theme`}>
       <PanelGroup direction="horizontal">
-        <Panel defaultSize={25} minSize={15} maxSize={40}>
+        <Panel defaultSize={35} minSize={15} maxSize={50}>
           <ChatPanel
             chatSessions={chatSessions}
             currentChatId={currentChatId}
@@ -411,7 +411,7 @@ function App() {
           />
         </Panel>
         <PanelResizeHandle className="resize-handle" />
-        <Panel defaultSize={50} minSize={30}>
+        <Panel defaultSize={40} minSize={25}>
           <Scratchpad
             tabs={scratchpadTabs}
             currentTabId={currentScratchpadTabId}
