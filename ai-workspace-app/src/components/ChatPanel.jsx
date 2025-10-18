@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare } from 'react-icons/fi'
 import MessageDetailModal from './MessageDetailModal'
 import ConfigurationModal from './ConfigurationModal'
@@ -20,8 +20,91 @@ function ChatPanel({
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [attachedFiles, setAttachedFiles] = useState([])
   const [openConfigModal, setOpenConfigModal] = useState(null) // 'dione', 'tool', 'task', or null
+  const [prevChatCount, setPrevChatCount] = useState(0) // Track previous chat count
+  const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
+  const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
+
+  // Detect new chat during render (before effect runs) OR use animating chat
+  // This ensures the component mounts with correct initial state
+  const newChatId =
+    chatSessions.length > prevChatCount && !animatingChatId
+      ? currentChatId
+      : animatingChatId
+
+
+  const springTransition = {
+    type: 'spring',
+    damping: 15,
+    stiffness: 100,
+    mass: 0.8,
+  }
+
+  const newChatVariants = {
+    initial: {
+      opacity: 0,
+      y: 40,
+      scale: 0.5,
+      boxShadow: '0 0 0px rgba(100, 108, 255, 0)',
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      boxShadow: [
+        '0 0 0px rgba(100, 108, 255, 0)',
+        '0 0 30px rgba(100, 108, 255, 0.9)',
+        '0 0 15px rgba(100, 108, 255, 0.4)',
+        '0 0 0px rgba(100, 108, 255, 0)',
+      ],
+      transition: {
+        opacity: {
+          type: 'tween',
+          duration: 0.5,
+          ease: 'easeOut',
+        },
+        y: {
+          type: 'tween',
+          duration: 0.7,
+          ease: [0.34, 1.56, 0.64, 1], // Bouncy easing
+        },
+        scale: {
+          type: 'tween',
+          duration: 0.7,
+          ease: [0.34, 1.56, 0.64, 1], // Bouncy easing
+        },
+        boxShadow: {
+          duration: 1,
+          delay: 0.2,
+          times: [0, 0.3, 0.7, 1],
+          ease: 'easeOut',
+        },
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+      y: -20,
+      transition: {
+        opacity: {
+          type: 'tween',
+          duration: 0.4,
+          ease: 'easeOut',
+        },
+        scale: {
+          type: 'tween',
+          duration: 0.4,
+          ease: 'easeOut',
+        },
+        y: {
+          type: 'tween',
+          duration: 0.4,
+          ease: 'easeOut',
+        },
+      },
+    },
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -30,6 +113,47 @@ function ChatPanel({
   useEffect(() => {
     scrollToBottom()
   }, [currentMessages])
+
+  // Handle new chats - queue them if animation is running
+  useEffect(() => {
+    if (chatSessions.length > prevChatCount) {
+      const newChatId = currentChatId
+
+      if (!animatingChatId) {
+        // No animation running, start immediately
+        setAnimatingChatId(newChatId)
+        setPendingAnimationId(null)
+      } else {
+        // Animation running, queue this for later
+        setPendingAnimationId(newChatId)
+      }
+
+      setPrevChatCount(chatSessions.length)
+    } else if (chatSessions.length < prevChatCount) {
+      // Chat deleted
+      setPrevChatCount(chatSessions.length)
+      setAnimatingChatId(null)
+      setPendingAnimationId(null)
+    }
+  }, [chatSessions.length])
+
+  // When current animation finishes, start pending animation
+  useEffect(() => {
+    if (!animatingChatId) return
+
+    const timer = setTimeout(() => {
+      if (pendingAnimationId) {
+        // Start animating the pending chat
+        setAnimatingChatId(pendingAnimationId)
+        setPendingAnimationId(null)
+      } else {
+        // No pending, just clear
+        setAnimatingChatId(null)
+      }
+    }, 1200)
+
+    return () => clearTimeout(timer)
+  }, [animatingChatId, pendingAnimationId])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -261,41 +385,58 @@ function ChatPanel({
             +
           </button>
         </div>
-        <div className="chat-history-list">
-          {chatSessions.map((chat) => (
-            <div
-              key={chat.id}
-              className={`chat-history-item ${chat.id === currentChatId ? 'active' : ''}`}
-              onClick={() => onSelectChat(chat.id)}
-            >
-              {/* Compact view (shown when sidebar is collapsed) */}
-              <div className="chat-history-compact">
-                <div className="chat-compact-time">{formatDateCompact(chat.createdAt)}</div>
-                <div className="chat-compact-icon"><FiMessageSquare size={20} /></div>
-                <div className="chat-compact-count">{chat.messages.length}</div>
-              </div>
+        <motion.div className="chat-history-list" layout>
+          <AnimatePresence>
+            {chatSessions.map((chat) => {
+              const isNewChat = chat.id === newChatId
+              return (
+                <motion.div
+                  key={chat.id}
+                  className={`chat-history-item ${chat.id === currentChatId ? 'active' : ''}`}
+                  onClick={() => onSelectChat(chat.id)}
+                  transition={isNewChat ? undefined : springTransition}
+                  initial={
+                    isNewChat
+                      ? newChatVariants.initial
+                      : false
+                  }
+                  animate={
+                    isNewChat
+                      ? newChatVariants.animate
+                      : { opacity: 1, y: 0, scale: 1 }
+                  }
+                  exit={newChatVariants.exit}
+                >
+                  {/* Compact view (shown when sidebar is collapsed) */}
+                  <div className="chat-history-compact">
+                    <div className="chat-compact-time">{formatDateCompact(chat.createdAt)}</div>
+                    <div className="chat-compact-icon"><FiMessageSquare size={20} /></div>
+                    <div className="chat-compact-count">{chat.messages.length}</div>
+                  </div>
 
-              {/* Expanded view (shown when sidebar is hovered) */}
-              <div className="chat-history-content">
-                <div className="chat-history-title">{chat.title}</div>
-                <div className="chat-history-meta">
-                  <span className="chat-message-count">{chat.messages.length}件</span>
-                  <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
-                </div>
-              </div>
-              <button
-                className="chat-delete-button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onDeleteChat(chat.id)
-                }}
-                title="削除"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
+                  {/* Expanded view (shown when sidebar is hovered) */}
+                  <div className="chat-history-content">
+                    <div className="chat-history-title">{chat.title}</div>
+                    <div className="chat-history-meta">
+                      <span className="chat-message-count">{chat.messages.length}件</span>
+                      <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
+                    </div>
+                  </div>
+                  <button
+                    className="chat-delete-button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onDeleteChat(chat.id)
+                    }}
+                    title="削除"
+                  >
+                    ×
+                  </button>
+                </motion.div>
+              )
+            })}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
       {/* Main Chat Area */}
