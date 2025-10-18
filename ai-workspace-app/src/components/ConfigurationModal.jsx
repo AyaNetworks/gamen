@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { createPortal } from 'react-dom'
 import './ConfigurationModal.css'
 
 function ConfigurationModal({ configType, onClose, theme }) {
@@ -123,9 +125,23 @@ function ConfigurationModal({ configType, onClose, theme }) {
 
   const tabs = getTabs()
 
-  return (
-    <div className={`config-modal-overlay ${theme}-theme`} onClick={onClose}>
-      <div className="config-modal-container" onClick={(e) => e.stopPropagation()}>
+  return createPortal(
+    <motion.div
+      className={`config-modal-overlay ${theme}-theme`}
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div
+        className="config-modal-container"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.8, y: 50 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.8, y: 50 }}
+        transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
+      >
         <div className="config-modal-header">
           <h2 className="config-modal-title">{getModalTitle()}</h2>
           <button className="config-modal-close-button" onClick={onClose}>×</button>
@@ -146,8 +162,9 @@ function ConfigurationModal({ configType, onClose, theme }) {
         <div className="config-modal-body">
           {renderTabContent()}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>,
+    document.body
   )
 }
 
