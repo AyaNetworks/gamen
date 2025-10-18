@@ -1,10 +1,49 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { createPortal } from 'react-dom'
 import './ConfigurationModal.css'
 
 function ConfigurationModal({ configType, onClose, theme }) {
   const [activeTab, setActiveTab] = useState(0)
+  const modalRef = useRef(null)
+
+  const containerVariants = {
+    hidden: {
+      clipPath: 'circle(0% at 50% 50%)',
+      opacity: 0,
+    },
+    visible: {
+      clipPath: 'circle(100% at 50% 50%)',
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 80,
+        damping: 20,
+        duration: 0.15,
+      },
+    },
+    exit: {
+      clipPath: 'circle(0% at 50% 50%)',
+      opacity: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 80,
+        damping: 30,
+        duration: 0.15,
+      },
+    },
+  }
+
+  const contentVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.15,
+        duration: 0.15,
+      },
+    },
+  }
 
   const getModalTitle = () => {
     switch (configType) {
@@ -129,18 +168,18 @@ function ConfigurationModal({ configType, onClose, theme }) {
     <motion.div
       className={`config-modal-overlay ${theme}-theme`}
       onClick={onClose}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={containerVariants}
+      ref={modalRef}
     >
       <motion.div
         className="config-modal-container"
         onClick={(e) => e.stopPropagation()}
-        initial={{ opacity: 0, scale: 0.8, y: 50 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.8, y: 50 }}
-        transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
+        initial="hidden"
+        animate="visible"
+        variants={contentVariants}
       >
         <div className="config-modal-header">
           <h2 className="config-modal-title">{getModalTitle()}</h2>
