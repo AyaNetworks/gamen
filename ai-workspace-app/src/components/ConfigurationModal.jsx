@@ -188,13 +188,32 @@ function ConfigurationModal({ configType, onClose, theme }) {
 
         <div className="config-modal-tabs">
           {tabs.map((tab, index) => (
-            <button
+            <motion.button
               key={tab.id}
               className={`config-tab ${activeTab === index ? 'active' : ''}`}
               onClick={() => setActiveTab(index)}
+              initial={false}
+              animate={{
+                backgroundColor:
+                  activeTab === index
+                    ? 'rgba(100, 108, 255, 0.15)'
+                    : 'rgba(100, 108, 255, 0)',
+              }}
+              transition={{ duration: 0.2 }}
             >
               {tab.name}
-            </button>
+              {activeTab === index && (
+                <motion.div
+                  className="config-tab-underline"
+                  layoutId="config-tab-underline"
+                  transition={{
+                    type: 'spring',
+                    stiffness: 500,
+                    damping: 30,
+                  }}
+                />
+              )}
+            </motion.button>
           ))}
         </div>
 

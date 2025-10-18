@@ -87,6 +87,15 @@
   transition: all 0.2s;
   border-bottom: 2px solid transparent;
   text-align: center;
+  outline: none;
+  position: relative;
+}
+
+.config-tab:focus,
+.config-tab:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 .config-tab:hover {
@@ -96,8 +105,18 @@
 
 .config-tab.active {
   color: #fff;
-  border-bottom-color: rgba(100, 108, 255, 0.8);
   background-color: rgba(100, 108, 255, 0.1);
+  position: relative;
+}
+
+.config-tab-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(100, 108, 255, 0.6), rgba(100, 108, 255, 1), rgba(100, 108, 255, 0.6));
+  border-radius: 1px;
 }
 
 .config-modal-body {
@@ -187,6 +206,14 @@
 
 .config-modal-overlay.light-theme .config-tab {
   color: #666;
+  outline: none;
+}
+
+.config-modal-overlay.light-theme .config-tab:focus,
+.config-modal-overlay.light-theme .config-tab:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 .config-modal-overlay.light-theme .config-tab:hover {

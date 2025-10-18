@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { BiLinkExternal } from 'react-icons/bi'
 import { FiDownload } from 'react-icons/fi'
 import FilePreview from './FilePreview'
@@ -26,6 +27,32 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
     setSelectedItem(null)
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 10,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+        ease: 'easeOut',
+      },
+    },
+  }
+
   return (
     <div className="document-panel">
       <div className="panel-header">
@@ -47,13 +74,19 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
           <div className="list-header">
             <h3>Dioneナレッジ</h3>
           </div>
-          <div className="document-list">
+          <motion.div
+            className="document-list"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {documents.map((doc) => {
               const IconComponent = getFileIcon(doc.name)
               return (
-                <div
+                <motion.div
                   key={doc.id}
                   className="document-item"
+                  variants={itemVariants}
                 >
                   <div className="document-item-main">
                     <div className="document-item-content" onClick={() => handleItemClick(doc)}>
@@ -110,10 +143,10 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                       </div>
                     )}
                   </div>
-                </div>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
 
         {/* アップロードしたドキュメント */}
@@ -129,13 +162,19 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
               + アップロード
             </label>
           </div>
-          <div className="library-list">
+          <motion.div
+            className="library-list"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {libraries.map((lib) => {
               const IconComponent = getFileIcon(lib.name)
               return (
-                <div
+                <motion.div
                   key={lib.id}
                   className="library-item"
+                  variants={itemVariants}
                 >
                   <div className="library-item-content" onClick={() => handleItemClick(lib)}>
                     <span className="library-icon">
@@ -153,10 +192,10 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                   >
                     ×
                   </button>
-                </div>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
 
