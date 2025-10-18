@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { FiDownload, FiRotateCcw, FiRotateCw } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -23,7 +24,151 @@ function Scratchpad({
   const [editingTitle, setEditingTitle] = useState('')
   const [isPreviewMode, setIsPreviewMode] = useState(true)
   const [controllerPosition, setControllerPosition] = useState(null)
+  const [prevTabCount, setPrevTabCount] = useState(0)
+  const [animatingTabId, setAnimatingTabId] = useState(null)
+  const [pendingAnimationId, setPendingAnimationId] = useState(null)
+  const [shouldAnimateNewTabBtn, setShouldAnimateNewTabBtn] = useState(false)
   const editorRef = useRef(null)
+
+  // Detect new tab during render OR use animating tab
+  const newTabId =
+    tabs.length > prevTabCount && !animatingTabId
+      ? currentTabId
+      : animatingTabId
+
+  // Plus button spin + scale bounce animation
+  const plusButtonVariants = {
+    normal: {
+      rotate: 0,
+      scale: 1,
+      boxShadow: '0 0 10px rgba(100, 108, 255, 0.3)',
+      transition: {
+        rotate: { duration: 0 }, // instant return (no reverse spin)
+        scale: { duration: 0.2, ease: 'easeOut' },
+        boxShadow: { duration: 0.2, ease: 'easeOut' },
+      },
+    },
+    animate: {
+      rotate: 360,
+      scale: [1, 1.15, 1],
+      boxShadow: [
+        '0 0 10px rgba(100, 108, 255, 0.3)',
+        '0 0 20px rgba(100, 108, 255, 0.7)',
+        '0 0 10px rgba(100, 108, 255, 0.3)',
+      ],
+      transition: {
+        duration: 0.35,
+        ease: 'easeInOut',
+      },
+    },
+  }
+
+  // Animation variants (same as chat)
+  const newTabVariants = {
+    initial: {
+      opacity: 0,
+      y: 40,
+      scale: 0.5,
+      boxShadow: '0 0 0px rgba(100, 108, 255, 0)',
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      boxShadow: [
+        '0 0 0px rgba(100, 108, 255, 0)',
+        '0 0 30px rgba(100, 108, 255, 0.9)',
+        '0 0 15px rgba(100, 108, 255, 0.4)',
+        '0 0 0px rgba(100, 108, 255, 0)',
+      ],
+      transition: {
+        opacity: {
+          type: 'tween',
+          duration: 0.25,
+          ease: 'easeOut',
+        },
+        y: {
+          type: 'tween',
+          duration: 0.35,
+          ease: [0.34, 1.56, 0.64, 1],
+        },
+        scale: {
+          type: 'tween',
+          duration: 0.35,
+          ease: [0.34, 1.56, 0.64, 1],
+        },
+        boxShadow: {
+          duration: 0.5,
+          delay: 0.1,
+          times: [0, 0.3, 0.7, 1],
+          ease: 'easeOut',
+        },
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+      y: -20,
+      transition: {
+        opacity: {
+          type: 'tween',
+          duration: 0.4,
+          ease: 'easeOut',
+        },
+        scale: {
+          type: 'tween',
+          duration: 0.4,
+          ease: 'easeOut',
+        },
+        y: {
+          type: 'tween',
+          duration: 0.4,
+          ease: 'easeOut',
+        },
+      },
+    },
+  }
+
+  // Handle new tabs - queue them if animation is running
+  useEffect(() => {
+    if (tabs.length > prevTabCount) {
+      const newTabId = currentTabId
+
+      if (!animatingTabId) {
+        // No animation running, start immediately
+        setAnimatingTabId(newTabId)
+        setPendingAnimationId(null)
+      } else {
+        // Animation running, queue this for later
+        setPendingAnimationId(newTabId)
+      }
+
+      setPrevTabCount(tabs.length)
+    } else if (tabs.length < prevTabCount) {
+      // Tab deleted
+      setPrevTabCount(tabs.length)
+      setAnimatingTabId(null)
+      setPendingAnimationId(null)
+    }
+  }, [tabs.length])
+
+  // When current animation finishes, start pending animation
+  useEffect(() => {
+    if (!animatingTabId) return
+
+    const timer = setTimeout(() => {
+      if (pendingAnimationId) {
+        // Start animating the pending tab
+        setAnimatingTabId(pendingAnimationId)
+        setPendingAnimationId(null)
+      } else {
+        // No pending, just clear
+        setAnimatingTabId(null)
+      }
+    }, 30)
+
+    return () => clearTimeout(timer)
+  }, [animatingTabId, pendingAnimationId])
 
   const handleEditorChange = (e) => {
     onUpdate(e.target.value)
@@ -115,50 +260,77 @@ function Scratchpad({
       {/* Tabs */}
       <div className="scratchpad-tabs">
         <div className="tabs-list">
-          {tabs.map((tab) => (
-            <div
-              key={tab.id}
-              className={`tab ${tab.id === currentTabId ? 'active' : ''}`}
-              onClick={() => onSelectTab(tab.id)}
-            >
-              {editingTabId === tab.id ? (
-                <input
-                  className="tab-title-input"
-                  value={editingTitle}
-                  onChange={handleTitleChange}
-                  onBlur={handleTitleSubmit}
-                  onKeyDown={handleTitleKeyDown}
-                  autoFocus
-                  onClick={(e) => e.stopPropagation()}
-                />
-              ) : (
-                <>
-                  <span
-                    className="tab-title"
-                    onDoubleClick={() => handleTabDoubleClick(tab)}
-                  >
-                    {tab.title}
-                  </span>
-                  {tabs.length > 1 && (
-                    <button
-                      className="tab-close"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onCloseTab(tab.id)
-                      }}
-                      title="閉じる"
-                    >
-                      ×
-                    </button>
+          <AnimatePresence>
+            {tabs.map((tab) => {
+              const isNewTab = tab.id === newTabId
+              return (
+                <motion.div
+                  key={tab.id}
+                  className={`tab ${tab.id === currentTabId ? 'active' : ''}`}
+                  onClick={() => onSelectTab(tab.id)}
+                  initial={
+                    isNewTab
+                      ? newTabVariants.initial
+                      : false
+                  }
+                  animate={
+                    isNewTab
+                      ? newTabVariants.animate
+                      : { opacity: 1, y: 0, scale: 1 }
+                  }
+                  exit={newTabVariants.exit}
+                >
+                  {editingTabId === tab.id ? (
+                    <input
+                      className="tab-title-input"
+                      value={editingTitle}
+                      onChange={handleTitleChange}
+                      onBlur={handleTitleSubmit}
+                      onKeyDown={handleTitleKeyDown}
+                      autoFocus
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  ) : (
+                    <>
+                      <span
+                        className="tab-title"
+                        onDoubleClick={() => handleTabDoubleClick(tab)}
+                      >
+                        {tab.title}
+                      </span>
+                      {tabs.length > 1 && (
+                        <button
+                          className="tab-close"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onCloseTab(tab.id)
+                          }}
+                          title="閉じる"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </>
                   )}
-                </>
-              )}
-            </div>
-          ))}
+                </motion.div>
+              )
+            })}
+          </AnimatePresence>
         </div>
-        <button className="new-tab-button" onClick={onNewTab} title="新しいタブ">
+        <motion.button
+          className="new-tab-button"
+          onClick={() => {
+            setShouldAnimateNewTabBtn(true)
+            onNewTab()
+          }}
+          title="新しいタブ"
+          variants={plusButtonVariants}
+          initial="normal"
+          animate={shouldAnimateNewTabBtn ? 'animate' : 'normal'}
+          onAnimationComplete={() => setShouldAnimateNewTabBtn(false)}
+        >
           +
-        </button>
+        </motion.button>
       </div>
 
       {/* Editor / Preview */}

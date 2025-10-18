@@ -23,6 +23,7 @@ function ChatPanel({
   const [prevChatCount, setPrevChatCount] = useState(0) // Track previous chat count
   const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
+  const [shouldAnimateNewChatBtn, setShouldAnimateNewChatBtn] = useState(false)
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
 
@@ -33,6 +34,32 @@ function ChatPanel({
       ? currentChatId
       : animatingChatId
 
+
+  const plusButtonVariants = {
+    normal: {
+      rotate: 0,
+      scale: 1,
+      boxShadow: '0 0 10px rgba(100, 108, 255, 0.3)',
+      transition: {
+        rotate: { duration: 0 }, // instant return (no reverse spin)
+        scale: { duration: 0.2, ease: 'easeOut' },
+        boxShadow: { duration: 0.2, ease: 'easeOut' },
+      },
+    },
+    animate: {
+      rotate: 360,
+      scale: [1, 1.15, 1],
+      boxShadow: [
+        '0 0 10px rgba(100, 108, 255, 0.3)',
+        '0 0 20px rgba(100, 108, 255, 0.7)',
+        '0 0 10px rgba(100, 108, 255, 0.3)',
+      ],
+      transition: {
+        duration: 0.35,
+        ease: 'easeInOut',
+      },
+    },
+  }
 
   const springTransition = {
     type: 'spring',
@@ -61,22 +88,22 @@ function ChatPanel({
       transition: {
         opacity: {
           type: 'tween',
-          duration: 0.5,
+          duration: 0.25,
           ease: 'easeOut',
         },
         y: {
           type: 'tween',
-          duration: 0.7,
+          duration: 0.35,
           ease: [0.34, 1.56, 0.64, 1], // Bouncy easing
         },
         scale: {
           type: 'tween',
-          duration: 0.7,
+          duration: 0.35,
           ease: [0.34, 1.56, 0.64, 1], // Bouncy easing
         },
         boxShadow: {
-          duration: 1,
-          delay: 0.2,
+          duration: 0.5,
+          delay: 0.1,
           times: [0, 0.3, 0.7, 1],
           ease: 'easeOut',
         },
@@ -150,7 +177,7 @@ function ChatPanel({
         // No pending, just clear
         setAnimatingChatId(null)
       }
-    }, 1200)
+    }, 30)
 
     return () => clearTimeout(timer)
   }, [animatingChatId, pendingAnimationId])
@@ -381,9 +408,20 @@ function ChatPanel({
       <div className="chat-history-sidebar">
         <div className="chat-history-header">
           <h3>チャット履歴</h3>
-          <button className="new-chat-button" onClick={onNewChat} title="新しいチャット">
+          <motion.button
+            className="new-chat-button"
+            onClick={() => {
+              setShouldAnimateNewChatBtn(true)
+              onNewChat()
+            }}
+            title="新しいチャット"
+            variants={plusButtonVariants}
+            initial="normal"
+            animate={shouldAnimateNewChatBtn ? 'animate' : 'normal'}
+            onAnimationComplete={() => setShouldAnimateNewChatBtn(false)}
+          >
             +
-          </button>
+          </motion.button>
         </div>
         <motion.div className="chat-history-list" layout>
           <AnimatePresence>
