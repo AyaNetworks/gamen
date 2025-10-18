@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
-import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool } from 'react-icons/fi'
+import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare } from 'react-icons/fi'
 import MessageDetailModal from './MessageDetailModal'
+import ConfigurationModal from './ConfigurationModal'
 import './ChatPanel.css'
 
 function ChatPanel({
@@ -17,6 +18,7 @@ function ChatPanel({
   const [inputValue, setInputValue] = useState('')
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [attachedFiles, setAttachedFiles] = useState([])
+  const [openConfigModal, setOpenConfigModal] = useState(null) // 'dione', 'tool', 'task', or null
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
 
@@ -299,13 +301,36 @@ function ChatPanel({
       <div className="chat-main">
         <div className="chat-header">
           <h2>チャット</h2>
-          <button
-            className="theme-toggle-button"
-            onClick={onToggleTheme}
-            title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
-          >
-            {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
-          </button>
+          <div className="chat-header-buttons">
+            <button
+              className="config-button dione-config-button"
+              onClick={() => setOpenConfigModal('dione')}
+              title="Dione設定"
+            >
+              <FiUser size={20} />
+            </button>
+            <button
+              className="config-button tool-config-button"
+              onClick={() => setOpenConfigModal('tool')}
+              title="ツール設定"
+            >
+              <FiStar size={20} />
+            </button>
+            <button
+              className="config-button task-config-button"
+              onClick={() => setOpenConfigModal('task')}
+              title="タスク設定"
+            >
+              <FiCheckSquare size={20} />
+            </button>
+            <button
+              className="theme-toggle-button"
+              onClick={onToggleTheme}
+              title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+            >
+              {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
+            </button>
+          </div>
         </div>
         <div className="chat-messages">
           {currentMessages.map((message, index) => {
@@ -409,6 +434,14 @@ function ChatPanel({
         <MessageDetailModal
           message={selectedMessage}
           onClose={handleCloseModal}
+          theme={theme}
+        />
+      )}
+
+      {openConfigModal && (
+        <ConfigurationModal
+          configType={openConfigModal}
+          onClose={() => setOpenConfigModal(null)}
           theme={theme}
         />
       )}
