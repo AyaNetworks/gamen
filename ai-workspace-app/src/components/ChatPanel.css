@@ -39,10 +39,6 @@
   flex-shrink: 0;
 }
 
-.chat-history-header:hover ~ .chat-history-list {
-  opacity: 0.15;
-}
-
 .chat-history-sidebar:hover .chat-history-header {
   justify-content: space-between;
 }
