@@ -1,6 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll } from 'framer-motion'
 import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend } from 'react-icons/fi'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/github-dark.css'
 import MessageDetailModal from './MessageDetailModal'
 import ConfigurationModal from './ConfigurationModal'
 import './ChatPanel.css'
@@ -27,6 +32,9 @@ function ChatPanel({
   const [shouldAnimateSendBtn, setShouldAnimateSendBtn] = useState(false)
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
+  const textareaRef = useRef(null)
+  const messagesContainerRef = useRef(null)
+  const { scrollYProgress } = useScroll({ container: messagesContainerRef })
 
   // Detect new chat during render (before effect runs) OR use animating chat
   // This ensures the component mounts with correct initial state
@@ -206,6 +214,14 @@ function ChatPanel({
     return () => clearTimeout(timer)
   }, [animatingChatId, pendingAnimationId])
 
+  // Auto-expand textarea based on content
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + 'px'
+    }
+  }, [inputValue])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (inputValue.trim() || attachedFiles.length > 0) {
@@ -214,6 +230,29 @@ function ChatPanel({
       onSendMessage(inputValue, attachedFiles)
       setInputValue('')
       setAttachedFiles([])
+    }
+  }
+
+  const handleKeyDown = (e) => {
+    // Ctrl+Enter or Cmd+Enter to submit
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault()
+      handleSubmit(e)
+    }
+    // Shift+Enter for line break - let default behavior happen
+    // Regular Enter for line break - prevent form submission
+    if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+      e.preventDefault()
+      // Insert line break manually
+      const textarea = e.target
+      const start = textarea.selectionStart
+      const end = textarea.selectionEnd
+      const newValue = inputValue.substring(0, start) + '\n' + inputValue.substring(end)
+      setInputValue(newValue)
+      // Move cursor after the inserted line break
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + 1
+      }, 0)
     }
   }
 
@@ -548,7 +587,16 @@ function ChatPanel({
             </motion.button>
           </div>
         </div>
-        <div className="chat-messages">
+
+        <div className="chat-messages" ref={messagesContainerRef}>
+          {/* Scroll Progress Indicator */}
+          <motion.div
+            className="scroll-progress-indicator"
+            style={{
+              scaleX: scrollYProgress,
+            }}
+          />
+
           {currentMessages.map((message, index) => {
             const hasDetails = message.role === 'ai' && (message.trace || message.traceback || message.toolArgs || message.toolResults)
             return (
@@ -577,7 +625,14 @@ function ChatPanel({
                       </div>
                     )}
                     {message.content && (
-                      <div className="message-content">{message.content}</div>
+                      <div className="message-content">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm, remarkBreaks]}
+                          rehypePlugins={[rehypeHighlight]}
+                        >
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
                     )}
                     {renderAttachments(message.attachments)}
                   </div>
@@ -633,12 +688,14 @@ function ChatPanel({
             >
               <FiPaperclip size={20} />
             </button>
-            <input
-              type="text"
+            <textarea
+              ref={textareaRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Dioneと何をしますか？"
+              onKeyDown={handleKeyDown}
+              placeholder="Dioneと何をしますか？ (Ctrl+Enter で送信、Shift+Enter で改行)"
               className="chat-input"
+              rows="1"
             />
             <button type="submit" className="chat-send-button">
               <motion.div

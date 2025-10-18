@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll } from 'framer-motion'
 import { FiDownload, FiRotateCcw, FiRotateCw } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -29,6 +29,8 @@ function Scratchpad({
   const [pendingAnimationId, setPendingAnimationId] = useState(null)
   const [shouldAnimateNewTabBtn, setShouldAnimateNewTabBtn] = useState(false)
   const editorRef = useRef(null)
+  const previewRef = useRef(null)
+  const { scrollYProgress } = useScroll({ container: previewRef })
 
   // Detect new tab during render OR use animating tab
   const newTabId =
@@ -363,7 +365,14 @@ function Scratchpad({
         </div>
 
         {isPreviewMode ? (
-          <div className="scratchpad-preview" onContextMenu={handleEditorContextMenu}>
+          <div className="scratchpad-preview" ref={previewRef} onContextMenu={handleEditorContextMenu}>
+            {/* Scroll Progress Indicator */}
+            <motion.div
+              className="scroll-progress-indicator"
+              style={{
+                scaleX: scrollYProgress,
+              }}
+            />
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkBreaks]}
               rehypePlugins={[rehypeHighlight]}
