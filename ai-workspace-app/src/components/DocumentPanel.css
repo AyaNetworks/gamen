@@ -68,10 +68,18 @@
 
 .document-section {
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .document-section:last-child {
   margin-bottom: 0;
+  flex: 1;
+}
+
+.library-section-wrapper {
+  flex: 1;
 }
 
 .list-header {
@@ -89,18 +97,21 @@
 }
 
 .upload-button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.65rem;
   background-color: rgba(100, 108, 255, 0.7);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   color: white;
   border: 1px solid rgba(100, 108, 255, 0.5);
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 1.25rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 0 10px rgba(100, 108, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .upload-button:hover {
@@ -109,11 +120,44 @@
   box-shadow: 0 0 15px rgba(100, 108, 255, 0.5);
 }
 
-.document-list,
+.upload-button-bottom {
+  padding: 0.875rem;
+  background-color: rgba(42, 42, 42, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: rgba(100, 108, 255, 0.6);
+  border: 2px dotted rgba(100, 108, 255, 0.4);
+  border-radius: 6px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.upload-button-bottom:hover {
+  background-color: rgba(42, 42, 42, 0.5);
+  border-color: rgba(100, 108, 255, 0.6);
+  color: rgba(100, 108, 255, 0.8);
+  box-shadow: 0 0 10px rgba(100, 108, 255, 0.2);
+}
+
+.document-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .library-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
 }
 
 .document-item {
@@ -148,12 +192,14 @@
   gap: 0.75rem;
   flex: 1;
   cursor: pointer;
+  min-width: 0;
 }
 
 .document-actions {
   display: flex;
   gap: 0.25rem;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .document-download-button,
@@ -264,6 +310,7 @@
   gap: 0.75rem;
   flex: 1;
   cursor: pointer;
+  min-width: 0;
 }
 
 .library-delete-button {
@@ -281,6 +328,7 @@
   justify-content: center;
   padding: 0;
   opacity: 0;
+  flex-shrink: 0;
 }
 
 .library-item:hover .library-delete-button {
@@ -304,6 +352,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .preview-modal {

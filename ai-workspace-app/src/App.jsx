@@ -154,11 +154,11 @@ function App() {
             preview: file.preview
           }))
 
-          // Add attachments to documents for Dione knowledge base
-          const newDocuments = attachments.map(file => ({
+          // Add attachments to libraries (uploaded documents)
+          const newLibraries = attachments.map(file => ({
             id: Date.now() + Math.random(),
             name: file.name,
-            type: 'document',
+            type: 'library',
             content: '',
             file: file.file,
             filePath: `Uploaded from chat at ${new Date().toLocaleString('ja-JP')}`,
@@ -169,7 +169,7 @@ function App() {
             }
           }))
 
-          setDocuments(prevDocs => [...prevDocs, ...newDocuments])
+          setLibraries(prevLibs => [...prevLibs, ...newLibraries])
         }
 
         const newMessages = [...chat.messages, newMessage]

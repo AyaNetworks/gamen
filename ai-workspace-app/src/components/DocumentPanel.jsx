@@ -253,17 +253,9 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
         </div>
 
         {/* アップロードしたドキュメント */}
-        <div className="document-section">
+        <div className="document-section library-section-wrapper">
           <div className="list-header">
             <h3>アップロードしたドキュメント</h3>
-            <label className="upload-button">
-              <input
-                type="file"
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-              />
-              + アップロード
-            </label>
           </div>
           <motion.div className="library-list">
             <AnimatePresence>
@@ -298,6 +290,14 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                 )
               })}
             </AnimatePresence>
+            <label className="upload-button-bottom">
+              <input
+                type="file"
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+              />
+              +
+            </label>
           </motion.div>
         </div>
       </div>
