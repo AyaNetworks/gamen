@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare } from 'react-icons/fi'
 import MessageDetailModal from './MessageDetailModal'
 import ConfigurationModal from './ConfigurationModal'
@@ -323,13 +324,23 @@ function ChatPanel({
             >
               <FiCheckSquare size={20} />
             </button>
-            <button
+            <motion.button
               className="theme-toggle-button"
               onClick={onToggleTheme}
               title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
-            </button>
+              <motion.div
+                key={theme}
+                initial={{ opacity: 0, rotate: -180 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 180 }}
+                transition={{ duration: 0.4 }}
+              >
+                {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
+              </motion.div>
+            </motion.button>
           </div>
         </div>
         <div className="chat-messages">

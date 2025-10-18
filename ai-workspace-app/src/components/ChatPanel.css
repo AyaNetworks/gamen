@@ -851,7 +851,8 @@
 .light-theme .chat-history-title,
 .light-theme .chat-message-count,
 .light-theme .chat-timestamp,
-.light-theme .chat-compact-time {
+.light-theme .chat-compact-time,
+.light-theme .chat-compact-count {
   color: #555;
 }
 
@@ -863,11 +864,20 @@
   color: inherit;
 }
 
+.light-theme .chat-compact-count {
+  background-color: rgba(100, 108, 255, 0.15);
+}
+
 .light-theme .chat-history-item.active .chat-history-title,
 .light-theme .chat-history-item.active .chat-message-count,
 .light-theme .chat-history-item.active .chat-timestamp,
-.light-theme .chat-history-item.active .chat-compact-time {
+.light-theme .chat-history-item.active .chat-compact-time,
+.light-theme .chat-history-item.active .chat-compact-count {
   color: #333;
+}
+
+.light-theme .chat-history-item.active .chat-compact-count {
+  background-color: rgba(100, 108, 255, 0.3);
 }
 
 .light-theme .message.user .message-bubble {

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels'
 import ChatPanel from './components/ChatPanel'
 import Scratchpad from './components/Scratchpad'
