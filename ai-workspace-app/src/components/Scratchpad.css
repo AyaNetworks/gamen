@@ -5,6 +5,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   height: 100vh;
+  position: relative;
 }
 
 /* Header with version control */

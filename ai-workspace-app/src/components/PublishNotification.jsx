@@ -1,0 +1,207 @@
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FiShare2, FiCopy, FiCheck, FiLock, FiX } from 'react-icons/fi'
+import './PublishNotification.css'
+
+function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
+  const [copied, setCopied] = useState(false)
+
+  // Auto-dismiss after 6 seconds
+  useEffect(() => {
+    if (!isOpen) return
+
+    const timer = setTimeout(() => {
+      onClose()
+    }, 6000)
+
+    return () => clearTimeout(timer)
+  }, [isOpen, onClose])
+
+  const generateShareUrl = () => {
+    // Generate a mock share URL
+    return `https://dione.app/share/${tabId}/${Math.random().toString(36).substr(2, 9)}`
+  }
+
+  const shareUrl = generateShareUrl()
+
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.error('Failed to copy URL:', error)
+    }
+  }
+
+  const notificationVariants = {
+    initial: {
+      opacity: 0,
+      y: -20,
+      scale: 0.95,
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 300,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      scale: 0.95,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  }
+
+  const contentVariants = {
+    initial: { opacity: 0, x: -10 },
+    animate: { opacity: 1, x: 0 },
+    transition: { delay: 0.1, duration: 0.3 },
+  }
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Overlay */}
+          <motion.div
+            className="notification-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+          />
+
+          {/* Notification */}
+          <motion.div
+            className={`publish-notification ${isPublished ? 'published' : 'private'}`}
+            variants={notificationVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            {isPublished ? (
+              <>
+                {/* Published State */}
+                <div className="notification-header">
+                  <div className="notification-icon-wrapper">
+                    <motion.div
+                      initial={{ rotate: -180, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      transition={{ duration: 0.4, delay: 0.1 }}
+                    >
+                      <FiShare2 size={24} />
+                    </motion.div>
+                  </div>
+                  <div className="notification-title">ドキュメントを共有中</div>
+                  <button
+                    className="notification-close"
+                    onClick={onClose}
+                    title="閉じる"
+                  >
+                    <FiX size={18} />
+                  </button>
+                </div>
+
+                <motion.div
+                  className="notification-content"
+                  variants={contentVariants}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <p className="notification-message">
+                    このリンクを使用して、ドキュメントを共有できます。プライベートにしたい場合はいつでもトグルできます。
+                  </p>
+
+                  <div className="share-url-container">
+                    <input
+                      type="text"
+                      className="share-url-input"
+                      value={shareUrl}
+                      readOnly
+                    />
+                    <motion.button
+                      className="copy-url-button"
+                      onClick={handleCopyUrl}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      title={copied ? 'コピーしました！' : 'URLをコピー'}
+                    >
+                      <motion.div
+                        key={copied ? 'check' : 'copy'}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {copied ? (
+                          <FiCheck size={18} />
+                        ) : (
+                          <FiCopy size={18} />
+                        )}
+                      </motion.div>
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </>
+            ) : (
+              <>
+                {/* Private State */}
+                <div className="notification-header">
+                  <div className="notification-icon-wrapper">
+                    <motion.div
+                      initial={{ rotate: 180, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      transition={{ duration: 0.4, delay: 0.1 }}
+                    >
+                      <FiLock size={24} />
+                    </motion.div>
+                  </div>
+                  <div className="notification-title">非公開に設定</div>
+                  <button
+                    className="notification-close"
+                    onClick={onClose}
+                    title="閉じる"
+                  >
+                    <FiX size={18} />
+                  </button>
+                </div>
+
+                <motion.div
+                  className="notification-content"
+                  variants={contentVariants}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <p className="notification-message">
+                    このドキュメントの共有URLは期限切れになりました。プライベートなままになります。
+                  </p>
+                  <p className="notification-submessage">
+                    再度共有したい場合は、公開トグルをクリックしてください。
+                  </p>
+                </motion.div>
+              </>
+            )}
+
+            {/* Progress Bar */}
+            <motion.div
+              className="notification-progress"
+              initial={{ scaleX: 1 }}
+              animate={{ scaleX: 0 }}
+              transition={{ duration: 6, ease: 'linear' }}
+            />
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  )
+}
+
+export default PublishNotification

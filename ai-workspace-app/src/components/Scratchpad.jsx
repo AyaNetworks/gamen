@@ -6,6 +6,8 @@ import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/github-dark.css'
+import StatsPanel from './StatsPanel'
+import PublishNotification from './PublishNotification'
 import './Scratchpad.css'
 
 function Scratchpad({
@@ -28,6 +30,11 @@ function Scratchpad({
   const [animatingTabId, setAnimatingTabId] = useState(null)
   const [pendingAnimationId, setPendingAnimationId] = useState(null)
   const [shouldAnimateNewTabBtn, setShouldAnimateNewTabBtn] = useState(false)
+  const [tabPublishStates, setTabPublishStates] = useState({
+    2: true // セグメント分析ノート is published by default
+  })
+  const [showNotification, setShowNotification] = useState(false)
+  const [notificationIsPublished, setNotificationIsPublished] = useState(false)
   const editorRef = useRef(null)
   const previewRef = useRef(null)
   const { scrollYProgress } = useScroll({ container: previewRef })
@@ -247,6 +254,20 @@ function Scratchpad({
     URL.revokeObjectURL(url)
   }
 
+  const handlePublishToggle = (tabId, isPublished) => {
+    setTabPublishStates(prev => ({
+      ...prev,
+      [tabId]: isPublished
+    }))
+
+    // Show notification
+    setNotificationIsPublished(isPublished)
+    setShowNotification(true)
+
+    // In a real app, this would call an API to update the publish state
+    // await api.updateTabPublishState(tabId, isPublished)
+  }
+
   return (
     <div className="scratchpad">
       {/* Header */}
@@ -441,6 +462,22 @@ function Scratchpad({
           </>
         )}
       </div>
+
+      {/* Stats Panel */}
+      <StatsPanel
+        content={currentTab?.content || ''}
+        isPublished={tabPublishStates[currentTabId] || false}
+        onPublishToggle={handlePublishToggle}
+        tabId={currentTabId}
+      />
+
+      {/* Publish Notification */}
+      <PublishNotification
+        isOpen={showNotification}
+        isPublished={notificationIsPublished}
+        tabId={currentTabId}
+        onClose={() => setShowNotification(false)}
+      />
     </div>
   )
 }
