@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll } from 'framer-motion'
-import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend } from 'react-icons/fi'
+import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend, FiCopy, FiCheck } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
@@ -30,6 +30,7 @@ function ChatPanel({
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
   const [shouldAnimateNewChatBtn, setShouldAnimateNewChatBtn] = useState(false)
   const [shouldAnimateSendBtn, setShouldAnimateSendBtn] = useState(false)
+  const [copiedMessageIndex, setCopiedMessageIndex] = useState(null)
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
   const textareaRef = useRef(null)
@@ -281,6 +282,18 @@ function ChatPanel({
 
   const handleAttachClick = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleCopyMessage = async (content, index) => {
+    try {
+      await navigator.clipboard.writeText(content)
+      setCopiedMessageIndex(index)
+      setTimeout(() => {
+        setCopiedMessageIndex(null)
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy message:', err)
+    }
   }
 
   const formatFileSize = (bytes) => {
@@ -636,7 +649,25 @@ function ChatPanel({
                     )}
                     {renderAttachments(message.attachments)}
                   </div>
-                  <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
+                  <div className="message-footer">
+                    <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
+                    {message.content && (
+                      <button
+                        className="message-copy-button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleCopyMessage(message.content, index)
+                        }}
+                        title={copiedMessageIndex === index ? "コピーしました！" : "メッセージをコピー"}
+                      >
+                        {copiedMessageIndex === index ? (
+                          <FiCheck size={14} />
+                        ) : (
+                          <FiCopy size={14} />
+                        )}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             )
