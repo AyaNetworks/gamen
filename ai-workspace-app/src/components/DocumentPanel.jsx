@@ -207,6 +207,8 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                     initial={isNewDoc ? newItemVariants.initial : false}
                     animate={isNewDoc ? newItemVariants.animate : { opacity: 1, y: 0, scale: 1 }}
                     exit={newItemVariants.exit}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, doc)}
                   >
                     <div className="document-item-main">
                       <div className="document-item-content" onClick={() => handleItemClick(doc)}>
@@ -216,6 +218,16 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                         <span className="document-name">{doc.name}</span>
                       </div>
                       <div className="document-actions">
+                        <button
+                          className="document-add-to-workspace-button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleAddToScratchpad(doc)
+                          }}
+                          title="Dioneワークスペースに追加"
+                        >
+                          <FiArrowUpLeft size={16} />
+                        </button>
                         <button
                           className="document-download-button"
                           onClick={(e) => {
@@ -298,12 +310,12 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                     </div>
                     <div className="library-item-actions">
                       <button
-                        className="library-add-button"
+                        className="library-add-to-workspace-button"
                         onClick={(e) => {
                           e.stopPropagation()
                           handleAddToScratchpad(lib)
                         }}
-                        title="スクラッチパッドに追加"
+                        title="Dioneワークスペースに追加"
                       >
                         <FiArrowUpLeft size={16} />
                       </button>

@@ -201,6 +201,7 @@
   flex-shrink: 0;
 }
 
+.document-add-to-workspace-button,
 .document-download-button,
 .document-delete-button {
   width: 24px;
@@ -218,15 +219,27 @@
   opacity: 0;
 }
 
+.document-add-to-workspace-button {
+  color: rgba(100, 150, 255, 0.8);
+}
+
 .document-download-button svg,
-.document-delete-button svg {
+.document-delete-button svg,
+.document-add-to-workspace-button svg {
   color: inherit;
   stroke-width: 2;
 }
 
+.document-item:hover .document-add-to-workspace-button,
 .document-item:hover .document-download-button,
 .document-item:hover .document-delete-button {
   opacity: 1;
+}
+
+.document-add-to-workspace-button:hover {
+  background-color: rgba(100, 150, 255, 0.3);
+  color: rgba(100, 150, 255, 1);
+  box-shadow: 0 0 8px rgba(100, 150, 255, 0.3);
 }
 
 .document-download-button:hover {
@@ -319,7 +332,8 @@
   flex-shrink: 0;
 }
 
-.library-add-button {
+.library-add-button,
+.library-add-to-workspace-button {
   width: 24px;
   height: 24px;
   border-radius: 4px;
@@ -336,11 +350,13 @@
   flex-shrink: 0;
 }
 
-.library-item:hover .library-add-button {
+.library-item:hover .library-add-button,
+.library-item:hover .library-add-to-workspace-button {
   opacity: 1;
 }
 
-.library-add-button:hover {
+.library-add-button:hover,
+.library-add-to-workspace-button:hover {
   background-color: rgba(100, 150, 255, 0.3);
   color: rgba(100, 150, 255, 1);
   box-shadow: 0 0 8px rgba(100, 150, 255, 0.3);
@@ -524,11 +540,15 @@
   color: #555;
 }
 
-.light-theme .library-add-button {
+.light-theme .document-add-to-workspace-button,
+.light-theme .library-add-button,
+.light-theme .library-add-to-workspace-button {
   color: rgba(83, 120, 242, 0.8);
 }
 
-.light-theme .library-add-button:hover {
+.light-theme .document-add-to-workspace-button:hover,
+.light-theme .library-add-button:hover,
+.light-theme .library-add-to-workspace-button:hover {
   background-color: rgba(83, 120, 242, 0.2);
   color: rgba(83, 120, 242, 1);
   box-shadow: 0 0 8px rgba(83, 120, 242, 0.3);
