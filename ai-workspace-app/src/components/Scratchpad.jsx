@@ -326,6 +326,108 @@ function Scratchpad({
     }
   }
 
+  const renderFilePreview = () => {
+    if (!currentTab) {
+      return <p style={{ padding: '2rem', color: '#888' }}>*No content to display...*</p>
+    }
+
+    const fileType = currentTab.fileType || 'file/md'
+    const content = currentTab.content || ''
+
+    // PDF files
+    if (fileType === 'application/pdf' || fileType === 'file/pdf') {
+      return (
+        <iframe
+          src={content || currentTab.filePath}
+          className="file-preview-iframe"
+          title={currentTab.title}
+        />
+      )
+    }
+
+    // HTML files
+    if (fileType === 'text/html' || fileType === 'file/html' || fileType === 'file/htm') {
+      return (
+        <iframe
+          srcDoc={content}
+          className="file-preview-iframe"
+          title={currentTab.title}
+          sandbox="allow-same-origin"
+        />
+      )
+    }
+
+    // Image files
+    if (fileType?.startsWith('image/') || ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(fileType?.split('/')[1])) {
+      return (
+        <div className="file-preview-image-container">
+          <img
+            src={content || currentTab.filePath}
+            alt={currentTab.title}
+            className="file-preview-image"
+          />
+        </div>
+      )
+    }
+
+    // CSV files
+    if (fileType === 'text/csv' || fileType === 'file/csv') {
+      try {
+        const rows = content.split('\n').map(row => row.split(','))
+        return (
+          <div className="file-preview-csv">
+            <table className="csv-table">
+              <thead>
+                <tr>
+                  {rows[0]?.map((header, i) => (
+                    <th key={i}>{header}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.slice(1).map((row, i) => (
+                  <tr key={i}>
+                    {row.map((cell, j) => (
+                      <td key={j}>{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      } catch (error) {
+        return <pre className="file-preview-text">{content}</pre>
+      }
+    }
+
+    // Code files (JSON, JavaScript, Python, etc.)
+    const codeExtensions = ['json', 'js', 'jsx', 'ts', 'tsx', 'py', 'java', 'cpp', 'c', 'css', 'scss', 'xml', 'yaml', 'yml']
+    const extension = fileType?.split('/')[1]
+    if (codeExtensions.includes(extension)) {
+      return (
+        <pre className="file-preview-code">
+          <code>{content || '*No content*'}</code>
+        </pre>
+      )
+    }
+
+    // Markdown files (default)
+    if (fileType === 'text/markdown' || fileType === 'file/md' || fileType === 'file/markdown' || !fileType) {
+      return (
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, remarkBreaks]}
+          rehypePlugins={[rehypeHighlight]}
+        >
+          {content || '*Markdown content will appear here...*'}
+        </ReactMarkdown>
+      )
+    }
+
+    // Plain text fallback
+    return <pre className="file-preview-text">{content || '*No content*'}</pre>
+  }
+
   return (
     <div className="scratchpad" onDragOver={handleDragOver} onDrop={handleDrop}>
       {/* Header */}
@@ -450,12 +552,7 @@ function Scratchpad({
                 scaleX: scrollYProgress,
               }}
             />
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm, remarkBreaks]}
-              rehypePlugins={[rehypeHighlight]}
-            >
-              {currentTab?.content || '*Markdown content will appear here...*'}
-            </ReactMarkdown>
+            {renderFilePreview()}
           </div>
         ) : (
           <textarea

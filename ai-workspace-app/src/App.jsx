@@ -66,6 +66,7 @@ function App() {
     }
   ])
   const [currentChatId, setCurrentChatId] = useState(1)
+  const [chatProjects, setChatProjects] = useState([])
   const [scratchpadTabs, setScratchpadTabs] = useState([
     {
       id: 1,
@@ -528,6 +529,40 @@ function App() {
     }
   }
 
+  // Chat Project handlers
+  const handleCreateProject = (projectName) => {
+    const newProject = {
+      id: Date.now(),
+      name: projectName || 'New Project',
+      chatIds: [],
+      createdAt: new Date().toISOString()
+    }
+    setChatProjects([...chatProjects, newProject])
+  }
+
+  const handleDeleteProject = (projectId) => {
+    setChatProjects(chatProjects.filter(p => p.id !== projectId))
+  }
+
+  const handleRenameProject = (projectId, newName) => {
+    setChatProjects(chatProjects.map(p =>
+      p.id === projectId ? { ...p, name: newName } : p
+    ))
+  }
+
+  const handleAddChatToProject = (chatId, projectId) => {
+    setChatProjects(chatProjects.map(p => {
+      if (p.id === projectId && !p.chatIds.includes(chatId)) {
+        return { ...p, chatIds: [...p.chatIds, chatId] }
+      }
+      return p
+    }))
+    // Update chat to include projectId
+    setChatSessions(chatSessions.map(chat =>
+      chat.id === chatId ? { ...chat, projectId } : chat
+    ))
+  }
+
   // Scratchpad handlers
   const handleScratchpadUpdate = (newContent) => {
     setScratchpadTabs(prevTabs =>
@@ -668,6 +703,9 @@ function App() {
       id: Date.now(),
       title: documentData.title,
       content: documentData.content,
+      fileType: documentData.fileType,
+      fileName: documentData.fileName,
+      filePath: documentData.filePath,
       history: [documentData.content],
       historyIndex: 0
     }
@@ -707,6 +745,11 @@ function App() {
             attachedWorkspaces={attachedWorkspaces}
             onRemoveAttachment={(index) => setAttachedWorkspaces(prev => prev.filter((_, i) => i !== index))}
             onClearAllAttachments={() => setAttachedWorkspaces([])}
+            chatProjects={chatProjects}
+            onCreateProject={handleCreateProject}
+            onDeleteProject={handleDeleteProject}
+            onRenameProject={handleRenameProject}
+            onAddChatToProject={handleAddChatToProject}
           />
         </Panel>
         <PanelResizeHandle className="resize-handle" />

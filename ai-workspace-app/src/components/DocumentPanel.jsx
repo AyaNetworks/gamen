@@ -35,19 +35,32 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
 
   const handleAddToScratchpad = (item) => {
     if (onAddToScratchpad) {
+      // Detect file type from name extension or tags
+      const fileExtension = item.name.split('.').pop()?.toLowerCase()
+      const fileType = item.tags?.fileType || `file/${fileExtension}`
+
       onAddToScratchpad({
         title: item.name,
-        content: item.content || ''
+        content: item.content || '',
+        fileType: fileType,
+        fileName: item.name,
+        filePath: item.filePath
       })
     }
   }
 
   const handleDragStart = (e, item) => {
     e.dataTransfer.effectAllowed = 'copy'
+    const fileExtension = item.name.split('.').pop()?.toLowerCase()
+    const fileType = item.tags?.fileType || `file/${fileExtension}`
+
     e.dataTransfer.setData('application/json', JSON.stringify({
       type: 'document',
       title: item.name,
-      content: item.content || ''
+      content: item.content || '',
+      fileType: fileType,
+      fileName: item.name,
+      filePath: item.filePath
     }))
   }
 
