@@ -38,28 +38,26 @@ function Scratchpad({
       ? currentTabId
       : animatingTabId
 
-  // Plus button spin + scale bounce animation
+  // Plus button pulsing glow + scale bounce animation
   const plusButtonVariants = {
     normal: {
-      rotate: 0,
       scale: 1,
       boxShadow: '0 0 10px rgba(100, 108, 255, 0.3)',
       transition: {
-        rotate: { duration: 0 }, // instant return (no reverse spin)
-        scale: { duration: 0.2, ease: 'easeOut' },
-        boxShadow: { duration: 0.2, ease: 'easeOut' },
+        duration: 0.3,
+        ease: 'easeOut',
       },
     },
     animate: {
-      rotate: 360,
-      scale: [1, 1.15, 1],
+      scale: [1, 1.15, 1.05, 1],
       boxShadow: [
         '0 0 10px rgba(100, 108, 255, 0.3)',
-        '0 0 20px rgba(100, 108, 255, 0.7)',
-        '0 0 10px rgba(100, 108, 255, 0.3)',
+        '0 0 30px rgba(100, 108, 255, 1)',
+        '0 0 25px rgba(100, 108, 255, 0.8)',
+        '0 0 15px rgba(100, 108, 255, 0.5)',
       ],
       transition: {
-        duration: 0.35,
+        duration: 0.5,
         ease: 'easeInOut',
       },
     },
