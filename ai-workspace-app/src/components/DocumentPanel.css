@@ -1,10 +1,10 @@
 .document-panel {
   display: flex;
   flex-direction: column;
-  background-color: rgba(36, 36, 36, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-left: 1px solid rgba(100, 108, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-left: 1px solid rgba(100, 108, 255, 0.15);
   height: 100vh;
 }
 
@@ -13,10 +13,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 1.5rem;
-  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
-  background-color: rgba(42, 42, 42, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   height: 64px;
   min-height: 64px;
   flex-shrink: 0;
@@ -91,7 +91,7 @@
 
 .list-header h3 {
   font-size: 0.9rem;
-  color: #888;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -121,29 +121,30 @@
 
 .upload-button-bottom {
   padding: 0.875rem;
-  background-color: rgba(42, 42, 42, 0.3);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  color: rgba(100, 108, 255, 0.6);
-  border: 2px dotted rgba(100, 108, 255, 0.4);
-  border-radius: 6px;
+  background-color: rgba(100, 150, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 2px solid rgba(150, 180, 255, 0.8);
+  border-radius: 8px;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: auto;
   margin-bottom: 0;
   width: 100%;
+  text-shadow: 0 1px 3px rgba(50, 80, 150, 0.5);
 }
 
 .upload-button-bottom:hover {
-  background-color: rgba(42, 42, 42, 0.5);
-  border-color: rgba(100, 108, 255, 0.6);
-  color: rgba(100, 108, 255, 0.8);
-  box-shadow: 0 0 10px rgba(100, 108, 255, 0.2);
+  background-color: rgba(100, 150, 255, 0.6);
+  border-color: rgba(180, 210, 255, 1);
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(30, 50, 120, 0.6);
 }
 
 .document-list {
@@ -162,19 +163,19 @@
 .document-item {
   display: flex;
   flex-direction: column;
-  background-color: rgba(42, 42, 42, 0.5);
+  background-color: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(100, 108, 255, 0.15);
+  border: 1px solid rgba(100, 108, 255, 0.12);
   border-radius: 6px;
   transition: all 0.2s;
   overflow: hidden;
 }
 
 .document-item:hover {
-  background-color: rgba(51, 51, 51, 0.7);
-  border-color: rgba(100, 108, 255, 0.3);
-  box-shadow: 0 0 10px rgba(100, 108, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(100, 108, 255, 0.25);
+  box-shadow: 0 0 8px rgba(100, 108, 255, 0.15);
 }
 
 .document-item-main {
@@ -496,15 +497,54 @@
   background: #555;
 }
 
+/* Dark Theme Styles */
+.dark-theme .panel-header {
+  background-color: rgba(30, 30, 50, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.25);
+}
+
+.dark-theme .list-header h3 {
+  color: #ffffff;
+}
+
+.dark-theme .document-item,
+.dark-theme .library-item {
+  background-color: rgba(50, 50, 80, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(100, 108, 255, 0.25);
+}
+
+.dark-theme .document-item:hover,
+.dark-theme .library-item:hover {
+  background-color: rgba(60, 70, 100, 0.4);
+  border-color: rgba(100, 108, 255, 0.4);
+}
+
+.dark-theme .upload-button-bottom {
+  color: rgba(100, 150, 255, 0.95);
+  border-color: rgba(100, 150, 255, 0.4);
+}
+
+.dark-theme .upload-button-bottom:hover {
+  color: rgba(100, 150, 255, 1);
+}
+
 /* Light Theme Styles */
 .light-theme .document-panel {
-  background-color: rgba(255, 255, 255, 0.75);
-  border-left: 1px solid rgba(100, 108, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-left: 1px solid rgba(100, 108, 255, 0.15);
 }
 
 .light-theme .panel-header {
-  background-color: rgba(240, 245, 255, 0.7);
-  border-bottom: 1px solid rgba(100, 108, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.15);
 }
 
 .light-theme .panel-header h2 {
@@ -517,21 +557,24 @@
 
 .light-theme .portal-link,
 .light-theme .upload-button {
-  background-color: rgba(100, 108, 255, 0.6);
-  border: 1px solid rgba(100, 108, 255, 0.6);
-  color: white;
+  background-color: rgba(83, 120, 242, 0.2);
+  border: 1px solid rgba(83, 120, 242, 0.5);
+  color: rgba(50, 80, 200, 1);
 }
 
 .light-theme .document-item,
 .light-theme .library-item {
-  background-color: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(100, 108, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(100, 108, 255, 0.12);
 }
 
 .light-theme .document-item:hover,
 .light-theme .library-item:hover {
-  background-color: rgba(240, 245, 255, 0.8);
-  border-color: rgba(100, 108, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(100, 108, 255, 0.25);
+  box-shadow: 0 0 8px rgba(100, 108, 255, 0.15);
 }
 
 .light-theme .document-name,
@@ -565,19 +608,40 @@
 }
 
 .light-theme .preview-modal {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .light-theme .preview-content {
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(100, 108, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(100, 108, 255, 0.2);
 }
 
 .light-theme .preview-header {
-  background-color: rgba(240, 245, 255, 0.8);
-  border-bottom: 1px solid rgba(100, 108, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.15);
 }
 
 .light-theme .preview-header h3 {
   color: #333;
+}
+
+.light-theme .upload-button-bottom {
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: rgba(83, 120, 242, 0.8);
+  border: 2px dotted rgba(83, 120, 242, 0.4);
+}
+
+.light-theme .upload-button-bottom:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(83, 120, 242, 0.7);
+  color: rgba(83, 120, 242, 1);
+  box-shadow: 0 0 10px rgba(83, 120, 242, 0.2);
 }

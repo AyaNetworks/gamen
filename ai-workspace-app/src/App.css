@@ -21,7 +21,7 @@
   }
 }
 
-/* Dark Theme - Night Sky Background (Dione Style) */
+/* Dark Theme - Dione Gradient Background */
 .app-container.dark-theme::before {
   content: '';
   position: absolute;
@@ -29,33 +29,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background:
-    /* Vivid Cyan/Turquoise glows - tech panels effect */
-    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(0, 220, 255, 0.35) 0%, rgba(0, 180, 230, 0.22) 40%, rgba(0, 150, 200, 0.08) 65%, transparent 80%),
-    radial-gradient(ellipse 700px 500px at 80% 60%, rgba(0, 240, 255, 0.4) 0%, rgba(0, 200, 240, 0.25) 45%, rgba(0, 160, 210, 0.1) 70%, transparent 85%),
-    radial-gradient(ellipse 500px 350px at 50% 80%, rgba(0, 230, 250, 0.3) 0%, rgba(0, 190, 220, 0.18) 40%, rgba(0, 150, 190, 0.07) 60%, transparent 75%),
-
-    /* Bright teal accents */
-    radial-gradient(ellipse 400px 300px at 70% 20%, rgba(20, 230, 255, 0.25) 0%, rgba(10, 190, 220, 0.15) 35%, transparent 65%),
-    radial-gradient(ellipse 450px 350px at 30% 70%, rgba(10, 210, 240, 0.22) 0%, rgba(5, 170, 200, 0.12) 35%, transparent 60%),
-
-    /* Rich night sky gradient */
-    linear-gradient(180deg,
-      #0d1520 0%,
-      #151d2e 20%,
-      #1d2638 40%,
-      #243041 60%,
-      #2a3849 80%,
-      #304050 100%
-    );
+  background: #114357; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #B87069, #114357); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #B87069, #114357); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background-size: 100% 100%;
   background-position: 0% 0%;
-  animation: tech-glow-drift 100s ease-in-out infinite, theme-fade-in 0.6s ease-out;
+  animation: theme-fade-in 0.6s ease-out;
   z-index: 0;
   pointer-events: none;
 }
 
-/* Stars for dark theme */
+/* Stars for dark theme - disabled for cleaner gradient */
 .app-container.dark-theme::after {
   content: '';
   position: absolute;
@@ -63,21 +47,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image:
-    radial-gradient(circle, white 0%, white 0.5px, transparent 0.5px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 0.4px, transparent 0.4px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 0.3px, transparent 0.3px),
-    radial-gradient(circle, rgba(255, 100, 100, 0.7) 0%, rgba(255, 100, 100, 0.7) 0.4px, transparent 0.4px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 0.4px, transparent 0.4px),
-    radial-gradient(circle, white 0%, white 0.5px, transparent 0.5px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 0.3px, transparent 0.3px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 0.4px, transparent 0.4px);
-  background-size: 100% 100%;
-  background-position: 15% 25%, 85% 70%, 40% 40%, 92% 30%, 60% 85%, 25% 60%, 70% 15%, 50% 50%;
-  background-repeat: no-repeat;
-  animation: stars-twinkle 8s ease-in-out infinite;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 @keyframes tech-glow-drift {
@@ -106,7 +76,7 @@
 
 
 
-/* Light Theme - Day Sky Background (Dione Style) */
+/* Light Theme - Moderate Dione Gradient Background */
 .app-container.light-theme::before {
   content: '';
   position: absolute;
@@ -114,44 +84,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background:
-    /* Bright fluffy white clouds with more contrast */
-    radial-gradient(ellipse 700px 400px at 15% 20%, rgba(255, 255, 255, 1) 0%, rgba(250, 253, 255, 0.95) 25%, rgba(235, 245, 255, 0.75) 50%, rgba(220, 238, 252, 0.4) 65%, transparent 75%),
-    radial-gradient(ellipse 600px 350px at 85% 25%, rgba(255, 255, 255, 0.98) 0%, rgba(245, 252, 255, 0.92) 30%, rgba(230, 245, 255, 0.7) 55%, rgba(215, 235, 250, 0.38) 70%, transparent 80%),
-    radial-gradient(ellipse 500px 300px at 50% 70%, rgba(255, 255, 255, 0.95) 0%, rgba(248, 253, 255, 0.88) 25%, rgba(233, 246, 255, 0.65) 50%, rgba(218, 240, 252, 0.35) 65%, transparent 75%),
-    radial-gradient(ellipse 550px 320px at 30% 60%, rgba(255, 255, 255, 0.9) 0%, rgba(246, 252, 255, 0.82) 28%, rgba(231, 244, 255, 0.6) 52%, rgba(216, 238, 252, 0.32) 68%, transparent 78%),
-
-    /* Vibrant clear blue sky gradient */
-    linear-gradient(180deg,
-      #3B8FC9 0%,
-      #4DA3D8 15%,
-      #60B8E5 30%,
-      #75CCF2 45%,
-      #8BDAF6 60%,
-      #A8E5F9 75%,
-      #C5EEFB 90%,
-      #DDF6FD 100%
-    );
+  background: #ddd6f3; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #d9a8a5, #ddd6f3); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #d9a8a5, #ddd6f3);
   background-size: 100% 100%;
   background-position: 0% 0%;
-  animation: cloud-drift 90s ease-in-out infinite, theme-fade-in 0.6s ease-out;
+  animation: theme-fade-in 0.6s ease-out;
   z-index: 0;
   pointer-events: none;
-}
-
-@keyframes cloud-drift {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(-1%, 1%);
-  }
-  50% {
-    transform: translate(-2%, -1%);
-  }
-  75% {
-    transform: translate(-1%, -1.5%);
-  }
 }
 
 .app-container {
@@ -167,21 +107,20 @@
 
 .resize-handle {
   width: 4px;
-  background-color: rgba(51, 51, 51, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: none;
+  border: none;
   cursor: col-resize;
   transition: all 0.2s;
   position: relative;
 }
 
 .resize-handle:hover {
-  background-color: rgba(100, 108, 255, 0.4);
+  background-color: transparent;
   box-shadow: 0 0 10px rgba(100, 108, 255, 0.4);
 }
 
 .resize-handle:active {
-  background-color: rgba(83, 91, 242, 0.6);
+  background-color: transparent;
   box-shadow: 0 0 15px rgba(100, 108, 255, 0.6);
 }
 
@@ -207,13 +146,13 @@
 
 /* Light Theme Resize Handle */
 .light-theme .resize-handle {
-  background-color: rgba(100, 108, 255, 0.3);
+  background-color: transparent;
 }
 
 .light-theme .resize-handle:hover {
-  background-color: rgba(100, 108, 255, 0.5);
+  background-color: transparent;
 }
 
 .light-theme .resize-handle:active {
-  background-color: rgba(83, 91, 242, 0.7);
+  background-color: transparent;
 }
