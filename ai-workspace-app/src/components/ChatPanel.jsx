@@ -722,7 +722,7 @@ function ChatPanel({
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Dioneと何をしますか？ (Ctrl+Enter で送信、Shift+Enter で改行)"
+              placeholder="Dioneと何をしますか？ (Ctrl+Enter で送信)"
               className="chat-input"
               rows="1"
             />
