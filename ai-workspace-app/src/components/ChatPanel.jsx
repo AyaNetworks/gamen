@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll } from 'framer-motion'
-import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend, FiCopy, FiCheck } from 'react-icons/fi'
+import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend, FiCopy, FiCheck, FiCornerDownLeft, FiX } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
@@ -31,6 +31,8 @@ function ChatPanel({
   const [shouldAnimateNewChatBtn, setShouldAnimateNewChatBtn] = useState(false)
   const [shouldAnimateSendBtn, setShouldAnimateSendBtn] = useState(false)
   const [copiedMessageIndex, setCopiedMessageIndex] = useState(null)
+  const [replyingToIndex, setReplyingToIndex] = useState(null)
+  const [replyingToContent, setReplyingToContent] = useState(null)
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
   const textareaRef = useRef(null)
@@ -226,9 +228,13 @@ function ChatPanel({
     if (inputValue.trim() || attachedFiles.length > 0) {
       setShouldAnimateSendBtn(true)
       setTimeout(() => setShouldAnimateSendBtn(false), 1500)
-      onSendMessage(inputValue, attachedFiles)
+      onSendMessage(inputValue, attachedFiles, {
+        replyingToIndex: replyingToIndex,
+        replyingToContent: replyingToContent
+      })
       setInputValue('')
       setAttachedFiles([])
+      handleClearReply()
     }
   }
 
@@ -292,6 +298,18 @@ function ChatPanel({
     } catch (err) {
       console.error('Failed to copy message:', err)
     }
+  }
+
+  const handleReplyMessage = (content, index) => {
+    setReplyingToIndex(index)
+    setReplyingToContent(content)
+    // Scroll to input and focus
+    textareaRef.current?.focus()
+  }
+
+  const handleClearReply = () => {
+    setReplyingToIndex(null)
+    setReplyingToContent(null)
   }
 
   const formatFileSize = (bytes) => {
@@ -628,6 +646,14 @@ function ChatPanel({
                   />
                 )}
                 <div className="message-content-wrapper">
+                  {/* Reply Context */}
+                  {message.replyingTo && (
+                    <div className="message-reply-context">
+                      <FiCornerDownLeft size={12} className="reply-context-icon" />
+                      <span className="reply-context-label">返信:</span>
+                      <span className="reply-context-preview">{message.replyingTo.substring(0, 60)}{message.replyingTo.length > 60 ? '...' : ''}</span>
+                    </div>
+                  )}
                   <div className="message-bubble">
                     {getMessageLabel(message) && (
                       <div className="message-role">
@@ -650,20 +676,32 @@ function ChatPanel({
                   <div className="message-footer">
                     <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
                     {message.content && (
-                      <button
-                        className="message-copy-button"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleCopyMessage(message.content, index)
-                        }}
-                        title={copiedMessageIndex === index ? "コピーしました！" : "メッセージをコピー"}
-                      >
-                        {copiedMessageIndex === index ? (
-                          <FiCheck size={14} />
-                        ) : (
-                          <FiCopy size={14} />
-                        )}
-                      </button>
+                      <>
+                        <button
+                          className="message-reply-button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleReplyMessage(message.content, index)
+                          }}
+                          title="返信"
+                        >
+                          <FiCornerDownLeft size={14} />
+                        </button>
+                        <button
+                          className="message-copy-button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleCopyMessage(message.content, index)
+                          }}
+                          title={copiedMessageIndex === index ? "コピーしました！" : "メッセージをコピー"}
+                        >
+                          {copiedMessageIndex === index ? (
+                            <FiCheck size={14} />
+                          ) : (
+                            <FiCopy size={14} />
+                          )}
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
@@ -697,6 +735,27 @@ function ChatPanel({
                   </button>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Reply Indicator */}
+          {replyingToIndex !== null && (
+            <div className="reply-indicator">
+              <div className="reply-indicator-content">
+                <FiCornerDownLeft size={16} className="reply-indicator-icon" />
+                <div className="reply-indicator-text">
+                  <span className="reply-label">返信:</span>
+                  <span className="reply-preview">{replyingToContent?.substring(0, 50)}{replyingToContent?.length > 50 ? '...' : ''}</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="reply-clear-button"
+                onClick={handleClearReply}
+                title="返信をキャンセル"
+              >
+                <FiX size={16} />
+              </button>
             </div>
           )}
 

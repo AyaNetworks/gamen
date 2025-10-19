@@ -400,13 +400,18 @@ function App() {
 
   const currentChat = chatSessions.find(chat => chat.id === currentChatId)
 
-  const handleSendMessage = (userMessage, attachments = []) => {
+  const handleSendMessage = (userMessage, attachments = [], replyContext = null) => {
     const updatedSessions = chatSessions.map(chat => {
       if (chat.id === currentChatId) {
         const newMessage = {
           role: 'user',
           content: userMessage,
           timestamp: new Date().toISOString()
+        }
+
+        // Add reply context if replying to a message
+        if (replyContext && replyContext.replyingToContent) {
+          newMessage.replyingTo = replyContext.replyingToContent
         }
 
         // Add attachments if any
