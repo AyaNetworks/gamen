@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll } from 'framer-motion'
-import { FiDownload, FiRotateCcw, FiRotateCw, FiPaperclip, FiX } from 'react-icons/fi'
+import { FiDownload, FiRotateCcw, FiRotateCw, FiPaperclip, FiX, FiEdit2, FiChevronLeft, FiChevronRight, FiEye } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
@@ -434,7 +434,7 @@ function Scratchpad({
       <div className="scratchpad-header">
         <div className="scratchpad-title-section">
           <h2>Dione Workspaces</h2>
-          <span className="scratchpad-subtitle">Dioneと作業するワークスペース</span>
+          <span className="scratchpad-subtitle">An AI driven operational platform.</span>
         </div>
       </div>
 
@@ -581,23 +581,23 @@ function Scratchpad({
                 onClick={handleToggleMode}
                 title={isPreviewMode ? '編集モードに切り替え' : 'プレビューモードに切り替え'}
               >
-                {isPreviewMode ? '✏️' : '👁️'}
+                {isPreviewMode ? <FiEdit2 size={18} /> : <FiEye size={18} />}
               </button>
 
               {/* Directional Buttons */}
               <button
                 className="controller-button controller-top"
                 onClick={() => handleDirectionAction('top')}
-                title="上"
+                title="Dione"
               >
-                ⬆️
+                <img src="/sample_assets/dione/Dione-logo.png" alt="Dione" className="dione-logo-button" />
               </button>
               <button
                 className="controller-button controller-right"
                 onClick={() => handleDirectionAction('right')}
                 title="右"
               >
-                ➡️
+                <FiChevronRight size={24} />
               </button>
               <button
                 className="controller-button controller-bottom"
@@ -611,7 +611,7 @@ function Scratchpad({
                 onClick={() => handleDirectionAction('left')}
                 title="左"
               >
-                ⬅️
+                <FiChevronLeft size={24} />
               </button>
             </div>
           </>
