@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { createPortal } from 'react-dom'
+import Button from './ui/Button'
 import './MessageDetailModal.css'
 
 function MessageDetailModal({ message, onClose, theme }) {
@@ -142,7 +143,13 @@ function MessageDetailModal({ message, onClose, theme }) {
       >
         <div className="modal-header">
           <h2 className="modal-title">{getModalTitle()}</h2>
-          <button className="modal-close-button" onClick={onClose}>×</button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+          >
+            ×
+          </Button>
         </div>
         <div className="modal-body">
           {renderContent()}

@@ -115,6 +115,21 @@
   gap: 0.5rem;
 }
 
+/* Style motion.div wrapper to not interfere with new tab button */
+.scratchpad-tabs > div:last-child {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .scratchpad-tabs:hover ~ .scratchpad-content {
   opacity: 0.15;
 }
@@ -223,31 +238,21 @@
   color: white;
 }
 
-.new-tab-button {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background-color: rgba(100, 108, 255, 0.7);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  color: white;
-  border: 1px solid rgba(100, 108, 255, 0.5);
-  font-size: 1.5rem;
-  font-weight: 300;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  flex-shrink: 0;
-  box-shadow: 0 0 10px rgba(100, 108, 255, 0.3);
-}
-
-.new-tab-button:hover {
-  background-color: rgba(83, 91, 242, 0.8);
-  border-color: rgba(100, 108, 255, 0.8);
-  box-shadow: 0 0 15px rgba(100, 108, 255, 0.5);
+button.radix-button.new-tab-button {
+  width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  min-width: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-radius: 50% !important;
+  font-size: 1.5rem !important;
+  font-weight: 300 !important;
+  flex-shrink: 0 !important;
+  gap: 0 !important;
+  line-height: 1 !important;
 }
 
 /* Editor / Preview Container */
@@ -457,52 +462,54 @@
 }
 
 /* Center Button */
-.controller-center {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(100, 108, 255, 0.8) 0%, rgba(83, 91, 242, 0.9) 100%);
+.circular-controller .controller-center {
+  position: absolute !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.8) 0%, rgba(83, 91, 242, 0.9) 100%) !important;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: white;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 4px 20px rgba(100, 108, 255, 0.6), 0 0 30px rgba(100, 108, 255, 0.3);
-  border: 2px solid rgba(100, 108, 255, 0.5);
+  color: white !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  box-shadow: 0 4px 20px rgba(100, 108, 255, 0.6), 0 0 30px rgba(100, 108, 255, 0.3) !important;
+  border: 2px solid rgba(100, 108, 255, 0.5) !important;
   z-index: 3;
-  font-size: 14px;
+  font-size: 14px !important;
   line-height: 1;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  padding: 0 !important;
 }
 
-.controller-center:hover {
-  background: linear-gradient(135deg, rgba(83, 91, 242, 0.9) 0%, rgba(66, 71, 217, 1) 100%);
-  box-shadow: 0 6px 25px rgba(100, 108, 255, 0.8), 0 0 40px rgba(100, 108, 255, 0.5);
-  border-color: rgba(100, 108, 255, 0.8);
-  transform: translate(-50%, -50%) scale(1.15);
+.circular-controller .controller-center:hover {
+  background: linear-gradient(135deg, rgba(83, 91, 242, 0.9) 0%, rgba(66, 71, 217, 1) 100%) !important;
+  box-shadow: 0 6px 25px rgba(100, 108, 255, 0.8), 0 0 40px rgba(100, 108, 255, 0.5) !important;
+  border-color: rgba(100, 108, 255, 0.8) !important;
+  transform: translate(-50%, -50%) scale(1.15) !important;
 }
 
 /* Directional Buttons - Baumkuchen style */
-.controller-button {
-  width: 70px;
-  height: 70px;
-  background-color: rgba(42, 42, 42, 0.7);
+.circular-controller .controller-button {
+  position: absolute !important;
+  width: 70px !important;
+  height: 70px !important;
+  background-color: rgba(42, 42, 42, 0.7) !important;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #ddd;
-  border: 2px solid rgba(100, 108, 255, 0.4);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(100, 108, 255, 0.2);
+  color: #ddd !important;
+  border: 2px solid rgba(100, 108, 255, 0.4) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(100, 108, 255, 0.2) !important;
 }
 
-.controller-button:hover {
-  background-color: rgba(100, 108, 255, 0.7);
-  color: white;
-  border-color: rgba(100, 108, 255, 0.8);
-  box-shadow: 0 4px 15px rgba(100, 108, 255, 0.5), 0 0 25px rgba(100, 108, 255, 0.4);
+.circular-controller .controller-button:hover {
+  background-color: rgba(100, 108, 255, 0.7) !important;
+  color: white !important;
+  border-color: rgba(100, 108, 255, 0.8) !important;
+  box-shadow: 0 4px 15px rgba(100, 108, 255, 0.5), 0 0 25px rgba(100, 108, 255, 0.4) !important;
 }
 
 /* Dione Logo Button */
@@ -523,11 +530,13 @@
 }
 
 /* Top Button - Arc slice shape */
-.controller-top {
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+.circular-controller .controller-top {
+  left: 50% !important;
+  top: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0 !important;
   clip-path: ellipse(45% 48% at 50% 55%);
   background-color: #000000 !important;
   border-color: #000000 !important;
@@ -535,29 +544,35 @@
 }
 
 /* Right Button - Arc slice shape */
-.controller-right {
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 0 50% 50% 0 / 0 100% 100% 0;
+.circular-controller .controller-right {
+  right: 0 !important;
+  top: 50% !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  border-radius: 0 50% 50% 0 / 0 100% 100% 0 !important;
   clip-path: ellipse(48% 45% at 45% 50%);
 }
 
 /* Bottom Button - Arc slice shape */
-.controller-bottom {
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  border-radius: 0 0 50% 50% / 0 0 100% 100%;
-  clip-path: ellipse(45% 48% at 50% 45%);
+.circular-controller .controller-bottom {
+  left: 50% !important;
+  bottom: 0 !important;
+  right: auto !important;
+  top: auto !important;
+  transform: translateX(-50%) !important;
+  border-radius: 50% !important;
+  clip-path: none !important;
 }
 
 /* Left Button - Arc slice shape */
-.controller-left {
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 50% 0 0 50% / 100% 0 0 100%;
+.circular-controller .controller-left {
+  left: 0 !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  border-radius: 50% 0 0 50% / 100% 0 0 100% !important;
   clip-path: ellipse(48% 45% at 55% 50%);
 }
 
@@ -956,8 +971,7 @@
   color: #333;
 }
 
-.light-theme .version-button,
-.light-theme .new-tab-button {
+.light-theme .version-button {
   background-color: rgba(100, 108, 255, 0.8);
   border: 2px solid rgba(100, 108, 255, 0.8);
   color: white;
@@ -968,6 +982,8 @@
   border-color: rgba(83, 91, 242, 1);
   box-shadow: 0 0 15px rgba(100, 108, 255, 0.4);
 }
+
+/* Light theme tab button override removed - now using Radix variants */
 
 .light-theme .version-button svg {
   color: white;

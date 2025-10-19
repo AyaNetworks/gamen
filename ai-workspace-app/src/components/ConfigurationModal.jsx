@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { createPortal } from 'react-dom'
+import Button from './ui/Button'
 import './ConfigurationModal.css'
 
 function ConfigurationModal({ configType, onClose, theme }) {
@@ -183,15 +184,19 @@ function ConfigurationModal({ configType, onClose, theme }) {
       >
         <div className="config-modal-header">
           <h2 className="config-modal-title">{getModalTitle()}</h2>
-          <button className="config-modal-close-button" onClick={onClose}>×</button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+          >
+            ×
+          </Button>
         </div>
 
         <div className="config-modal-tabs">
           {tabs.map((tab, index) => (
-            <motion.button
+            <motion.div
               key={tab.id}
-              className={`config-tab ${activeTab === index ? 'active' : ''}`}
-              onClick={() => setActiveTab(index)}
               initial={false}
               animate={{
                 backgroundColor:
@@ -201,7 +206,14 @@ function ConfigurationModal({ configType, onClose, theme }) {
               }}
               transition={{ duration: 0.2 }}
             >
-              {tab.name}
+              <Button
+                variant="tab"
+                onClick={() => setActiveTab(index)}
+                className={activeTab === index ? 'active' : ''}
+                animated={false}
+              >
+                {tab.name}
+              </Button>
               {activeTab === index && (
                 <motion.div
                   className="config-tab-underline"
@@ -213,7 +225,7 @@ function ConfigurationModal({ configType, onClose, theme }) {
                   }}
                 />
               )}
-            </motion.button>
+            </motion.div>
           ))}
         </div>
 

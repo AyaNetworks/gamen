@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiShare2, FiCopy, FiCheck, FiLock, FiX } from 'react-icons/fi'
+import Button from './ui/Button'
 import './PublishNotification.css'
 
 function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
@@ -101,13 +102,14 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                     </motion.div>
                   </div>
                   <div className="notification-title">ドキュメントを共有中</div>
-                  <button
-                    className="notification-close"
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={onClose}
                     title="閉じる"
                   >
                     <FiX size={18} />
-                  </button>
+                  </Button>
                 </div>
 
                 <motion.div
@@ -127,27 +129,32 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                       value={shareUrl}
                       readOnly
                     />
-                    <motion.button
-                      className="copy-url-button"
-                      onClick={handleCopyUrl}
+                    <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      title={copied ? 'コピーしました！' : 'URLをコピー'}
                     >
-                      <motion.div
-                        key={copied ? 'check' : 'copy'}
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.2 }}
+                      <Button
+                        variant="action"
+                        size="md"
+                        onClick={handleCopyUrl}
+                        title={copied ? 'コピーしました！' : 'URLをコピー'}
+                        animated={false}
                       >
-                        {copied ? (
-                          <FiCheck size={18} />
-                        ) : (
-                          <FiCopy size={18} />
-                        )}
-                      </motion.div>
-                    </motion.button>
+                        <motion.div
+                          key={copied ? 'check' : 'copy'}
+                          initial={{ opacity: 0, scale: 0.5 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.5 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          {copied ? (
+                            <FiCheck size={18} />
+                          ) : (
+                            <FiCopy size={18} />
+                          )}
+                        </motion.div>
+                      </Button>
+                    </motion.div>
                   </div>
                 </motion.div>
               </>
@@ -165,13 +172,14 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                     </motion.div>
                   </div>
                   <div className="notification-title">非公開に設定</div>
-                  <button
-                    className="notification-close"
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={onClose}
                     title="閉じる"
                   >
                     <FiX size={18} />
-                  </button>
+                  </Button>
                 </div>
 
                 <motion.div

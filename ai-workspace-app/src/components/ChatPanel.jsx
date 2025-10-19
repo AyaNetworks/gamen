@@ -8,6 +8,7 @@ import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/github-dark.css'
 import MessageDetailModal from './MessageDetailModal'
 import ConfigurationModal from './ConfigurationModal'
+import Button from './ui/Button'
 import './ChatPanel.css'
 
 function ChatPanel({
@@ -239,8 +240,8 @@ function ChatPanel({
   const handleSubmit = (e) => {
     e.preventDefault()
     if (inputValue.trim() || attachedFiles.length > 0 || attachedWorkspaces.length > 0) {
+      // Trigger paper plane animation
       setShouldAnimateSendBtn(true)
-      setTimeout(() => setShouldAnimateSendBtn(false), 1500)
       onSendMessage(inputValue, attachedFiles, {
         replyingToIndex: replyingToIndex,
         replyingToContent: replyingToContent,
@@ -578,29 +579,40 @@ function ChatPanel({
         <div className="chat-history-header">
           <h3>チャット履歴</h3>
           <div className="chat-history-header-buttons">
-            <motion.button
-              className="project-toggle-button"
-              onClick={() => setShowProjectInput(!showProjectInput)}
-              title={showProjectInput ? 'プロジェクト作成をキャンセル' : '新しいプロジェクトを作成'}
+            <motion.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <FiFolder size={20} />
-            </motion.button>
-            <motion.button
-              className="new-chat-button"
-              onClick={() => {
-                setShouldAnimateNewChatBtn(true)
-                onNewChat()
-              }}
-              title="新しいチャット"
+              <Button
+                variant="surface"
+                size="md"
+                onClick={() => setShowProjectInput(!showProjectInput)}
+                title={showProjectInput ? 'プロジェクト作成をキャンセル' : '新しいプロジェクトを作成'}
+                className="project-toggle-button"
+              >
+                <FiFolder size={20} />
+              </Button>
+            </motion.div>
+            <motion.div
               variants={plusButtonVariants}
               initial="normal"
               animate={shouldAnimateNewChatBtn ? 'animate' : 'normal'}
               onAnimationComplete={() => setShouldAnimateNewChatBtn(false)}
             >
-              +
-            </motion.button>
+              <Button
+                variant="surface"
+                size="md"
+                onClick={() => {
+                  setShouldAnimateNewChatBtn(true)
+                  onNewChat()
+                }}
+                title="新しいチャット"
+                animated={false}
+                className="new-chat-button"
+              >
+                +
+              </Button>
+            </motion.div>
           </div>
         </div>
         <motion.div className="chat-history-list" layout>
@@ -622,13 +634,14 @@ function ChatPanel({
                 className="project-name-input"
                 autoFocus
               />
-              <button
-                className="project-submit-button"
+              <Button
+                variant="surface"
+                size="md"
                 onClick={handleCreateProjectSubmit}
                 title="プロジェクトを作成"
               >
                 ✓
-              </button>
+              </Button>
             </div>
           )}
 
@@ -682,16 +695,18 @@ function ChatPanel({
                                 <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
                               </div>
                             </div>
-                            <button
-                              className="chat-delete-button"
+                            <Button
+                              variant="destructive"
+                              size="sm"
                               onClick={(e) => {
                                 e.stopPropagation()
                                 onDeleteChat(chat.id)
                               }}
                               title="削除"
+                              className="chat-delete-button"
                             >
                               ×
-                            </button>
+                            </Button>
                           </motion.div>
                         )
                       })}
@@ -747,16 +762,18 @@ function ChatPanel({
                       <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
                     </div>
                   </div>
-                  <button
-                    className="chat-delete-button"
+                  <Button
+                    variant="destructive"
+                    size="sm"
                     onClick={(e) => {
                       e.stopPropagation()
                       onDeleteChat(chat.id)
                     }}
                     title="削除"
+                    className="chat-delete-button"
                   >
                     ×
-                  </button>
+                  </Button>
                 </motion.div>
               )
             })}
@@ -769,44 +786,49 @@ function ChatPanel({
         <div className="chat-header">
           <h2>チャット</h2>
           <div className="chat-header-buttons">
-            <button
-              className="config-button dione-config-button"
+            <Button
+              variant="surface"
+              size="md"
               onClick={() => setOpenConfigModal('dione')}
               title="Dione設定"
             >
               <FiUser size={20} />
-            </button>
-            <button
-              className="config-button tool-config-button"
+            </Button>
+            <Button
+              variant="surface"
+              size="md"
               onClick={() => setOpenConfigModal('tool')}
               title="ツール設定"
             >
               <FiStar size={20} />
-            </button>
-            <button
-              className="config-button task-config-button"
+            </Button>
+            <Button
+              variant="surface"
+              size="md"
               onClick={() => setOpenConfigModal('task')}
               title="タスク設定"
             >
               <FiCheckSquare size={20} />
-            </button>
-            <motion.button
-              className="theme-toggle-button"
+            </Button>
+            <Button
+              variant="surface"
+              size="md"
               onClick={onToggleTheme}
               title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              animated={false}
             >
-              <motion.div
-                key={theme}
-                initial={{ opacity: 0, rotate: -180 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                exit={{ opacity: 0, rotate: 180 }}
-                transition={{ duration: 0.4 }}
-              >
-                {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
-              </motion.div>
-            </motion.button>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={theme}
+                  initial={{ opacity: 0, rotate: -180 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 180 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
+                </motion.div>
+              </AnimatePresence>
+            </Button>
           </div>
         </div>
 
@@ -882,8 +904,9 @@ function ChatPanel({
                     <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
                     {message.content && (
                       <>
-                        <button
-                          className="message-reply-button"
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
                             handleReplyMessage(message.content, index)
@@ -891,9 +914,10 @@ function ChatPanel({
                           title="返信"
                         >
                           <FiCornerDownLeft size={14} />
-                        </button>
-                        <button
-                          className="message-copy-button"
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
                             handleCopyMessage(message.content, index)
@@ -905,7 +929,7 @@ function ChatPanel({
                           ) : (
                             <FiCopy size={14} />
                           )}
-                        </button>
+                        </Button>
                       </>
                     )}
                   </div>
@@ -930,14 +954,15 @@ function ChatPanel({
                     <div className="attached-file-name">{file.name}</div>
                     <div className="attached-file-size">{formatFileSize(file.size)}</div>
                   </div>
-                  <button
+                  <Button
                     type="button"
-                    className="attached-file-remove"
+                    variant="destructive"
+                    size="sm"
                     onClick={() => handleRemoveFile(index)}
                     title="削除"
                   >
                     ×
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -953,14 +978,15 @@ function ChatPanel({
                   <span className="reply-preview">{replyingToContent?.substring(0, 50)}{replyingToContent?.length > 50 ? '...' : ''}</span>
                 </div>
               </div>
-              <button
+              <Button
                 type="button"
-                className="reply-clear-button"
+                variant="ghost"
+                size="sm"
                 onClick={handleClearReply}
                 title="返信をキャンセル"
               >
                 <FiX size={16} />
-              </button>
+              </Button>
             </div>
           )}
 
@@ -976,14 +1002,15 @@ function ChatPanel({
                       <span className="attachment-name">{workspace.title}</span>
                     </div>
                   </div>
-                  <button
+                  <Button
                     type="button"
-                    className="attachment-clear-button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => onRemoveAttachment(index)}
                     title="この添付をキャンセル"
                   >
                     <FiX size={16} />
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -998,14 +1025,15 @@ function ChatPanel({
               accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar"
               style={{ display: 'none' }}
             />
-            <button
+            <Button
               type="button"
-              className="chat-attach-button"
+              variant="soft"
+              size="md"
               onClick={handleAttachClick}
               title="ファイルを添付"
             >
               <FiPaperclip size={20} />
-            </button>
+            </Button>
             <textarea
               ref={textareaRef}
               value={inputValue}
@@ -1015,16 +1043,22 @@ function ChatPanel({
               className="chat-input"
               rows="1"
             />
-            <button type="submit" className="chat-send-button">
+            <Button
+              type="submit"
+              variant="soft"
+              size="md"
+              animated={false}
+            >
               <motion.div
                 variants={planeIconVariants}
                 initial="normal"
                 animate={shouldAnimateSendBtn ? 'launch' : 'normal'}
+                onAnimationComplete={() => setShouldAnimateSendBtn(false)}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <FiSend size={20} />
               </motion.div>
-            </button>
+            </Button>
           </div>
         </form>
       </div>

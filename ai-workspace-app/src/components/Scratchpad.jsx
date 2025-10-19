@@ -8,6 +8,7 @@ import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/github-dark.css'
 import StatsPanel from './StatsPanel'
 import PublishNotification from './PublishNotification'
+import Button from './ui/Button'
 import './Scratchpad.css'
 
 function Scratchpad({
@@ -480,8 +481,9 @@ function Scratchpad({
                         {tab.title}
                       </span>
                       {tabs.length > 1 && (
-                        <button
-                          className="tab-close"
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
                             onCloseTab(tab.id)
@@ -489,7 +491,7 @@ function Scratchpad({
                           title="閉じる"
                         >
                           ×
-                        </button>
+                        </Button>
                       )}
                     </>
                   )}
@@ -498,49 +500,58 @@ function Scratchpad({
             })}
           </AnimatePresence>
         </div>
-        <motion.button
-          className="new-tab-button"
-          onClick={() => {
-            setShouldAnimateNewTabBtn(true)
-            onNewTab()
-          }}
-          title="新しいタブ"
+        <motion.div
           variants={plusButtonVariants}
           initial="normal"
           animate={shouldAnimateNewTabBtn ? 'animate' : 'normal'}
           onAnimationComplete={() => setShouldAnimateNewTabBtn(false)}
         >
-          +
-        </motion.button>
+          <Button
+            variant="surface"
+            size="md"
+            onClick={() => {
+              setShouldAnimateNewTabBtn(true)
+              onNewTab()
+            }}
+            title="新しいタブ"
+            animated={false}
+            className="new-tab-button"
+          >
+            +
+          </Button>
+        </motion.div>
       </div>
 
       {/* Editor / Preview */}
       <div className="scratchpad-content" ref={editorRef}>
         {/* Version Control Inside Content */}
         <div className="version-control-inline">
-          <button
-            className={`version-button ${!canUndo ? 'disabled' : ''}`}
+          <Button
+            variant="ghost"
+            size="md"
             onClick={onUndo}
             disabled={!canUndo}
             title="元に戻す (Undo)"
           >
             <FiRotateCcw size={18} />
-          </button>
-          <button
-            className={`version-button ${!canRedo ? 'disabled' : ''}`}
+          </Button>
+          <Button
+            variant="ghost"
+            size="md"
             onClick={onRedo}
             disabled={!canRedo}
             title="やり直す (Redo)"
           >
             <FiRotateCw size={18} />
-          </button>
-          <button
-            className="version-button download-button"
+          </Button>
+          <Button
+            variant="surface"
+            size="md"
             onClick={handleDownload}
             title="ダウンロード (Download)"
           >
             <FiDownload size={18} />
-          </button>
+          </Button>
         </div>
 
         {isPreviewMode ? (
@@ -576,43 +587,48 @@ function Scratchpad({
               }}
             >
               {/* Center Button */}
-              <button
-                className="controller-center"
+              <Button
+                variant="circular-center"
                 onClick={handleToggleMode}
                 title={isPreviewMode ? '編集モードに切り替え' : 'プレビューモードに切り替え'}
+                className="controller-center"
               >
                 {isPreviewMode ? <FiEdit2 size={18} /> : <FiEye size={18} />}
-              </button>
+              </Button>
 
               {/* Directional Buttons */}
-              <button
-                className="controller-button controller-top"
+              <Button
+                variant="circular"
                 onClick={() => handleDirectionAction('top')}
                 title="Dione"
+                className="controller-button controller-top"
               >
                 <img src="/sample_assets/dione/Dione-logo.png" alt="Dione" className="dione-logo-button" />
-              </button>
-              <button
-                className="controller-button controller-right"
+              </Button>
+              <Button
+                variant="circular"
                 onClick={() => handleDirectionAction('right')}
                 title="右"
+                className="controller-button controller-right"
               >
                 <FiChevronRight size={24} />
-              </button>
-              <button
-                className="controller-button controller-bottom"
+              </Button>
+              <Button
+                variant="circular"
                 onClick={() => handleDirectionAction('bottom')}
                 title="ドキュメントを添付"
+                className="controller-button controller-bottom"
               >
-                <FiPaperclip size={18} />
-              </button>
-              <button
-                className="controller-button controller-left"
+                <FiPaperclip size={24} />
+              </Button>
+              <Button
+                variant="circular"
                 onClick={() => handleDirectionAction('left')}
                 title="左"
+                className="controller-button controller-left"
               >
                 <FiChevronLeft size={24} />
-              </button>
+              </Button>
             </div>
           </>
         )}

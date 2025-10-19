@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import { FiFileText, FiShare2, FiHeart, FiEye, FiLock } from 'react-icons/fi'
+import Button from './ui/Button'
 import './StatsPanel.css'
 
 function StatsPanel({ content = '', isPublished = false, onPublishToggle = null, tabId = null }) {
@@ -168,48 +169,58 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
         <div className="stat-divider" />
 
         {/* Publish State Toggle */}
-        <motion.button
-          className={`publish-toggle ${isPublishedState ? 'published' : 'private'}`}
-          onClick={handlePublishToggle}
-          title={isPublishedState ? '非公開にする' : '共有を開始する'}
+        <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <motion.div
-            className="publish-icon"
-            key={isPublishedState ? 'share' : 'lock'}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.2 }}
+          <Button
+            variant="toggle"
+            onClick={handlePublishToggle}
+            title={isPublishedState ? '非公開にする' : '共有を開始する'}
+            animated={false}
+            className={isPublishedState ? 'published' : 'private'}
           >
-            {isPublishedState ? <FiShare2 size={16} /> : <FiLock size={16} />}
-          </motion.div>
-          <span className="publish-label">
-            {isPublishedState ? '共有中' : '非公開'}
-          </span>
-        </motion.button>
+            <motion.div
+              className="publish-icon"
+              key={isPublishedState ? 'share' : 'lock'}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.2 }}
+            >
+              {isPublishedState ? <FiShare2 size={16} /> : <FiLock size={16} />}
+            </motion.div>
+            <span className="publish-label">
+              {isPublishedState ? '共有中' : '非公開'}
+            </span>
+          </Button>
+        </motion.div>
 
         {/* Likes Count - Interactive */}
-        <motion.button
-          className={`stat-item like-button ${isLiked ? 'liked' : ''}`}
-          onClick={handleLikeToggle}
-          title={isLiked ? 'いいねを削除' : 'いいねする'}
+        <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <motion.div
-            initial={{ scale: 1 }}
-            animate={{ scale: likeScale }}
-            transition={{ duration: 0.1 }}
+          <Button
+            variant="toggle"
+            onClick={handleLikeToggle}
+            title={isLiked ? 'いいねを削除' : 'いいねする'}
+            animated={false}
+            className={isLiked ? 'liked' : ''}
           >
-            <FiHeart size={16} className={`stat-icon ${isLiked ? 'liked-heart' : ''}`} />
-          </motion.div>
-          <span className="stat-label">いいね</span>
-          <motion.span className="stat-value">
-            {animatedLikes}
-          </motion.span>
-        </motion.button>
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: likeScale }}
+              transition={{ duration: 0.1 }}
+            >
+              <FiHeart size={16} className={`stat-icon ${isLiked ? 'liked-heart' : ''}`} />
+            </motion.div>
+            <span className="stat-label">いいね</span>
+            <motion.span className="stat-value">
+              {animatedLikes}
+            </motion.span>
+          </Button>
+        </motion.div>
 
         {/* Impressions Count */}
         <div className="stat-item">

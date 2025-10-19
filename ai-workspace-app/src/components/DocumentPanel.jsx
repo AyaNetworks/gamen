@@ -4,6 +4,7 @@ import { BiLinkExternal } from 'react-icons/bi'
 import { FiDownload, FiArrowUpLeft } from 'react-icons/fi'
 import FilePreview from './FilePreview'
 import { getFileIcon } from '../utils/fileTypeDetector'
+import Button from './ui/Button'
 import './DocumentPanel.css'
 
 function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary, onDeleteDocument, onAddToScratchpad }) {
@@ -231,8 +232,9 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                         <span className="document-name">{doc.name}</span>
                       </div>
                       <div className="document-actions">
-                        <button
-                          className="document-add-to-workspace-button"
+                        <Button
+                          variant="icon"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
                             handleAddToScratchpad(doc)
@@ -240,9 +242,10 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                           title="Dioneワークスペースに追加"
                         >
                           <FiArrowUpLeft size={16} />
-                        </button>
-                        <button
-                          className="document-download-button"
+                        </Button>
+                        <Button
+                          variant="icon"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
                             // ダウンロード機能
@@ -259,9 +262,10 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                           title="ダウンロード"
                         >
                           <FiDownload size={18} />
-                        </button>
-                        <button
-                          className="document-delete-button"
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
                             onDeleteDocument(doc.id)
@@ -269,7 +273,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                           title="削除"
                         >
                           ×
-                        </button>
+                        </Button>
                       </div>
                     </div>
                     <div className="document-item-details">
@@ -322,8 +326,9 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                       <span className="library-name">{lib.name}</span>
                     </div>
                     <div className="library-item-actions">
-                      <button
-                        className="library-add-to-workspace-button"
+                      <Button
+                        variant="icon"
+                        size="sm"
                         onClick={(e) => {
                           e.stopPropagation()
                           handleAddToScratchpad(lib)
@@ -331,9 +336,10 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                         title="Dioneワークスペースに追加"
                       >
                         <FiArrowUpLeft size={16} />
-                      </button>
-                      <button
-                        className="library-delete-button"
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
                         onClick={(e) => {
                           e.stopPropagation()
                           onDeleteLibrary(lib.id)
@@ -341,19 +347,26 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                         title="削除"
                       >
                         ×
-                      </button>
+                      </Button>
                     </div>
                   </motion.div>
                 )
               })}
             </AnimatePresence>
-            <label className="upload-button-bottom">
+            <label className="upload-button-bottom" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
               <input
                 type="file"
                 onChange={handleFileUpload}
                 style={{ display: 'none' }}
               />
-              +
+              <Button
+                variant="upload"
+                size="lg"
+                onClick={(e) => e.target.closest('label').querySelector('input[type="file"]').click()}
+                style={{ width: '100%' }}
+              >
+                +
+              </Button>
             </label>
           </motion.div>
         </div>
@@ -364,7 +377,13 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
           <div className="preview-content" onClick={(e) => e.stopPropagation()}>
             <div className="preview-header">
               <h3>{selectedItem.name}</h3>
-              <button className="close-button" onClick={closePreview}>×</button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={closePreview}
+              >
+                ×
+              </Button>
             </div>
             <div className="preview-body">
               <FilePreview item={selectedItem} />
