@@ -434,7 +434,7 @@ function Scratchpad({
       <div className="scratchpad-header">
         <div className="scratchpad-title-section">
           <h2>Dione Workspaces</h2>
-          <span className="scratchpad-subtitle">An AI driven operational platform.</span>
+          <span className="scratchpad-subtitle">An AI driven operational platform by Eisuke Izawa.</span>
         </div>
       </div>
 
