@@ -505,6 +505,54 @@
   flex: 1;
 }
 
+/* Message Attachments Contexts Container */
+.message-attachments-contexts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Message Attachment Context */
+.message-attachment-context {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(100, 108, 255, 0.08);
+  border-left: 2px solid rgba(100, 108, 255, 0.5);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.attachment-context-icon {
+  color: rgba(100, 108, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.attachment-context-label {
+  font-weight: 600;
+  color: rgba(100, 108, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+}
+
+.attachment-context-name {
+  color: rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  min-width: 0;
+  flex: 1;
+}
+
 .message-footer {
   display: flex;
   align-items: center;
@@ -811,6 +859,90 @@
 }
 
 .reply-clear-button:active {
+  transform: scale(0.95);
+}
+
+/* Attachments Indicators Container */
+.attachments-indicators-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0 1rem 0.5rem 1rem;
+}
+
+/* Attachment Indicator */
+.attachment-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: rgba(100, 108, 255, 0.1);
+  border-left: 3px solid rgba(100, 108, 255, 0.6);
+  border-radius: 6px;
+  gap: 0.5rem;
+}
+
+.attachment-indicator-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.attachment-indicator-icon {
+  color: rgba(100, 108, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.attachment-indicator-text {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.attachment-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(100, 108, 255, 1);
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.attachment-name {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.attachment-clear-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: rgba(100, 108, 255, 0.1);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  color: rgba(100, 108, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.attachment-clear-button:hover {
+  background-color: rgba(100, 108, 255, 0.25);
+  border-color: rgba(100, 108, 255, 0.5);
+  color: rgba(100, 108, 255, 1);
+}
+
+.attachment-clear-button:active {
   transform: scale(0.95);
 }
 
@@ -1427,6 +1559,24 @@
   color: rgba(51, 51, 51, 0.8);
 }
 
+/* Light theme message attachment context */
+.light-theme .message-attachment-context {
+  background-color: rgba(100, 108, 255, 0.12);
+  border-left-color: rgba(83, 120, 242, 0.6);
+}
+
+.light-theme .attachment-context-icon {
+  color: rgba(83, 120, 242, 0.8);
+}
+
+.light-theme .attachment-context-label {
+  color: rgba(83, 120, 242, 1);
+}
+
+.light-theme .attachment-context-name {
+  color: rgba(51, 51, 51, 0.8);
+}
+
 /* Light theme reply indicator */
 .light-theme .reply-indicator {
   background-color: rgba(100, 150, 255, 0.15);
@@ -1455,4 +1605,34 @@
   background-color: rgba(255, 100, 100, 0.25);
   border-color: rgba(255, 100, 100, 0.5);
   color: rgba(220, 50, 50, 1);
+}
+
+/* Light Theme Attachment Indicator */
+.light-theme .attachment-indicator {
+  background-color: rgba(100, 108, 255, 0.15);
+  border-left-color: rgba(83, 120, 242, 0.7);
+}
+
+.light-theme .attachment-indicator-icon {
+  color: rgba(83, 120, 242, 0.9);
+}
+
+.light-theme .attachment-label {
+  color: rgba(83, 120, 242, 1);
+}
+
+.light-theme .attachment-name {
+  color: rgba(51, 51, 51, 0.85);
+}
+
+.light-theme .attachment-clear-button {
+  background-color: rgba(100, 108, 255, 0.12);
+  border-color: rgba(100, 108, 255, 0.3);
+  color: rgba(83, 120, 242, 0.8);
+}
+
+.light-theme .attachment-clear-button:hover {
+  background-color: rgba(100, 108, 255, 0.25);
+  border-color: rgba(100, 108, 255, 0.5);
+  color: rgba(83, 120, 242, 1);
 }

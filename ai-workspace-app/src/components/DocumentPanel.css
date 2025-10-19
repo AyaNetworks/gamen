@@ -312,6 +312,40 @@
   min-width: 0;
 }
 
+.library-item-actions {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.library-add-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: none;
+  border: none;
+  color: rgba(100, 150, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  flex-shrink: 0;
+}
+
+.library-item:hover .library-add-button {
+  opacity: 1;
+}
+
+.library-add-button:hover {
+  background-color: rgba(100, 150, 255, 0.3);
+  color: rgba(100, 150, 255, 1);
+  box-shadow: 0 0 8px rgba(100, 150, 255, 0.3);
+}
+
 .library-delete-button {
   width: 24px;
   height: 24px;
@@ -488,6 +522,16 @@
 .light-theme .library-name,
 .light-theme .document-filepath {
   color: #555;
+}
+
+.light-theme .library-add-button {
+  color: rgba(83, 120, 242, 0.8);
+}
+
+.light-theme .library-add-button:hover {
+  background-color: rgba(83, 120, 242, 0.2);
+  color: rgba(83, 120, 242, 1);
+  box-shadow: 0 0 8px rgba(83, 120, 242, 0.3);
 }
 
 .light-theme .detail-label {

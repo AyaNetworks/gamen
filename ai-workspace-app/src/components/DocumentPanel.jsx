@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BiLinkExternal } from 'react-icons/bi'
-import { FiDownload } from 'react-icons/fi'
+import { FiDownload, FiArrowUpLeft } from 'react-icons/fi'
 import FilePreview from './FilePreview'
 import { getFileIcon } from '../utils/fileTypeDetector'
 import './DocumentPanel.css'
 
-function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary, onDeleteDocument }) {
+function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary, onDeleteDocument, onAddToScratchpad }) {
   const [selectedItem, setSelectedItem] = useState(null)
   const [showPreview, setShowPreview] = useState(false)
   const [prevDocCount, setPrevDocCount] = useState(0)
@@ -31,6 +31,24 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
   const closePreview = () => {
     setShowPreview(false)
     setSelectedItem(null)
+  }
+
+  const handleAddToScratchpad = (item) => {
+    if (onAddToScratchpad) {
+      onAddToScratchpad({
+        title: item.name,
+        content: item.content || ''
+      })
+    }
+  }
+
+  const handleDragStart = (e, item) => {
+    e.dataTransfer.effectAllowed = 'copy'
+    e.dataTransfer.setData('application/json', JSON.stringify({
+      type: 'document',
+      title: item.name,
+      content: item.content || ''
+    }))
   }
 
   // Detect new documents and libraries
@@ -269,6 +287,8 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                     initial={isNewLib ? newItemVariants.initial : false}
                     animate={isNewLib ? newItemVariants.animate : { opacity: 1, y: 0, scale: 1 }}
                     exit={newItemVariants.exit}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, lib)}
                   >
                     <div className="library-item-content" onClick={() => handleItemClick(lib)}>
                       <span className="library-icon">
@@ -276,16 +296,28 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                       </span>
                       <span className="library-name">{lib.name}</span>
                     </div>
-                    <button
-                      className="library-delete-button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onDeleteLibrary(lib.id)
-                      }}
-                      title="削除"
-                    >
-                      ×
-                    </button>
+                    <div className="library-item-actions">
+                      <button
+                        className="library-add-button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleAddToScratchpad(lib)
+                        }}
+                        title="スクラッチパッドに追加"
+                      >
+                        <FiArrowUpLeft size={16} />
+                      </button>
+                      <button
+                        className="library-delete-button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onDeleteLibrary(lib.id)
+                        }}
+                        title="削除"
+                      >
+                        ×
+                      </button>
+                    </div>
                   </motion.div>
                 )
               })}

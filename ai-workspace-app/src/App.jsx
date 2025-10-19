@@ -397,6 +397,7 @@ function App() {
       }
     }
   ])
+  const [attachedWorkspaces, setAttachedWorkspaces] = useState([])
 
   const currentChat = chatSessions.find(chat => chat.id === currentChatId)
 
@@ -412,6 +413,11 @@ function App() {
         // Add reply context if replying to a message
         if (replyContext && replyContext.replyingToContent) {
           newMessage.replyingTo = replyContext.replyingToContent
+        }
+
+        // Add attached workspaces if any
+        if (replyContext && replyContext.attachedWorkspaces && replyContext.attachedWorkspaces.length > 0) {
+          newMessage.attachedWorkspaces = replyContext.attachedWorkspaces
         }
 
         // Add attachments if any
@@ -657,6 +663,27 @@ function App() {
     setDocuments(documents.filter(doc => doc.id !== documentId))
   }
 
+  const handleAddToScratchpad = (documentData) => {
+    const newTab = {
+      id: Date.now(),
+      title: documentData.title,
+      content: documentData.content,
+      history: [documentData.content],
+      historyIndex: 0
+    }
+    setScratchpadTabs([...scratchpadTabs, newTab])
+    setCurrentScratchpadTabId(newTab.id)
+  }
+
+  const handleAttachToChat = (workspaceData) => {
+    // Add workspace to the attached workspaces array (avoid duplicates)
+    setAttachedWorkspaces(prev => {
+      const alreadyAttached = prev.some(ws => ws.title === workspaceData.title)
+      if (alreadyAttached) return prev
+      return [...prev, workspaceData]
+    })
+  }
+
   const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
 
   const toggleTheme = () => {
@@ -677,6 +704,9 @@ function App() {
             onDeleteChat={handleDeleteChat}
             theme={theme}
             onToggleTheme={toggleTheme}
+            attachedWorkspaces={attachedWorkspaces}
+            onRemoveAttachment={(index) => setAttachedWorkspaces(prev => prev.filter((_, i) => i !== index))}
+            onClearAllAttachments={() => setAttachedWorkspaces([])}
           />
         </Panel>
         <PanelResizeHandle className="resize-handle" />
@@ -692,6 +722,8 @@ function App() {
             onSelectTab={handleSelectScratchpadTab}
             onCloseTab={handleCloseScratchpadTab}
             onRenameTab={handleRenameScratchpadTab}
+            onAddDocument={handleAddToScratchpad}
+            onAttachToChat={handleAttachToChat}
           />
         </Panel>
         <PanelResizeHandle className="resize-handle" />
@@ -702,6 +734,7 @@ function App() {
             onUploadLibrary={handleUploadLibrary}
             onDeleteLibrary={handleDeleteLibrary}
             onDeleteDocument={handleDeleteDocument}
+            onAddToScratchpad={handleAddToScratchpad}
           />
         </Panel>
       </PanelGroup>

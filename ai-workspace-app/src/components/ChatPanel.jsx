@@ -19,7 +19,10 @@ function ChatPanel({
   onSelectChat,
   onDeleteChat,
   theme,
-  onToggleTheme
+  onToggleTheme,
+  attachedWorkspaces,
+  onRemoveAttachment,
+  onClearAllAttachments
 }) {
   const [inputValue, setInputValue] = useState('')
   const [selectedMessage, setSelectedMessage] = useState(null)
@@ -225,16 +228,18 @@ function ChatPanel({
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (inputValue.trim() || attachedFiles.length > 0) {
+    if (inputValue.trim() || attachedFiles.length > 0 || attachedWorkspaces.length > 0) {
       setShouldAnimateSendBtn(true)
       setTimeout(() => setShouldAnimateSendBtn(false), 1500)
       onSendMessage(inputValue, attachedFiles, {
         replyingToIndex: replyingToIndex,
-        replyingToContent: replyingToContent
+        replyingToContent: replyingToContent,
+        attachedWorkspaces: attachedWorkspaces
       })
       setInputValue('')
       setAttachedFiles([])
       handleClearReply()
+      onClearAllAttachments() // Clear all attachments after sending
     }
   }
 
@@ -654,6 +659,18 @@ function ChatPanel({
                       <span className="reply-context-preview">{message.replyingTo.substring(0, 60)}{message.replyingTo.length > 60 ? '...' : ''}</span>
                     </div>
                   )}
+                  {/* Attachment Contexts */}
+                  {message.attachedWorkspaces && message.attachedWorkspaces.length > 0 && (
+                    <div className="message-attachments-contexts">
+                      {message.attachedWorkspaces.map((workspace, idx) => (
+                        <div key={idx} className="message-attachment-context">
+                          <FiPaperclip size={12} className="attachment-context-icon" />
+                          <span className="attachment-context-label">添付:</span>
+                          <span className="attachment-context-name">{workspace.title}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <div className="message-bubble">
                     {getMessageLabel(message) && (
                       <div className="message-role">
@@ -756,6 +773,31 @@ function ChatPanel({
               >
                 <FiX size={16} />
               </button>
+            </div>
+          )}
+
+          {/* Attachment Indicators */}
+          {attachedWorkspaces.length > 0 && (
+            <div className="attachments-indicators-container">
+              {attachedWorkspaces.map((workspace, index) => (
+                <div key={index} className="attachment-indicator">
+                  <div className="attachment-indicator-content">
+                    <FiPaperclip size={16} className="attachment-indicator-icon" />
+                    <div className="attachment-indicator-text">
+                      <span className="attachment-label">添付:</span>
+                      <span className="attachment-name">{workspace.title}</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="attachment-clear-button"
+                    onClick={() => onRemoveAttachment(index)}
+                    title="この添付をキャンセル"
+                  >
+                    <FiX size={16} />
+                  </button>
+                </div>
+              ))}
             </div>
           )}
 

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll } from 'framer-motion'
-import { FiDownload, FiRotateCcw, FiRotateCw } from 'react-icons/fi'
+import { FiDownload, FiRotateCcw, FiRotateCw, FiPaperclip, FiX } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
@@ -20,7 +20,9 @@ function Scratchpad({
   onNewTab,
   onSelectTab,
   onCloseTab,
-  onRenameTab
+  onRenameTab,
+  onAddDocument,
+  onAttachToChat
 }) {
   const [editingTabId, setEditingTabId] = useState(null)
   const [editingTitle, setEditingTitle] = useState('')
@@ -35,6 +37,7 @@ function Scratchpad({
   })
   const [showNotification, setShowNotification] = useState(false)
   const [notificationIsPublished, setNotificationIsPublished] = useState(false)
+  const [attachmentNotification, setAttachmentNotification] = useState(false)
   const editorRef = useRef(null)
   const previewRef = useRef(null)
   const { scrollYProgress } = useScroll({ container: previewRef })
@@ -227,8 +230,41 @@ function Scratchpad({
   }
 
   const handleDirectionAction = (direction) => {
-    // Placeholder actions for directional buttons
-    console.log(`Action for direction: ${direction}`)
+    const currentTabIndex = tabs.findIndex(tab => tab.id === currentTabId)
+
+    switch (direction) {
+      case 'left':
+        // Navigate to previous tab
+        if (currentTabIndex > 0) {
+          onSelectTab(tabs[currentTabIndex - 1].id)
+        }
+        break
+      case 'right':
+        // Navigate to next tab
+        if (currentTabIndex < tabs.length - 1) {
+          onSelectTab(tabs[currentTabIndex + 1].id)
+        }
+        break
+      case 'bottom':
+        // Attach current tab to chat
+        if (currentTab && onAttachToChat) {
+          onAttachToChat({
+            title: currentTab.title,
+            content: currentTab.content
+          })
+          // Show notification
+          setAttachmentNotification(true)
+          setTimeout(() => setAttachmentNotification(false), 3000)
+        }
+        break
+      case 'top':
+        // Placeholder for future feature
+        console.log('Top button action - to be implemented')
+        break
+      default:
+        break
+    }
+
     setControllerPosition(null)
   }
 
@@ -268,8 +304,30 @@ function Scratchpad({
     // await api.updateTabPublishState(tabId, isPublished)
   }
 
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    try {
+      const data = e.dataTransfer.getData('application/json')
+      if (data) {
+        const document = JSON.parse(data)
+        if (document.type === 'document' && onAddDocument) {
+          // Add document as new tab
+          onAddDocument(document)
+        }
+      }
+    } catch (error) {
+      console.error('Error handling drop:', error)
+    }
+  }
+
   return (
-    <div className="scratchpad">
+    <div className="scratchpad" onDragOver={handleDragOver} onDrop={handleDrop}>
       {/* Header */}
       <div className="scratchpad-header">
         <div className="scratchpad-title-section">
@@ -447,9 +505,9 @@ function Scratchpad({
               <button
                 className="controller-button controller-bottom"
                 onClick={() => handleDirectionAction('bottom')}
-                title="下"
+                title="ドキュメントを添付"
               >
-                ⬇️
+                <FiPaperclip size={18} />
               </button>
               <button
                 className="controller-button controller-left"
@@ -478,6 +536,20 @@ function Scratchpad({
         tabId={currentTabId}
         onClose={() => setShowNotification(false)}
       />
+
+      {/* Attachment Notification */}
+      <AnimatePresence>
+        {attachmentNotification && (
+          <motion.div
+            className="attachment-notification"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            📎 {currentTab?.title} がチャットに追加されました
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
