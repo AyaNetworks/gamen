@@ -563,6 +563,18 @@ function App() {
     ))
   }
 
+  const handleRemoveChatFromProject = (chatId) => {
+    // Remove projectId from chat
+    setChatSessions(chatSessions.map(chat =>
+      chat.id === chatId ? { ...chat, projectId: null } : chat
+    ))
+    // Update project to remove chatId
+    setChatProjects(chatProjects.map(p => ({
+      ...p,
+      chatIds: p.chatIds.filter(id => id !== chatId)
+    })))
+  }
+
   // Scratchpad handlers
   const handleScratchpadUpdate = (newContent) => {
     setScratchpadTabs(prevTabs =>
@@ -750,6 +762,7 @@ function App() {
             onDeleteProject={handleDeleteProject}
             onRenameProject={handleRenameProject}
             onAddChatToProject={handleAddChatToProject}
+            onRemoveChatFromProject={handleRemoveChatFromProject}
           />
         </Panel>
         <PanelResizeHandle className="resize-handle" />

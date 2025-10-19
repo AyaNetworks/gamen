@@ -27,7 +27,8 @@ function ChatPanel({
   onCreateProject,
   onDeleteProject,
   onRenameProject,
-  onAddChatToProject
+  onAddChatToProject,
+  onRemoveChatFromProject
 }) {
   const [inputValue, setInputValue] = useState('')
   const [selectedMessage, setSelectedMessage] = useState(null)
@@ -365,6 +366,27 @@ function ChatPanel({
     }
   }
 
+  const handleRemoveFromProjectDrop = (e) => {
+    e.preventDefault()
+    const chatId = parseInt(e.dataTransfer.getData('text/plain'))
+    if (chatId && draggedChatId) {
+      // Remove from project
+      onRemoveChatFromProject(chatId)
+      setDraggedChatId(null)
+      setHoveredProjectId(null)
+    }
+  }
+
+  const handleUngroupedDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setHoveredProjectId('ungrouped')
+  }
+
+  const handleUngroupedDragLeave = () => {
+    setHoveredProjectId(null)
+  }
+
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
@@ -633,8 +655,11 @@ function ChatPanel({
                         return (
                           <motion.div
                             key={chat.id}
-                            className={`chat-history-item project-chat ${chat.id === currentChatId ? 'active' : ''}`}
+                            className={`chat-history-item project-chat ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
                             onClick={() => onSelectChat(chat.id)}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, chat.id)}
+                            onDragEnd={handleDragEnd}
                             transition={isNewChat ? undefined : springTransition}
                             initial={isNewChat ? newChatVariants.initial : false}
                             animate={
@@ -675,7 +700,15 @@ function ChatPanel({
               </div>
             )}
 
-            {/* Ungrouped Chats Section */}
+            {/* Ungrouped Chats Section - Always visible as drop target */}
+            <div
+              className={`ungrouped-chats-header ${hoveredProjectId === 'ungrouped' ? 'drag-over' : ''}`}
+              onDragOver={handleUngroupedDragOver}
+              onDragLeave={handleUngroupedDragLeave}
+              onDrop={handleRemoveFromProjectDrop}
+            >
+              <span className="ungrouped-label">PJ外のチャット</span>
+            </div>
             {chatSessions.filter(chat => !chat.projectId).map((chat) => {
               const isNewChat = chat.id === newChatId
               return (

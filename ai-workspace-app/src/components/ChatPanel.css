@@ -1907,3 +1907,69 @@
 .light-theme .chat-history-item.dragging {
   opacity: 0.6;
 }
+
+/* Ungrouped Chats Section Header */
+.ungrouped-chats-header {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  margin: 0.5rem 0 0.25rem 0;
+  color: rgba(100, 150, 255, 0.7);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+  transition: all 0.3s ease;
+  min-height: 32px;
+  border: none;
+}
+
+/* Full border when sidebar is hovered */
+.chat-history-sidebar:hover .ungrouped-chats-header {
+  border: 2px dashed rgba(100, 150, 255, 0.3);
+  border-radius: 4px;
+}
+
+.ungrouped-chats-header.drag-over {
+  background-color: rgba(100, 150, 255, 0.15);
+  border: 2px dashed rgba(100, 150, 255, 0.8);
+  border-radius: 4px;
+  color: rgba(100, 150, 255, 1);
+  box-shadow: inset 0 0 10px rgba(100, 150, 255, 0.25);
+}
+
+.ungrouped-label {
+  flex: 1;
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: translateY(-8px);
+  transition: opacity 0.3s ease, width 0.3s ease, transform 0.3s ease;
+}
+
+/* Show text when sidebar is hovered - Slide down + Fade */
+.chat-history-sidebar:hover .ungrouped-label {
+  opacity: 1;
+  width: auto;
+  transform: translateY(0);
+}
+
+/* Light theme ungrouped header */
+.light-theme .ungrouped-chats-header {
+  color: rgba(83, 120, 242, 0.7);
+}
+
+/* Light theme full border on hover */
+.light-theme .chat-history-sidebar:hover .ungrouped-chats-header {
+  border: 2px dashed rgba(83, 120, 242, 0.3);
+  border-radius: 4px;
+}
+
+.light-theme .ungrouped-chats-header.drag-over {
+  background-color: rgba(83, 120, 242, 0.12);
+  border-color: rgba(83, 120, 242, 0.8);
+  color: rgba(83, 120, 242, 1);
+  box-shadow: inset 0 0 10px rgba(83, 120, 242, 0.2);
+}
