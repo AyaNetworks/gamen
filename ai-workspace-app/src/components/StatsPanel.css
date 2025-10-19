@@ -56,6 +56,41 @@
   margin: 0 0.5rem;
 }
 
+/* Like Button */
+.like-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.like-button:hover {
+  transform: scale(1.05);
+}
+
+.like-button:active {
+  transform: scale(0.95);
+}
+
+.like-button:focus {
+  outline: none;
+}
+
+.like-button .stat-icon {
+  transition: all 0.2s ease;
+}
+
+.like-button.liked .stat-icon.liked-heart {
+  color: rgba(255, 100, 100, 1);
+  fill: rgba(255, 100, 100, 0.8);
+}
+
 /* Publish Toggle Button */
 .publish-toggle {
   display: flex;
@@ -69,6 +104,11 @@
   transition: all 0.2s ease;
   white-space: nowrap;
   font-weight: 500;
+  outline: none;
+}
+
+.publish-toggle:focus {
+  outline: none;
 }
 
 .publish-toggle.published {
@@ -123,6 +163,12 @@
 
 .light-theme .stat-divider {
   background-color: rgba(100, 108, 255, 0.3);
+}
+
+/* Light Theme - Like Button */
+.light-theme .like-button.liked .stat-icon.liked-heart {
+  color: rgba(220, 50, 50, 1);
+  fill: rgba(220, 50, 50, 0.8);
 }
 
 /* Light Theme - Publish Toggle */

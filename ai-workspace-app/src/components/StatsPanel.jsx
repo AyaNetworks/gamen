@@ -12,6 +12,8 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
     impressions: 0
   })
   const [isPublishedState, setIsPublishedState] = useState(isPublished)
+  const [isLiked, setIsLiked] = useState(false)
+  const [likeScale, setLikeScale] = useState(1)
 
   // Motion values for animated numbers
   const charCount = useMotionValue(0)
@@ -66,6 +68,39 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
 
     if (onPublishToggle) {
       onPublishToggle(tabId, newState)
+    }
+  }
+
+  // Handle like toggle
+  const handleLikeToggle = () => {
+    const newLikedState = !isLiked
+    setIsLiked(newLikedState)
+
+    // Animate the heart
+    setLikeScale(0.8)
+    setTimeout(() => {
+      setLikeScale(1)
+    }, 100)
+
+    // Update like count
+    if (newLikedState) {
+      animate(likesCount, stats.likes + 1, {
+        duration: 0.3,
+        ease: 'easeOut'
+      })
+      setStats(prev => ({
+        ...prev,
+        likes: prev.likes + 1
+      }))
+    } else {
+      animate(likesCount, Math.max(0, stats.likes - 1), {
+        duration: 0.3,
+        ease: 'easeOut'
+      })
+      setStats(prev => ({
+        ...prev,
+        likes: Math.max(0, prev.likes - 1)
+      }))
     }
   }
 
@@ -155,14 +190,26 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
           </span>
         </motion.button>
 
-        {/* Likes Count */}
-        <div className="stat-item">
-          <FiHeart size={16} className="stat-icon" />
+        {/* Likes Count - Interactive */}
+        <motion.button
+          className={`stat-item like-button ${isLiked ? 'liked' : ''}`}
+          onClick={handleLikeToggle}
+          title={isLiked ? 'いいねを削除' : 'いいねする'}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <motion.div
+            initial={{ scale: 1 }}
+            animate={{ scale: likeScale }}
+            transition={{ duration: 0.1 }}
+          >
+            <FiHeart size={16} className={`stat-icon ${isLiked ? 'liked-heart' : ''}`} />
+          </motion.div>
           <span className="stat-label">いいね</span>
           <motion.span className="stat-value">
             {animatedLikes}
           </motion.span>
-        </div>
+        </motion.button>
 
         {/* Impressions Count */}
         <div className="stat-item">
