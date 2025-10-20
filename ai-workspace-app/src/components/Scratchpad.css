@@ -245,6 +245,7 @@ button.radix-button.new-tab-button {
   min-width: 32px !important;
   padding: 0 !important;
   margin: 0 !important;
+  margin-bottom: 0.5rem !important;
   border: none !important;
   border-width: 0 !important;
   border-radius: 50% !important;
@@ -253,6 +254,9 @@ button.radix-button.new-tab-button {
   flex-shrink: 0 !important;
   gap: 0 !important;
   line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Editor / Preview Container */
@@ -501,14 +505,13 @@ button.radix-button.new-tab-button {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #ddd !important;
-  border: 2px solid rgba(100, 108, 255, 0.4) !important;
+  border: none !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(100, 108, 255, 0.2) !important;
 }
 
-.circular-controller .controller-button:hover {
+.circular-controller .controller-button:hover:not(.controller-top) {
   background-color: rgba(100, 108, 255, 0.7) !important;
   color: white !important;
-  border-color: rgba(100, 108, 255, 0.8) !important;
   box-shadow: 0 4px 15px rgba(100, 108, 255, 0.5), 0 0 25px rgba(100, 108, 255, 0.4) !important;
 }
 
@@ -536,11 +539,21 @@ button.radix-button.new-tab-button {
   right: auto !important;
   bottom: auto !important;
   transform: translateX(-50%) !important;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0 !important;
-  clip-path: ellipse(45% 48% at 50% 55%);
+  border-radius: 50% !important;
+  clip-path: circle(48% at 50% 55%);
   background-color: #000000 !important;
-  border-color: #000000 !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.8) !important;
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+}
+
+.circular-controller .controller-top:hover {
+  background-color: #1a1a1a !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.9) !important;
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.9))
+          drop-shadow(0 0 2px rgba(255, 255, 255, 0.9))
+          drop-shadow(0 0 3px rgba(255, 255, 255, 0.9))
+          drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) !important;
+  color: #ddd !important;
 }
 
 /* Right Button - Arc slice shape */

@@ -29,7 +29,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0;
   border-bottom: 1px solid rgba(100, 108, 255, 0.2);
   background-color: rgba(32, 32, 32, 0.5);
   backdrop-filter: blur(5px);
@@ -41,6 +41,7 @@
 
 .chat-history-sidebar:hover .chat-history-header {
   justify-content: space-between;
+  padding: 0 1rem;
 }
 
 .chat-history-header h3 {
@@ -66,7 +67,7 @@ button.radix-button.new-chat-button {
   min-height: 36px !important;
   min-width: 36px !important;
   padding: 0 !important;
-  margin: 0 !important;
+  margin: 0 auto !important;
   border: none !important;
   border-width: 0 !important;
   border-radius: 50% !important;
@@ -75,6 +76,13 @@ button.radix-button.new-chat-button {
   flex-shrink: 0 !important;
   gap: 0 !important;
   line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.chat-history-sidebar:hover button.radix-button.new-chat-button {
+  margin: 0 !important;
 }
 
 /* Header Buttons Container */
@@ -82,6 +90,13 @@ button.radix-button.new-chat-button {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.chat-history-sidebar:hover .chat-history-header-buttons {
+  width: auto;
+  justify-content: flex-end;
 }
 
 /* Style motion.div wrappers to not interfere with buttons */
@@ -99,12 +114,21 @@ button.radix-button.new-chat-button {
   margin: 0 !important;
 }
 
+/* Hide the folder button wrapper when sidebar is shrunk */
+.chat-history-header-buttons > div:first-child {
+  display: none;
+}
+
+.chat-history-sidebar:hover .chat-history-header-buttons > div:first-child {
+  display: inline-flex;
+}
+
 /* Project Toggle Button */
 button.radix-button.project-toggle-button {
-  width: 36px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  min-width: 36px !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
   border: none !important;
@@ -114,13 +138,17 @@ button.radix-button.project-toggle-button {
   gap: 0 !important;
   line-height: 1 !important;
   opacity: 0;
-  width: 0 !important;
   overflow: hidden;
+  display: none;
 }
 
 .chat-history-sidebar:hover button.radix-button.project-toggle-button {
+  display: flex !important;
   opacity: 1 !important;
   width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  min-width: 36px !important;
 }
 
 .chat-history-list {
