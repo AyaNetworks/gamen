@@ -120,7 +120,8 @@
 }
 
 .upload-button-bottom {
-  padding: 0.875rem;
+  box-sizing: border-box;
+  padding: 0.5rem;
   background-color: rgba(100, 150, 255, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -138,13 +139,34 @@
   margin-bottom: 0;
   width: 100%;
   text-shadow: 0 1px 3px rgba(50, 80, 150, 0.5);
+  height: 55px;
+}
+
+.upload-button-bottom button.radix-button.button-variant-upload {
+  width: auto !important;
+  padding: 0.3rem 0.6rem !important;
+  margin: 0 !important;
+  border: none !important;
+  border-width: 0 !important;
+  font-size: 1.3rem !important;
 }
 
 .upload-button-bottom:hover {
+  padding: 0;
   background-color: rgba(100, 150, 255, 0.6);
   border-color: rgba(180, 210, 255, 1);
   color: #ffffff;
   text-shadow: 0 1px 3px rgba(30, 50, 120, 0.6);
+}
+
+.upload-button-bottom:hover button.radix-button.button-variant-upload {
+  width: calc(100% - 4px) !important;
+  height: calc(100% - 4px) !important;
+  padding: 0 !important;
+  margin: 2px !important;
+  border: none !important;
+  border-width: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .document-list {
