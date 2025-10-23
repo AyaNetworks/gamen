@@ -1,17 +1,6 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* Tailwind handles most of these with @tailwind base */
 
-#root {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Theme transition animation */
+/* Theme transition animation - now handled by Tailwind in JSX */
 @keyframes theme-fade-in {
   0% {
     opacity: 0;
@@ -21,138 +10,29 @@
   }
 }
 
-/* Dark Theme - Dione Gradient Background */
-.app-container.dark-theme::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #114357; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #B87069, #114357); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #B87069, #114357); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background-size: 100% 100%;
-  background-position: 0% 0%;
-  animation: theme-fade-in 0.6s ease-out;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Stars for dark theme - disabled for cleaner gradient */
-.app-container.dark-theme::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-}
-
-@keyframes tech-glow-drift {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(-1%, 0.5%);
-  }
-  50% {
-    transform: translate(-1.5%, -0.5%);
-  }
-  75% {
-    transform: translate(-0.5%, -1%);
-  }
-}
-
-@keyframes stars-twinkle {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-
-
-/* Light Theme - Moderate Dione Gradient Background */
-.app-container.light-theme::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #ddd6f3; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #d9a8a5, #ddd6f3); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #d9a8a5, #ddd6f3);
-  background-size: 100% 100%;
-  background-position: 0% 0%;
-  animation: theme-fade-in 0.6s ease-out;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.app-container {
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-
-.app-container > * {
-  position: relative;
-  z-index: 1;
-}
-
+/* Resize handle styling - using Tailwind-like approach */
 .resize-handle {
-  width: 4px;
-  background: none;
-  border: none;
-  cursor: col-resize;
-  transition: all 0.2s;
-  position: relative;
+  @apply w-1 bg-transparent border-none cursor-col-resize transition-all duration-200 relative;
 }
 
 .resize-handle:hover {
-  background-color: transparent;
   box-shadow: 0 0 10px rgba(100, 108, 255, 0.4);
 }
 
 .resize-handle:active {
-  background-color: transparent;
   box-shadow: 0 0 15px rgba(100, 108, 255, 0.6);
 }
 
-/* Add a visual indicator on hover */
+/* Visual indicator on hover */
 .resize-handle::after {
   content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 3px;
-  height: 40px;
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  @apply w-[3px] h-10 rounded-sm transition-opacity duration-200;
   background: linear-gradient(180deg, rgba(100, 108, 255, 0.6), rgba(100, 108, 255, 0.9), rgba(100, 108, 255, 0.6));
-  border-radius: 2px;
   opacity: 0;
-  transition: opacity 0.2s;
   box-shadow: 0 0 8px rgba(100, 108, 255, 0.5);
 }
 
 .resize-handle:hover::after {
   opacity: 1;
-}
-
-/* Light Theme Resize Handle */
-.light-theme .resize-handle {
-  background-color: transparent;
-}
-
-.light-theme .resize-handle:hover {
-  background-color: transparent;
-}
-
-.light-theme .resize-handle:active {
-  background-color: transparent;
 }

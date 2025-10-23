@@ -683,8 +683,17 @@ function App() {
   const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
 
   return (
-    <div className={`app-container ${theme === 'dark' ? 'dark' : ''}`}>
-      <PanelGroup direction="horizontal">
+    <div className={`h-screen relative overflow-hidden ${theme === 'dark' ? 'dark' : ''}`}>
+      {/* Background gradients */}
+      <div className={`absolute inset-0 pointer-events-none z-0 animate-[theme-fade-in_0.6s_ease-out] ${
+        theme === 'dark'
+          ? 'bg-gradient-to-l from-[#B87069] to-[#114357]'
+          : 'bg-gradient-to-r from-[#d9a8a5] to-[#ddd6f3]'
+      }`} />
+
+      {/* Content with z-index above background */}
+      <div className="relative z-10 h-full">
+        <PanelGroup direction="horizontal">
         <Panel defaultSize={35} minSize={15} maxSize={50}>
           {/* ChatPanel now gets ALL data from Zustand stores - no props needed! */}
           <ChatPanel />
@@ -718,6 +727,7 @@ function App() {
           />
         </Panel>
       </PanelGroup>
+      </div>
     </div>
   )
 }
