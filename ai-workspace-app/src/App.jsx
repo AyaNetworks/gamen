@@ -6,67 +6,14 @@ import Scratchpad from './components/Scratchpad'
 import DocumentPanel from './components/DocumentPanel'
 import './App.css'
 
+// Import Zustand stores
+import { useChatStore, useThemeStore, useProjectStore, useWorkspaceStore } from './store'
+
 function App() {
-  const [theme, setTheme] = useState('dark') // 'light' or 'dark'
-  const [chatSessions, setChatSessions] = useState([
-    {
-      id: 1,
-      title: 'Q2マーケティング分析',
-      messages: [
-        { role: 'user', content: 'Q2の顧客データを分析してください。campaign_data.csvを参照してください。', timestamp: new Date(Date.now() - 900000).toISOString() },
-        {
-          role: 'ai',
-          type: 'dione',
-          status: 'success',
-          content: '承知しました。Q2のマーケティングキャンペーンデータを分析します。データから以下のポイントが確認できました：\n\n📊 **キャンペーン成果サマリー**\n- 総インプレッション数: 2.5M\n- クリック率: 3.2%\n- コンバージョン率: 1.8%\n- 平均CPC: ¥245\n\n🎯 **パフォーマンス分析**\n- Email キャンペーン: 最高のROI (420%)\n- Social Media: 最多クリック数 (89K)\n- Display Ads: 最低CPC (¥180)\n\n💡 **推奨事項**\nEmail キャンペーンへの予算配分を増やすことで、全体ROIが約15%向上する可能性があります。',
-          timestamp: new Date(Date.now() - 890000).toISOString(),
-          trace: 'Step 1: Load campaign_data.csv\nStep 2: Parse CSV structure\nStep 3: Calculate KPIs (CTR, CVR, CPC, ROI)\nStep 4: Segment by channel\nStep 5: Identify top performers\nStep 6: Generate insights and recommendations'
-        },
-        { role: 'user', content: 'データをスクラッチパッドに整理してもらえますか？', timestamp: new Date(Date.now() - 850000).toISOString() },
-        {
-          role: 'ai',
-          type: 'dione',
-          status: 'success',
-          content: 'スクラッチパッドにQ2マーケティング分析レポートを作成しました。以下のセクションを含めました：\n\n✅ エグゼクティブサマリー\n✅ チャネル別詳細分析\n✅ 予算配分最適化案\n✅ 次四半期への推奨事項\n\nスクラッチパッドタブで確認してください。さらに詳細な分析が必要な部分があればお知らせください。',
-          timestamp: new Date(Date.now() - 840000).toISOString()
-        },
-        { role: 'user', content: 'Emailキャンペーンの詳細なセグメンテーション分析をお願いします', timestamp: new Date(Date.now() - 750000).toISOString() },
-        {
-          role: 'ai',
-          type: 'thinking',
-          status: 'success',
-          content: '詳細分析を実施中...\n\nステップ1: Emailキャンペーンのセグメント識別\nステップ2: 各セグメントのエンゲージメント指標計算\nステップ3: 年齢層・性別・地域別の効果測定\nステップ4: A/Bテスト結果の統計分析\nステップ5: セグメント別最適な送信時間の決定\nステップ6: パーソナライゼーション機会の特定',
-          timestamp: new Date(Date.now() - 740000).toISOString(),
-          trace: 'Analyzing 12 customer segments\nProcessing 450K email interactions\nCalculating engagement metrics\nPerforming chi-square tests for significance\nIdentifying optimal send times by timezone'
-        },
-        {
-          role: 'ai',
-          type: 'dione',
-          status: 'success',
-          content: '📧 **Emailキャンペーン セグメント分析完了**\n\n🔝 **Top Performer: 25-34歳 / 東京都**\n- OpenRate: 48%\n- CTR: 5.2%\n- Conversion: 2.8%\n- Best Send Time: 火・木 10:00-11:00\n\n🎯 **High Potential: 35-44歳 / 大阪府**\n- OpenRate: 42%\n- CTR: 4.1%\n- Conversion: 2.1%\n- 最適タイミング: 水・金 15:00-16:00\n\n💼 **Enterprise Segment: 45+ / 全国**\n- OpenRate: 35%\n- CTR: 3.2%\n- Conversion: 3.5% (最高)\n- 注: リード育成に時間必要\n\n**アクション:** セグメント別パーソナライゼーション実装で平均CTRが8%向上予測。',
-          timestamp: new Date(Date.now() - 730000).toISOString()
-        },
-      ],
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 2,
-      title: '新規顧客セグメント戦略',
-      messages: [
-        { role: 'user', content: 'VIPカスタマー層の行動パターン分析をしてください', timestamp: new Date(Date.now() - 600000).toISOString() },
-        {
-          role: 'ai',
-          type: 'dione',
-          status: 'success',
-          content: '👑 **VIPカスタマー層の分析結果**\n\n📈 **購買パターン**\n- 月平均購買回数: 8.2回\n- 平均注文額: ¥28,500\n- リピート率: 92%\n- LTV: ¥342,000\n\n🎁 **嗜好性**\n- プレミアム商品: 68%\n- 限定版: 54%\n- 高速配送: 87%\n\n💬 **コミュニケーション**\n- メール開封率: 76%\n- SMS開封率: 89%\n- チャットサポート利用: 42%\n\n💡 **推奨施策:**\n1. VIP専用会員プログラム立ち上げ\n2. 専任コンシェルジュサービス\n3. 先行商品販売イベント',
-          timestamp: new Date(Date.now() - 590000).toISOString()
-        }
-      ],
-      createdAt: new Date().toISOString()
-    }
-  ])
-  const [currentChatId, setCurrentChatId] = useState(1)
-  const [chatProjects, setChatProjects] = useState([])
+  // Zustand stores - replaces useState for global state
+  const theme = useThemeStore((state) => state.theme)
+
+  // Keep local state for scratchpad and documents (can migrate later if needed)
   const [scratchpadTabs, setScratchpadTabs] = useState([
     {
       id: 1,
@@ -398,11 +345,14 @@ function App() {
       }
     }
   ])
-  const [attachedWorkspaces, setAttachedWorkspaces] = useState([])
 
-  const currentChat = chatSessions.find(chat => chat.id === currentChatId)
+  // === OLD HANDLERS REMOVED - Now in Zustand stores ===
+  // handleSendMessage, handleNewChat, handleSelectChat, handleDeleteChat
+  // handleCreateProject, handleDeleteProject, handleRenameProject
+  // handleAddChatToProject, handleRemoveChatFromProject
+  // toggleTheme, attachedWorkspaces handlers
 
-  const handleSendMessage = (userMessage, attachments = [], replyContext = null) => {
+  const handleSendMessage_OLD = (userMessage, attachments = [], replyContext = null) => {
     const updatedSessions = chatSessions.map(chat => {
       if (chat.id === currentChatId) {
         const newMessage = {
@@ -726,44 +676,18 @@ function App() {
   }
 
   const handleAttachToChat = (workspaceData) => {
-    // Add workspace to the attached workspaces array (avoid duplicates)
-    setAttachedWorkspaces(prev => {
-      const alreadyAttached = prev.some(ws => ws.title === workspaceData.title)
-      if (alreadyAttached) return prev
-      return [...prev, workspaceData]
-    })
+    // Use Zustand store to attach workspace
+    useWorkspaceStore.getState().attachWorkspace(workspaceData)
   }
 
   const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark')
-  }
 
   return (
     <div className={`app-container ${theme}-theme`}>
       <PanelGroup direction="horizontal">
         <Panel defaultSize={35} minSize={15} maxSize={50}>
-          <ChatPanel
-            chatSessions={chatSessions}
-            currentChatId={currentChatId}
-            currentMessages={currentChat?.messages || []}
-            onSendMessage={handleSendMessage}
-            onNewChat={handleNewChat}
-            onSelectChat={handleSelectChat}
-            onDeleteChat={handleDeleteChat}
-            theme={theme}
-            onToggleTheme={toggleTheme}
-            attachedWorkspaces={attachedWorkspaces}
-            onRemoveAttachment={(index) => setAttachedWorkspaces(prev => prev.filter((_, i) => i !== index))}
-            onClearAllAttachments={() => setAttachedWorkspaces([])}
-            chatProjects={chatProjects}
-            onCreateProject={handleCreateProject}
-            onDeleteProject={handleDeleteProject}
-            onRenameProject={handleRenameProject}
-            onAddChatToProject={handleAddChatToProject}
-            onRemoveChatFromProject={handleRemoveChatFromProject}
-          />
+          {/* ChatPanel now gets ALL data from Zustand stores - no props needed! */}
+          <ChatPanel />
         </Panel>
         <PanelResizeHandle className="resize-handle" />
         <Panel defaultSize={40} minSize={25}>

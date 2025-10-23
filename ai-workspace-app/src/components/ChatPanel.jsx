@@ -11,6 +11,9 @@ import ConfigurationModal from './ConfigurationModal'
 import Button from './ui/Button'
 import './ChatPanel.css'
 
+// Import Zustand stores
+import { useChatStore, useThemeStore, useProjectStore, useWorkspaceStore } from '../store'
+
 // Animation variants defined outside component to prevent re-creation
 const planeIconVariants = {
   normal: {
@@ -75,26 +78,31 @@ const AnimatedSendButton = memo(({ shouldAnimate, animationKey, onAnimationCompl
 
 AnimatedSendButton.displayName = 'AnimatedSendButton'
 
-function ChatPanel({
-  chatSessions,
-  currentChatId,
-  currentMessages,
-  onSendMessage,
-  onNewChat,
-  onSelectChat,
-  onDeleteChat,
-  theme,
-  onToggleTheme,
-  attachedWorkspaces,
-  onRemoveAttachment,
-  onClearAllAttachments,
-  chatProjects,
-  onCreateProject,
-  onDeleteProject,
-  onRenameProject,
-  onAddChatToProject,
-  onRemoveChatFromProject
-}) {
+function ChatPanel() {
+  // Zustand stores - replace all props!
+  const chatSessions = useChatStore((state) => state.chatSessions)
+  const currentChatId = useChatStore((state) => state.currentChatId)
+  const currentMessages = useChatStore((state) => state.getCurrentMessages())
+  const sendMessage = useChatStore((state) => state.sendMessage)
+  const createNewChat = useChatStore((state) => state.createNewChat)
+  const setCurrentChatId = useChatStore((state) => state.setCurrentChatId)
+  const deleteChat = useChatStore((state) => state.deleteChat)
+  const addChatToProject = useChatStore((state) => state.addChatToProject)
+  const removeChatFromProject = useChatStore((state) => state.removeChatFromProject)
+
+  const theme = useThemeStore((state) => state.theme)
+  const toggleTheme = useThemeStore((state) => state.toggleTheme)
+
+  const chatProjects = useProjectStore((state) => state.chatProjects)
+  const createProject = useProjectStore((state) => state.createProject)
+  const deleteProject = useProjectStore((state) => state.deleteProject)
+  const renameProject = useProjectStore((state) => state.renameProject)
+
+  const attachedWorkspaces = useWorkspaceStore((state) => state.attachedWorkspaces)
+  const removeAttachment = useWorkspaceStore((state) => state.removeAttachment)
+  const clearAllAttachments = useWorkspaceStore((state) => state.clearAllAttachments)
+
+  // Local UI state (these stay as useState since they're component-specific)
   const [inputValue, setInputValue] = useState('')
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [attachedFiles, setAttachedFiles] = useState([])
@@ -327,7 +335,7 @@ function ChatPanel({
       } else {
         console.log('⛔ Animation blocked - already animating')
       }
-      onSendMessage(inputValue, attachedFiles, {
+      sendMessage(inputValue, attachedFiles, {
         replyingToIndex: replyingToIndex,
         replyingToContent: replyingToContent,
         attachedWorkspaces: attachedWorkspaces
@@ -335,7 +343,7 @@ function ChatPanel({
       setInputValue('')
       setAttachedFiles([])
       handleClearReply()
-      onClearAllAttachments() // Clear all attachments after sending
+      clearAllAttachments() // Clear all attachments after sending
     }
   }
 
@@ -416,7 +424,7 @@ function ChatPanel({
 
   const handleCreateProjectSubmit = () => {
     if (projectInputValue.trim()) {
-      onCreateProject(projectInputValue.trim())
+      createProject(projectInputValue.trim())
       setProjectInputValue('')
       setShowProjectInput(false)
     }
@@ -447,7 +455,7 @@ function ChatPanel({
     e.preventDefault()
     const chatId = parseInt(e.dataTransfer.getData('text/plain'))
     if (chatId && draggedChatId) {
-      onAddChatToProject(chatId, projectId)
+      addChatToProject(chatId, projectId)
       setDraggedChatId(null)
       setHoveredProjectId(null)
     }
@@ -458,7 +466,7 @@ function ChatPanel({
     const chatId = parseInt(e.dataTransfer.getData('text/plain'))
     if (chatId && draggedChatId) {
       // Remove from project
-      onRemoveChatFromProject(chatId)
+      removeChatFromProject(chatId)
       setDraggedChatId(null)
       setHoveredProjectId(null)
     }
@@ -690,7 +698,7 @@ function ChatPanel({
                 size="md"
                 onClick={() => {
                   setShouldAnimateNewChatBtn(true)
-                  onNewChat()
+                  createNewChat()
                 }}
                 title="新しいチャット"
                 animated={false}
@@ -755,7 +763,7 @@ function ChatPanel({
                           <motion.div
                             key={chat.id}
                             className={`chat-history-item project-chat ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
-                            onClick={() => onSelectChat(chat.id)}
+                            onClick={() => setCurrentChatId(chat.id)}
                             draggable
                             onDragStart={(e) => handleDragStart(e, chat.id)}
                             onDragEnd={handleDragEnd}
@@ -786,7 +794,7 @@ function ChatPanel({
                               size="sm"
                               onClick={(e) => {
                                 e.stopPropagation()
-                                onDeleteChat(chat.id)
+                                deleteChat(chat.id)
                               }}
                               title="削除"
                               className="chat-delete-button"
@@ -899,7 +907,7 @@ function ChatPanel({
             <Button
               variant="surface"
               size="md"
-              onClick={onToggleTheme}
+              onClick={toggleTheme}
               title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
               animated={false}
             >
@@ -1092,7 +1100,7 @@ function ChatPanel({
                     type="button"
                     variant="ghost"
                     size="sm"
-                    onClick={() => onRemoveAttachment(index)}
+                    onClick={() => removeAttachment(index)}
                     title="この添付をキャンセル"
                   >
                     <FiX size={16} />
