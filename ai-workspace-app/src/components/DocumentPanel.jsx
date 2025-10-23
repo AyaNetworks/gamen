@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { BiLinkExternal } from 'react-icons/bi'
-import { FiDownload, FiArrowUpLeft } from 'react-icons/fi'
-import FilePreview from './FilePreview'
+import { FiArrowUpLeft, FiDownload } from 'react-icons/fi'
 import { getFileIcon } from '../utils/fileTypeDetector'
+import FilePreview from './FilePreview'
 import Button from './ui/Button'
 import './DocumentPanel.css'
 
-function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary, onDeleteDocument, onAddToScratchpad }) {
+function DocumentPanel({
+  documents,
+  libraries,
+  onUploadLibrary,
+  onDeleteLibrary,
+  onDeleteDocument,
+  onAddToScratchpad,
+}) {
   const [selectedItem, setSelectedItem] = useState(null)
   const [showPreview, setShowPreview] = useState(false)
   const [prevDocCount, setPrevDocCount] = useState(0)
@@ -45,7 +52,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
         content: item.content || '',
         fileType: fileType,
         fileName: item.name,
-        filePath: item.filePath
+        filePath: item.filePath,
       })
     }
   }
@@ -55,19 +62,28 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
     const fileExtension = item.name.split('.').pop()?.toLowerCase()
     const fileType = item.tags?.fileType || `file/${fileExtension}`
 
-    e.dataTransfer.setData('application/json', JSON.stringify({
-      type: 'document',
-      title: item.name,
-      content: item.content || '',
-      fileType: fileType,
-      fileName: item.name,
-      filePath: item.filePath
-    }))
+    e.dataTransfer.setData(
+      'application/json',
+      JSON.stringify({
+        type: 'document',
+        title: item.name,
+        content: item.content || '',
+        fileType: fileType,
+        fileName: item.name,
+        filePath: item.filePath,
+      })
+    )
   }
 
   // Detect new documents and libraries
-  const newDocId = documents.length > prevDocCount && !animatingDocId ? documents[documents.length - 1]?.id : animatingDocId
-  const newLibId = libraries.length > prevLibCount && !animatingLibId ? libraries[libraries.length - 1]?.id : animatingLibId
+  const newDocId =
+    documents.length > prevDocCount && !animatingDocId
+      ? documents[documents.length - 1]?.id
+      : animatingDocId
+  const newLibId =
+    libraries.length > prevLibCount && !animatingLibId
+      ? libraries[libraries.length - 1]?.id
+      : animatingLibId
 
   // Animation variants for new items
   const newItemVariants = {
@@ -353,16 +369,22 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
                 )
               })}
             </AnimatePresence>
-            <label className="upload-button-bottom" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <input
-                type="file"
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-              />
+            <label
+              className="upload-button-bottom"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <input type="file" onChange={handleFileUpload} style={{ display: 'none' }} />
               <Button
                 variant="upload"
                 size="lg"
-                onClick={(e) => e.target.closest('label').querySelector('input[type="file"]').click()}
+                onClick={(e) =>
+                  e.target.closest('label').querySelector('input[type="file"]').click()
+                }
                 style={{ width: '100%' }}
               >
                 +
@@ -377,11 +399,7 @@ function DocumentPanel({ documents, libraries, onUploadLibrary, onDeleteLibrary,
           <div className="preview-content" onClick={(e) => e.stopPropagation()}>
             <div className="preview-header">
               <h3>{selectedItem.name}</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={closePreview}
-              >
+              <Button variant="ghost" size="sm" onClick={closePreview}>
                 ×
               </Button>
             </div>

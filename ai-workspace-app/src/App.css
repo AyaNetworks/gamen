@@ -30,7 +30,7 @@
 
 /* Visual indicator on hover */
 .resize-handle::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -39,7 +39,12 @@
   height: 40px;
   border-radius: 2px;
   transition: opacity 0.2s;
-  background: linear-gradient(180deg, rgba(100, 108, 255, 0.6), rgba(100, 108, 255, 0.9), rgba(100, 108, 255, 0.6));
+  background: linear-gradient(
+    180deg,
+    rgba(100, 108, 255, 0.6),
+    rgba(100, 108, 255, 0.9),
+    rgba(100, 108, 255, 0.6)
+  );
   opacity: 0;
   box-shadow: 0 0 8px rgba(100, 108, 255, 0.5);
 }

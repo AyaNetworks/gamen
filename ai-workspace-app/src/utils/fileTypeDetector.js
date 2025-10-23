@@ -1,14 +1,14 @@
 import {
+  BsFileEarmark,
+  BsFileEarmarkCode,
+  BsFileEarmarkImage,
+  BsFileEarmarkText,
+  BsFiletypeCsv,
   BsFiletypeDocx,
+  BsFiletypeMd,
   BsFiletypePdf,
   BsFiletypePptx,
   BsFiletypeXlsx,
-  BsFileEarmarkImage,
-  BsFileEarmarkText,
-  BsFileEarmarkCode,
-  BsFileEarmark,
-  BsFiletypeMd,
-  BsFiletypeCsv
 } from 'react-icons/bs'
 
 export const getFileType = (fileName) => {
@@ -16,48 +16,48 @@ export const getFileType = (fileName) => {
 
   const typeMap = {
     // Markdown
-    'md': 'markdown',
-    'markdown': 'markdown',
+    md: 'markdown',
+    markdown: 'markdown',
 
     // PDF
-    'pdf': 'pdf',
+    pdf: 'pdf',
 
     // Word
-    'doc': 'word',
-    'docx': 'word',
+    doc: 'word',
+    docx: 'word',
 
     // Excel
-    'xls': 'excel',
-    'xlsx': 'excel',
-    'csv': 'csv',
+    xls: 'excel',
+    xlsx: 'excel',
+    csv: 'csv',
 
     // PowerPoint
-    'ppt': 'powerpoint',
-    'pptx': 'powerpoint',
+    ppt: 'powerpoint',
+    pptx: 'powerpoint',
 
     // Images
-    'png': 'image',
-    'jpg': 'image',
-    'jpeg': 'image',
-    'gif': 'image',
-    'svg': 'image',
-    'webp': 'image',
+    png: 'image',
+    jpg: 'image',
+    jpeg: 'image',
+    gif: 'image',
+    svg: 'image',
+    webp: 'image',
 
     // Text
-    'txt': 'text',
+    txt: 'text',
 
     // Code files
-    'js': 'code',
-    'jsx': 'code',
-    'ts': 'code',
-    'tsx': 'code',
-    'py': 'code',
-    'java': 'code',
-    'cpp': 'code',
-    'c': 'code',
-    'html': 'code',
-    'css': 'code',
-    'json': 'code',
+    js: 'code',
+    jsx: 'code',
+    ts: 'code',
+    tsx: 'code',
+    py: 'code',
+    java: 'code',
+    cpp: 'code',
+    c: 'code',
+    html: 'code',
+    css: 'code',
+    json: 'code',
   }
 
   return typeMap[extension] || 'unknown'
@@ -67,16 +67,16 @@ export const getFileIcon = (fileName) => {
   const fileType = getFileType(fileName)
 
   const iconMap = {
-    'markdown': BsFiletypeMd,
-    'pdf': BsFiletypePdf,
-    'word': BsFiletypeDocx,
-    'excel': BsFiletypeXlsx,
-    'csv': BsFiletypeCsv,
-    'powerpoint': BsFiletypePptx,
-    'image': BsFileEarmarkImage,
-    'text': BsFileEarmarkText,
-    'code': BsFileEarmarkCode,
-    'unknown': BsFileEarmark,
+    markdown: BsFiletypeMd,
+    pdf: BsFiletypePdf,
+    word: BsFiletypeDocx,
+    excel: BsFiletypeXlsx,
+    csv: BsFiletypeCsv,
+    powerpoint: BsFiletypePptx,
+    image: BsFileEarmarkImage,
+    text: BsFileEarmarkText,
+    code: BsFileEarmarkCode,
+    unknown: BsFileEarmark,
   }
 
   return iconMap[fileType] || BsFileEarmark

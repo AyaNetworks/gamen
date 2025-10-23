@@ -9,30 +9,33 @@ export const useProjectStore = create(
         chatProjects: [],
 
         // Actions
-        createProject: (projectName) => set((state) => {
-          const newProject = {
-            id: Date.now(),
-            name: projectName,
-            createdAt: new Date().toISOString()
-          }
+        createProject: (projectName) =>
+          set((state) => {
+            const newProject = {
+              id: Date.now(),
+              name: projectName,
+              createdAt: new Date().toISOString(),
+            }
 
-          return {
-            chatProjects: [...state.chatProjects, newProject]
-          }
-        }),
+            return {
+              chatProjects: [...state.chatProjects, newProject],
+            }
+          }),
 
-        deleteProject: (projectId) => set((state) => ({
-          chatProjects: state.chatProjects.filter(project => project.id !== projectId)
-        })),
+        deleteProject: (projectId) =>
+          set((state) => ({
+            chatProjects: state.chatProjects.filter((project) => project.id !== projectId),
+          })),
 
-        renameProject: (projectId, newName) => set((state) => ({
-          chatProjects: state.chatProjects.map(project =>
-            project.id === projectId ? { ...project, name: newName } : project
-          )
-        })),
+        renameProject: (projectId, newName) =>
+          set((state) => ({
+            chatProjects: state.chatProjects.map((project) =>
+              project.id === projectId ? { ...project, name: newName } : project
+            ),
+          })),
 
         getProjectById: (projectId) => {
-          return get().chatProjects.find(project => project.id === projectId)
+          return get().chatProjects.find((project) => project.id === projectId)
         },
       }),
       {

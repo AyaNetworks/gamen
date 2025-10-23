@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Button from './ui/Button'
 import './ConfigurationModal.css'
@@ -65,19 +65,19 @@ function ConfigurationModal({ configType, onClose, theme }) {
         return [
           { name: '基本設定', id: 'basic' },
           { name: 'パーソナリティ', id: 'personality' },
-          { name: '詳細設定', id: 'advanced' }
+          { name: '詳細設定', id: 'advanced' },
         ]
       case 'tool':
         return [
           { name: 'ツール一覧', id: 'list' },
           { name: 'ツール追加', id: 'add' },
-          { name: 'ツール詳細', id: 'details' }
+          { name: 'ツール詳細', id: 'details' },
         ]
       case 'task':
         return [
           { name: 'タスク定義', id: 'define' },
           { name: 'タスク管理', id: 'manage' },
-          { name: 'タスク実行', id: 'execute' }
+          { name: 'タスク実行', id: 'execute' },
         ]
       default:
         return []
@@ -159,7 +159,11 @@ function ConfigurationModal({ configType, onClose, theme }) {
           </div>
         )
       default:
-        return <div className="tab-content"><p>設定内容</p></div>
+        return (
+          <div className="tab-content">
+            <p>設定内容</p>
+          </div>
+        )
     }
   }
 
@@ -184,11 +188,7 @@ function ConfigurationModal({ configType, onClose, theme }) {
       >
         <div className="config-modal-header">
           <h2 className="config-modal-title">{getModalTitle()}</h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-          >
+          <Button variant="ghost" size="sm" onClick={onClose}>
             ×
           </Button>
         </div>
@@ -200,9 +200,7 @@ function ConfigurationModal({ configType, onClose, theme }) {
               initial={false}
               animate={{
                 backgroundColor:
-                  activeTab === index
-                    ? 'rgba(100, 108, 255, 0.15)'
-                    : 'rgba(100, 108, 255, 0)',
+                  activeTab === index ? 'rgba(100, 108, 255, 0.15)' : 'rgba(100, 108, 255, 0)',
               }}
               transition={{ duration: 0.2 }}
             >
@@ -229,9 +227,7 @@ function ConfigurationModal({ configType, onClose, theme }) {
           ))}
         </div>
 
-        <div className="config-modal-body">
-          {renderTabContent()}
-        </div>
+        <div className="config-modal-body">{renderTabContent()}</div>
       </motion.div>
     </motion.div>,
     document.body

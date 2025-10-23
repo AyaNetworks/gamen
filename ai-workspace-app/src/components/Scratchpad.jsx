@@ -1,13 +1,23 @@
-import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence, useScroll } from 'framer-motion'
-import { FiDownload, FiRotateCcw, FiRotateCw, FiPaperclip, FiX, FiEdit2, FiChevronLeft, FiChevronRight, FiEye } from 'react-icons/fi'
+import { AnimatePresence, motion, useScroll } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiDownload,
+  FiEdit2,
+  FiEye,
+  FiPaperclip,
+  FiRotateCcw,
+  FiRotateCw,
+  FiX,
+} from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import remarkBreaks from 'remark-breaks'
 import rehypeHighlight from 'rehype-highlight'
+import remarkBreaks from 'remark-breaks'
+import remarkGfm from 'remark-gfm'
 import 'highlight.js/styles/github-dark.css'
-import StatsPanel from './StatsPanel'
 import PublishNotification from './PublishNotification'
+import StatsPanel from './StatsPanel'
 import Button from './ui/Button'
 import './Scratchpad.css'
 
@@ -23,7 +33,7 @@ function Scratchpad({
   onCloseTab,
   onRenameTab,
   onAddDocument,
-  onAttachToChat
+  onAttachToChat,
 }) {
   const [editingTabId, setEditingTabId] = useState(null)
   const [editingTitle, setEditingTitle] = useState('')
@@ -34,7 +44,7 @@ function Scratchpad({
   const [pendingAnimationId, setPendingAnimationId] = useState(null)
   const [shouldAnimateNewTabBtn, setShouldAnimateNewTabBtn] = useState(false)
   const [tabPublishStates, setTabPublishStates] = useState({
-    2: true // セグメント分析ノート is published by default
+    2: true, // セグメント分析ノート is published by default
   })
   const [showNotification, setShowNotification] = useState(false)
   const [notificationIsPublished, setNotificationIsPublished] = useState(false)
@@ -44,10 +54,7 @@ function Scratchpad({
   const { scrollYProgress } = useScroll({ container: previewRef })
 
   // Detect new tab during render OR use animating tab
-  const newTabId =
-    tabs.length > prevTabCount && !animatingTabId
-      ? currentTabId
-      : animatingTabId
+  const newTabId = tabs.length > prevTabCount && !animatingTabId ? currentTabId : animatingTabId
 
   // Plus button pulsing glow + scale bounce animation
   const plusButtonVariants = {
@@ -217,7 +224,7 @@ function Scratchpad({
     const rect = e.currentTarget.getBoundingClientRect()
     setControllerPosition({
       x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      y: e.clientY - rect.top,
     })
   }
 
@@ -231,7 +238,7 @@ function Scratchpad({
   }
 
   const handleDirectionAction = (direction) => {
-    const currentTabIndex = tabs.findIndex(tab => tab.id === currentTabId)
+    const currentTabIndex = tabs.findIndex((tab) => tab.id === currentTabId)
 
     switch (direction) {
       case 'left':
@@ -251,7 +258,7 @@ function Scratchpad({
         if (currentTab && onAttachToChat) {
           onAttachToChat({
             title: currentTab.title,
-            content: currentTab.content
+            content: currentTab.content,
           })
           // Show notification
           setAttachmentNotification(true)
@@ -292,9 +299,9 @@ function Scratchpad({
   }
 
   const handlePublishToggle = (tabId, isPublished) => {
-    setTabPublishStates(prev => ({
+    setTabPublishStates((prev) => ({
       ...prev,
-      [tabId]: isPublished
+      [tabId]: isPublished,
     }))
 
     // Show notification
@@ -304,7 +311,6 @@ function Scratchpad({
     // In a real app, this would call an API to update the publish state
     // await api.updateTabPublishState(tabId, isPublished)
   }
-
 
   const handleDragOver = (e) => {
     e.preventDefault()
@@ -359,7 +365,10 @@ function Scratchpad({
     }
 
     // Image files
-    if (fileType?.startsWith('image/') || ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(fileType?.split('/')[1])) {
+    if (
+      fileType?.startsWith('image/') ||
+      ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(fileType?.split('/')[1])
+    ) {
       return (
         <div className="file-preview-image-container">
           <img
@@ -374,7 +383,7 @@ function Scratchpad({
     // CSV files
     if (fileType === 'text/csv' || fileType === 'file/csv') {
       try {
-        const rows = content.split('\n').map(row => row.split(','))
+        const rows = content.split('\n').map((row) => row.split(','))
         return (
           <div className="file-preview-csv">
             <table className="csv-table">
@@ -403,7 +412,22 @@ function Scratchpad({
     }
 
     // Code files (JSON, JavaScript, Python, etc.)
-    const codeExtensions = ['json', 'js', 'jsx', 'ts', 'tsx', 'py', 'java', 'cpp', 'c', 'css', 'scss', 'xml', 'yaml', 'yml']
+    const codeExtensions = [
+      'json',
+      'js',
+      'jsx',
+      'ts',
+      'tsx',
+      'py',
+      'java',
+      'cpp',
+      'c',
+      'css',
+      'scss',
+      'xml',
+      'yaml',
+      'yml',
+    ]
     const extension = fileType?.split('/')[1]
     if (codeExtensions.includes(extension)) {
       return (
@@ -414,12 +438,14 @@ function Scratchpad({
     }
 
     // Markdown files (default)
-    if (fileType === 'text/markdown' || fileType === 'file/md' || fileType === 'file/markdown' || !fileType) {
+    if (
+      fileType === 'text/markdown' ||
+      fileType === 'file/md' ||
+      fileType === 'file/markdown' ||
+      !fileType
+    ) {
       return (
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm, remarkBreaks]}
-          rehypePlugins={[rehypeHighlight]}
-        >
+        <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeHighlight]}>
           {content || '*Markdown content will appear here...*'}
         </ReactMarkdown>
       )
@@ -435,7 +461,9 @@ function Scratchpad({
       <div className="scratchpad-header">
         <div className="scratchpad-title-section">
           <h2>Dione Workspaces</h2>
-          <span className="scratchpad-subtitle">An AI driven operational platform by Eisuke Izawa.</span>
+          <span className="scratchpad-subtitle">
+            An AI driven operational platform by Eisuke Izawa.
+          </span>
         </div>
       </div>
 
@@ -450,16 +478,8 @@ function Scratchpad({
                   key={tab.id}
                   className={`tab ${tab.id === currentTabId ? 'active' : ''}`}
                   onClick={() => onSelectTab(tab.id)}
-                  initial={
-                    isNewTab
-                      ? newTabVariants.initial
-                      : false
-                  }
-                  animate={
-                    isNewTab
-                      ? newTabVariants.animate
-                      : { opacity: 1, y: 0, scale: 1 }
-                  }
+                  initial={isNewTab ? newTabVariants.initial : false}
+                  animate={isNewTab ? newTabVariants.animate : { opacity: 1, y: 0, scale: 1 }}
                   exit={newTabVariants.exit}
                 >
                   {editingTabId === tab.id ? (
@@ -474,10 +494,7 @@ function Scratchpad({
                     />
                   ) : (
                     <>
-                      <span
-                        className="tab-title"
-                        onDoubleClick={() => handleTabDoubleClick(tab)}
-                      >
+                      <span className="tab-title" onDoubleClick={() => handleTabDoubleClick(tab)}>
                         {tab.title}
                       </span>
                       {tabs.length > 1 && (
@@ -555,7 +572,11 @@ function Scratchpad({
         </div>
 
         {isPreviewMode ? (
-          <div className="scratchpad-preview" ref={previewRef} onContextMenu={handleEditorContextMenu}>
+          <div
+            className="scratchpad-preview"
+            ref={previewRef}
+            onContextMenu={handleEditorContextMenu}
+          >
             {/* Scroll Progress Indicator */}
             <motion.div
               className="scroll-progress-indicator"
@@ -583,7 +604,7 @@ function Scratchpad({
               className="circular-controller"
               style={{
                 left: `${controllerPosition.x}px`,
-                top: `${controllerPosition.y}px`
+                top: `${controllerPosition.y}px`,
               }}
             >
               {/* Center Button */}
@@ -603,7 +624,11 @@ function Scratchpad({
                 title="Dione"
                 className="controller-button controller-top"
               >
-                <img src="/sample_assets/dione/Dione-logo.png" alt="Dione" className="dione-logo-button" />
+                <img
+                  src="/sample_assets/dione/Dione-logo.png"
+                  alt="Dione"
+                  className="dione-logo-button"
+                />
               </Button>
               <Button
                 variant="circular"

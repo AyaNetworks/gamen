@@ -1,13 +1,13 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels'
+import { useState } from 'react'
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import ChatPanel from './components/ChatPanel'
-import Scratchpad from './components/Scratchpad'
 import DocumentPanel from './components/DocumentPanel'
+import Scratchpad from './components/Scratchpad'
 import './App.css'
 
 // Import Zustand stores
-import { useChatStore, useThemeStore, useProjectStore, useWorkspaceStore } from './store'
+import { useChatStore, useProjectStore, useThemeStore, useWorkspaceStore } from './store'
 
 function App() {
   // Zustand stores - replaces useState for global state
@@ -65,7 +65,7 @@ function App() {
 
 **期待される成果**: 全体ROI 20-25%向上`,
       history: [''],
-      historyIndex: 0
+      historyIndex: 0,
     },
     {
       id: 2,
@@ -120,8 +120,8 @@ function App() {
 - 復帰割引コード (15-25%)
 - パーソナライズされた商品提案`,
       history: [''],
-      historyIndex: 0
-    }
+      historyIndex: 0,
+    },
   ])
   const [currentScratchpadTabId, setCurrentScratchpadTabId] = useState(1)
   const [documents, setDocuments] = useState([
@@ -171,7 +171,7 @@ function App() {
 - **CTR** = (クリック数 / 開封数) × 100
 - **Conversion Rate** = (コンバージョン数 / 配信数) × 100`,
       filePath: '/knowledge_base/email-marketing.md',
-      tags: { category: 'marketing', channel: 'email', expertise: 'high' }
+      tags: { category: 'marketing', channel: 'email', expertise: 'high' },
     },
     {
       id: 2,
@@ -217,7 +217,7 @@ function App() {
 **フェーズ 2** (2-3ヶ月): パーソナライゼーション実装
 **フェーズ 3** (4-6ヶ月): 自動化フロー構築`,
       filePath: '/knowledge_base/segmentation.md',
-      tags: { category: 'strategy', focus: 'segmentation', level: 'advanced' }
+      tags: { category: 'strategy', focus: 'segmentation', level: 'advanced' },
     },
     {
       id: 3,
@@ -258,7 +258,7 @@ function App() {
 **Q2 売上目標**: ¥152M
 **目標達成率**: 105%`,
       filePath: '/knowledge_base/marketing-calendar.md',
-      tags: { category: 'planning', timeframe: 'q2-2024' }
+      tags: { category: 'planning', timeframe: 'q2-2024' },
     },
   ])
   const [libraries, setLibraries] = useState([
@@ -266,14 +266,15 @@ function App() {
       id: 1,
       name: 'Q2_campaign_data.csv',
       type: 'library',
-      content: 'Channel,Impressions,Clicks,CTR,Conversions,CVR,Spend,Revenue,ROI\nEmail,450000,21600,4.8%,540,2.5%,2400,10080,420%\nSocial Media,1200000,25200,2.1%,302,1.2%,8500,12758,150%\nDisplay Ads,850000,33200,3.9%,598,1.8%,8700,10370,120%',
+      content:
+        'Channel,Impressions,Clicks,CTR,Conversions,CVR,Spend,Revenue,ROI\nEmail,450000,21600,4.8%,540,2.5%,2400,10080,420%\nSocial Media,1200000,25200,2.1%,302,1.2%,8500,12758,150%\nDisplay Ads,850000,33200,3.9%,598,1.8%,8700,10370,120%',
       filePath: '/uploads/Q2_campaign_data.csv',
       tags: {
         source: 'chat',
         uploadedAt: new Date(Date.now() - 700000).toISOString(),
         fileType: 'text/csv',
-        campaign: 'Q2-2024'
-      }
+        campaign: 'Q2-2024',
+      },
     },
     {
       id: 2,
@@ -286,21 +287,22 @@ function App() {
         source: 'chat',
         uploadedAt: new Date(Date.now() - 650000).toISOString(),
         fileType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        focus: 'VIP-Standard-Dormant'
-      }
+        focus: 'VIP-Standard-Dormant',
+      },
     },
     {
       id: 3,
       name: 'Email_Template_Q2.html',
       type: 'library',
-      content: '<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: Arial, sans-serif; }\n    .container { max-width: 600px; margin: 0 auto; }\n    .header { background-color: #6C6CFF; padding: 20px; color: white; }\n    .content { padding: 20px; background-color: #f9f9f9; }\n    .cta-button { background-color: #6C6CFF; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; }\n  </style>\n</head>\n<body>\n  <div class="container">\n    <div class="header">\n      <h1>Q2 Special Offer</h1>\n    </div>\n    <div class="content">\n      <p>Dear Valued Customer,</p>\n      <p>We have an exclusive offer for you this quarter...</p>\n      <a href="#" class="cta-button">Shop Now</a>\n    </div>\n  </div>\n</body>\n</html>',
+      content:
+        '<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: Arial, sans-serif; }\n    .container { max-width: 600px; margin: 0 auto; }\n    .header { background-color: #6C6CFF; padding: 20px; color: white; }\n    .content { padding: 20px; background-color: #f9f9f9; }\n    .cta-button { background-color: #6C6CFF; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; }\n  </style>\n</head>\n<body>\n  <div class="container">\n    <div class="header">\n      <h1>Q2 Special Offer</h1>\n    </div>\n    <div class="content">\n      <p>Dear Valued Customer,</p>\n      <p>We have an exclusive offer for you this quarter...</p>\n      <a href="#" class="cta-button">Shop Now</a>\n    </div>\n  </div>\n</body>\n</html>',
       filePath: '/uploads/Email_Template_Q2.html',
       tags: {
         source: 'chat',
         uploadedAt: new Date(Date.now() - 600000).toISOString(),
         fileType: 'text/html',
-        purpose: 'email-template'
-      }
+        purpose: 'email-template',
+      },
     },
     {
       id: 4,
@@ -313,8 +315,8 @@ function App() {
         source: 'chat',
         uploadedAt: new Date(Date.now() - 550000).toISOString(),
         fileType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        slides: '24'
-      }
+        slides: '24',
+      },
     },
     {
       id: 5,
@@ -327,8 +329,8 @@ function App() {
         source: 'chat',
         uploadedAt: new Date(Date.now() - 500000).toISOString(),
         fileType: 'application/pdf',
-        version: '2.1'
-      }
+        version: '2.1',
+      },
     },
     {
       id: 6,
@@ -341,9 +343,9 @@ function App() {
         source: 'chat',
         uploadedAt: new Date(Date.now() - 450000).toISOString(),
         fileType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        platform: 'Instagram-Twitter-Facebook'
-      }
-    }
+        platform: 'Instagram-Twitter-Facebook',
+      },
+    },
   ])
 
   // === OLD HANDLERS REMOVED - Now in Zustand stores ===
@@ -353,12 +355,12 @@ function App() {
   // toggleTheme, attachedWorkspaces handlers
 
   const handleSendMessage_OLD = (userMessage, attachments = [], replyContext = null) => {
-    const updatedSessions = chatSessions.map(chat => {
+    const updatedSessions = chatSessions.map((chat) => {
       if (chat.id === currentChatId) {
         const newMessage = {
           role: 'user',
           content: userMessage,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         }
 
         // Add reply context if replying to a message
@@ -367,21 +369,25 @@ function App() {
         }
 
         // Add attached workspaces if any
-        if (replyContext && replyContext.attachedWorkspaces && replyContext.attachedWorkspaces.length > 0) {
+        if (
+          replyContext &&
+          replyContext.attachedWorkspaces &&
+          replyContext.attachedWorkspaces.length > 0
+        ) {
           newMessage.attachedWorkspaces = replyContext.attachedWorkspaces
         }
 
         // Add attachments if any
         if (attachments.length > 0) {
-          newMessage.attachments = attachments.map(file => ({
+          newMessage.attachments = attachments.map((file) => ({
             name: file.name,
             size: file.size,
             type: file.type,
-            preview: file.preview
+            preview: file.preview,
           }))
 
           // Add attachments to libraries (uploaded documents)
-          const newLibraries = attachments.map(file => ({
+          const newLibraries = attachments.map((file) => ({
             id: Date.now() + Math.random(),
             name: file.name,
             type: 'library',
@@ -391,19 +397,21 @@ function App() {
             tags: {
               source: 'chat',
               uploadedAt: new Date().toISOString(),
-              fileType: file.type
-            }
+              fileType: file.type,
+            },
           }))
 
-          setLibraries(prevLibs => [...prevLibs, ...newLibraries])
+          setLibraries((prevLibs) => [...prevLibs, ...newLibraries])
         }
 
         const newMessages = [...chat.messages, newMessage]
 
         // Update title if this is the first message
-        const title = chat.messages.length === 0
-          ? (userMessage || 'ファイル添付').substring(0, 30) + ((userMessage || 'ファイル添付').length > 30 ? '...' : '')
-          : chat.title
+        const title =
+          chat.messages.length === 0
+            ? (userMessage || 'ファイル添付').substring(0, 30) +
+              ((userMessage || 'ファイル添付').length > 30 ? '...' : '')
+            : chat.title
 
         return { ...chat, messages: newMessages, title }
       }
@@ -420,8 +428,9 @@ function App() {
       if (lowerMessage.includes('スクラッチパッド') || lowerMessage.includes('scratchpad')) {
         aiResponse = 'スクラッチパッドを更新しました。'
         handleScratchpadUpdate(
-          scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)?.content +
-          '\n// AI generated content\n' + userMessage
+          scratchpadTabs.find((tab) => tab.id === currentScratchpadTabId)?.content +
+            '\n// AI generated content\n' +
+            userMessage
         )
       } else if (lowerMessage.includes('こんにちは') || lowerMessage.includes('hello')) {
         aiResponse = 'こんにちは！どのようにお手伝いできますか？'
@@ -429,12 +438,21 @@ function App() {
         aiResponse = 'ご質問ありがとうございます。シンプルなAIとして、基本的な応答のみ可能です。'
       }
 
-      setChatSessions(prevSessions =>
-        prevSessions.map(chat => {
+      setChatSessions((prevSessions) =>
+        prevSessions.map((chat) => {
           if (chat.id === currentChatId) {
             return {
               ...chat,
-              messages: [...chat.messages, { role: 'ai', type: 'dione', status: 'success', content: aiResponse, timestamp: new Date().toISOString() }]
+              messages: [
+                ...chat.messages,
+                {
+                  role: 'ai',
+                  type: 'dione',
+                  status: 'success',
+                  content: aiResponse,
+                  timestamp: new Date().toISOString(),
+                },
+              ],
             }
           }
           return chat
@@ -448,7 +466,7 @@ function App() {
       id: Date.now(),
       title: '新しいチャット',
       messages: [],
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     }
     setChatSessions([newChat, ...chatSessions])
     setCurrentChatId(newChat.id)
@@ -459,7 +477,7 @@ function App() {
   }
 
   const handleDeleteChat = (chatId) => {
-    const filteredSessions = chatSessions.filter(chat => chat.id !== chatId)
+    const filteredSessions = chatSessions.filter((chat) => chat.id !== chatId)
 
     if (filteredSessions.length === 0) {
       // Create a new empty chat if all are deleted
@@ -467,7 +485,7 @@ function App() {
         id: Date.now(),
         title: '新しいチャット',
         messages: [],
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       }
       setChatSessions([newChat])
       setCurrentChatId(newChat.id)
@@ -485,50 +503,52 @@ function App() {
       id: Date.now(),
       name: projectName || 'New Project',
       chatIds: [],
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     }
     setChatProjects([...chatProjects, newProject])
   }
 
   const handleDeleteProject = (projectId) => {
-    setChatProjects(chatProjects.filter(p => p.id !== projectId))
+    setChatProjects(chatProjects.filter((p) => p.id !== projectId))
   }
 
   const handleRenameProject = (projectId, newName) => {
-    setChatProjects(chatProjects.map(p =>
-      p.id === projectId ? { ...p, name: newName } : p
-    ))
+    setChatProjects(chatProjects.map((p) => (p.id === projectId ? { ...p, name: newName } : p)))
   }
 
   const handleAddChatToProject = (chatId, projectId) => {
-    setChatProjects(chatProjects.map(p => {
-      if (p.id === projectId && !p.chatIds.includes(chatId)) {
-        return { ...p, chatIds: [...p.chatIds, chatId] }
-      }
-      return p
-    }))
+    setChatProjects(
+      chatProjects.map((p) => {
+        if (p.id === projectId && !p.chatIds.includes(chatId)) {
+          return { ...p, chatIds: [...p.chatIds, chatId] }
+        }
+        return p
+      })
+    )
     // Update chat to include projectId
-    setChatSessions(chatSessions.map(chat =>
-      chat.id === chatId ? { ...chat, projectId } : chat
-    ))
+    setChatSessions(
+      chatSessions.map((chat) => (chat.id === chatId ? { ...chat, projectId } : chat))
+    )
   }
 
   const handleRemoveChatFromProject = (chatId) => {
     // Remove projectId from chat
-    setChatSessions(chatSessions.map(chat =>
-      chat.id === chatId ? { ...chat, projectId: null } : chat
-    ))
+    setChatSessions(
+      chatSessions.map((chat) => (chat.id === chatId ? { ...chat, projectId: null } : chat))
+    )
     // Update project to remove chatId
-    setChatProjects(chatProjects.map(p => ({
-      ...p,
-      chatIds: p.chatIds.filter(id => id !== chatId)
-    })))
+    setChatProjects(
+      chatProjects.map((p) => ({
+        ...p,
+        chatIds: p.chatIds.filter((id) => id !== chatId),
+      }))
+    )
   }
 
   // Scratchpad handlers
   const handleScratchpadUpdate = (newContent) => {
-    setScratchpadTabs(prevTabs =>
-      prevTabs.map(tab => {
+    setScratchpadTabs((prevTabs) =>
+      prevTabs.map((tab) => {
         if (tab.id === currentScratchpadTabId) {
           const newHistory = tab.history.slice(0, tab.historyIndex + 1)
           newHistory.push(newContent)
@@ -536,7 +556,7 @@ function App() {
             ...tab,
             content: newContent,
             history: newHistory,
-            historyIndex: newHistory.length - 1
+            historyIndex: newHistory.length - 1,
           }
         }
         return tab
@@ -545,14 +565,14 @@ function App() {
   }
 
   const handleScratchpadUndo = () => {
-    setScratchpadTabs(prevTabs =>
-      prevTabs.map(tab => {
+    setScratchpadTabs((prevTabs) =>
+      prevTabs.map((tab) => {
         if (tab.id === currentScratchpadTabId && tab.historyIndex > 0) {
           const newIndex = tab.historyIndex - 1
           return {
             ...tab,
             content: tab.history[newIndex],
-            historyIndex: newIndex
+            historyIndex: newIndex,
           }
         }
         return tab
@@ -561,14 +581,14 @@ function App() {
   }
 
   const handleScratchpadRedo = () => {
-    setScratchpadTabs(prevTabs =>
-      prevTabs.map(tab => {
+    setScratchpadTabs((prevTabs) =>
+      prevTabs.map((tab) => {
         if (tab.id === currentScratchpadTabId && tab.historyIndex < tab.history.length - 1) {
           const newIndex = tab.historyIndex + 1
           return {
             ...tab,
             content: tab.history[newIndex],
-            historyIndex: newIndex
+            historyIndex: newIndex,
           }
         }
         return tab
@@ -582,7 +602,7 @@ function App() {
       title: `Untitled ${scratchpadTabs.length + 1}`,
       content: '',
       history: [''],
-      historyIndex: 0
+      historyIndex: 0,
     }
     setScratchpadTabs([...scratchpadTabs, newTab])
     setCurrentScratchpadTabId(newTab.id)
@@ -593,7 +613,7 @@ function App() {
   }
 
   const handleCloseScratchpadTab = (tabId) => {
-    const filteredTabs = scratchpadTabs.filter(tab => tab.id !== tabId)
+    const filteredTabs = scratchpadTabs.filter((tab) => tab.id !== tabId)
 
     if (filteredTabs.length === 0) {
       const newTab = {
@@ -601,7 +621,7 @@ function App() {
         title: 'Untitled 1',
         content: '',
         history: [''],
-        historyIndex: 0
+        historyIndex: 0,
       }
       setScratchpadTabs([newTab])
       setCurrentScratchpadTabId(newTab.id)
@@ -614,10 +634,8 @@ function App() {
   }
 
   const handleRenameScratchpadTab = (tabId, newTitle) => {
-    setScratchpadTabs(prevTabs =>
-      prevTabs.map(tab =>
-        tab.id === tabId ? { ...tab, title: newTitle } : tab
-      )
+    setScratchpadTabs((prevTabs) =>
+      prevTabs.map((tab) => (tab.id === tabId ? { ...tab, title: newTitle } : tab))
     )
   }
 
@@ -630,7 +648,7 @@ function App() {
         name: file.name,
         type: 'library',
         content: e.target.result,
-        file: file
+        file: file,
       }
       setLibraries([...libraries, newLibrary])
     }
@@ -644,7 +662,7 @@ function App() {
         name: file.name,
         type: 'library',
         content: '',
-        file: file
+        file: file,
       }
       setLibraries([...libraries, newLibrary])
     } else {
@@ -653,11 +671,11 @@ function App() {
   }
 
   const handleDeleteLibrary = (libraryId) => {
-    setLibraries(libraries.filter(lib => lib.id !== libraryId))
+    setLibraries(libraries.filter((lib) => lib.id !== libraryId))
   }
 
   const handleDeleteDocument = (documentId) => {
-    setDocuments(documents.filter(doc => doc.id !== documentId))
+    setDocuments(documents.filter((doc) => doc.id !== documentId))
   }
 
   const handleAddToScratchpad = (documentData) => {
@@ -669,7 +687,7 @@ function App() {
       fileName: documentData.fileName,
       filePath: documentData.filePath,
       history: [documentData.content],
-      historyIndex: 0
+      historyIndex: 0,
     }
     setScratchpadTabs([...scratchpadTabs, newTab])
     setCurrentScratchpadTabId(newTab.id)
@@ -680,53 +698,55 @@ function App() {
     useWorkspaceStore.getState().attachWorkspace(workspaceData)
   }
 
-  const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
+  const currentScratchpadTab = scratchpadTabs.find((tab) => tab.id === currentScratchpadTabId)
 
   return (
     <div className={`h-screen relative overflow-hidden ${theme === 'dark' ? 'dark' : ''}`}>
       {/* Background gradients */}
-      <div className={`absolute inset-0 pointer-events-none z-0 animate-[theme-fade-in_0.6s_ease-out] ${
-        theme === 'dark'
-          ? 'bg-gradient-to-l from-[#B87069] to-[#114357]'
-          : 'bg-gradient-to-r from-[#d9a8a5] to-[#ddd6f3]'
-      }`} />
+      <div
+        className={`absolute inset-0 pointer-events-none z-0 animate-[theme-fade-in_0.6s_ease-out] ${
+          theme === 'dark'
+            ? 'bg-gradient-to-l from-[#B87069] to-[#114357]'
+            : 'bg-gradient-to-r from-[#d9a8a5] to-[#ddd6f3]'
+        }`}
+      />
 
       {/* Content with z-index above background */}
       <div className="relative z-10 h-full">
         <PanelGroup direction="horizontal">
-        <Panel defaultSize={35} minSize={15} maxSize={50}>
-          {/* ChatPanel now gets ALL data from Zustand stores - no props needed! */}
-          <ChatPanel />
-        </Panel>
-        <PanelResizeHandle className="resize-handle" />
-        <Panel defaultSize={40} minSize={25}>
-          <Scratchpad
-            tabs={scratchpadTabs}
-            currentTabId={currentScratchpadTabId}
-            currentTab={currentScratchpadTab}
-            onUpdate={handleScratchpadUpdate}
-            onUndo={handleScratchpadUndo}
-            onRedo={handleScratchpadRedo}
-            onNewTab={handleNewScratchpadTab}
-            onSelectTab={handleSelectScratchpadTab}
-            onCloseTab={handleCloseScratchpadTab}
-            onRenameTab={handleRenameScratchpadTab}
-            onAddDocument={handleAddToScratchpad}
-            onAttachToChat={handleAttachToChat}
-          />
-        </Panel>
-        <PanelResizeHandle className="resize-handle" />
-        <Panel defaultSize={25} minSize={15} maxSize={40}>
-          <DocumentPanel
-            documents={documents}
-            libraries={libraries}
-            onUploadLibrary={handleUploadLibrary}
-            onDeleteLibrary={handleDeleteLibrary}
-            onDeleteDocument={handleDeleteDocument}
-            onAddToScratchpad={handleAddToScratchpad}
-          />
-        </Panel>
-      </PanelGroup>
+          <Panel defaultSize={35} minSize={15} maxSize={50}>
+            {/* ChatPanel now gets ALL data from Zustand stores - no props needed! */}
+            <ChatPanel />
+          </Panel>
+          <PanelResizeHandle className="resize-handle" />
+          <Panel defaultSize={40} minSize={25}>
+            <Scratchpad
+              tabs={scratchpadTabs}
+              currentTabId={currentScratchpadTabId}
+              currentTab={currentScratchpadTab}
+              onUpdate={handleScratchpadUpdate}
+              onUndo={handleScratchpadUndo}
+              onRedo={handleScratchpadRedo}
+              onNewTab={handleNewScratchpadTab}
+              onSelectTab={handleSelectScratchpadTab}
+              onCloseTab={handleCloseScratchpadTab}
+              onRenameTab={handleRenameScratchpadTab}
+              onAddDocument={handleAddToScratchpad}
+              onAttachToChat={handleAttachToChat}
+            />
+          </Panel>
+          <PanelResizeHandle className="resize-handle" />
+          <Panel defaultSize={25} minSize={15} maxSize={40}>
+            <DocumentPanel
+              documents={documents}
+              libraries={libraries}
+              onUploadLibrary={handleUploadLibrary}
+              onDeleteLibrary={handleDeleteLibrary}
+              onDeleteDocument={handleDeleteDocument}
+              onAddToScratchpad={handleAddToScratchpad}
+            />
+          </Panel>
+        </PanelGroup>
       </div>
     </div>
   )

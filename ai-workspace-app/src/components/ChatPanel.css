@@ -53,7 +53,9 @@
   width: 0;
   overflow: hidden;
   white-space: nowrap;
-  transition: opacity 0.3s ease, width 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease;
 }
 
 .chat-history-sidebar:hover .chat-history-header h3 {
@@ -335,7 +337,7 @@ button.radix-button.project-toggle-button {
 
 .chat-delete-button:hover {
   background-color: rgba(239, 68, 68, 0.2);
-  color: #EF4444;
+  color: #ef4444;
 }
 
 .chat-history-item.active .chat-delete-button {
@@ -344,7 +346,7 @@ button.radix-button.project-toggle-button {
 
 .chat-history-item.active .chat-delete-button:hover {
   background-color: rgba(239, 68, 68, 0.2);
-  color: #EF4444;
+  color: #ef4444;
 }
 
 .chat-history-sidebar:hover .chat-history-list::-webkit-scrollbar {
@@ -474,7 +476,12 @@ button.radix-button.project-toggle-button {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, rgba(100, 108, 255, 0.6), rgba(100, 108, 255, 1), rgba(100, 108, 255, 0.6));
+  background: linear-gradient(
+    90deg,
+    rgba(100, 108, 255, 0.6),
+    rgba(100, 108, 255, 1),
+    rgba(100, 108, 255, 0.6)
+  );
   transform-origin: 0%;
   z-index: 10;
   box-shadow: 0 0 10px rgba(100, 108, 255, 0.5);
@@ -667,7 +674,9 @@ button.radix-button.project-toggle-button {
 
 .message-clickable {
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .message-clickable:hover {
@@ -770,7 +779,7 @@ button.radix-button.project-toggle-button {
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .message-content pre {
@@ -1598,7 +1607,12 @@ button.radix-button.project-toggle-button {
 
 /* Light theme scroll indicator */
 .light-theme .scroll-progress-indicator {
-  background: linear-gradient(90deg, rgba(83, 91, 242, 0.5), rgba(100, 108, 255, 0.9), rgba(83, 91, 242, 0.5));
+  background: linear-gradient(
+    90deg,
+    rgba(83, 91, 242, 0.5),
+    rgba(100, 108, 255, 0.9),
+    rgba(83, 91, 242, 0.5)
+  );
   box-shadow: 0 0 12px rgba(100, 108, 255, 0.4);
 }
 
@@ -2004,7 +2018,10 @@ button.radix-button.project-toggle-button {
   overflow: hidden;
   white-space: nowrap;
   transform: translateY(-8px);
-  transition: opacity 0.3s ease, width 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    transform 0.3s ease;
 }
 
 /* Show text when sidebar is hovered - Slide down + Fade */

@@ -1,18 +1,34 @@
-import { useState, useRef, useEffect, memo, useCallback } from 'react'
-import { motion, AnimatePresence, useScroll } from 'framer-motion'
-import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend, FiCopy, FiCheck, FiCornerDownLeft, FiX, FiFolder } from 'react-icons/fi'
+import { AnimatePresence, motion, useScroll } from 'framer-motion'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import {
+  FiCheck,
+  FiCheckSquare,
+  FiCopy,
+  FiCornerDownLeft,
+  FiFolder,
+  FiMessageSquare,
+  FiMoon,
+  FiPaperclip,
+  FiSend,
+  FiStar,
+  FiSun,
+  FiTool,
+  FiUser,
+  FiX,
+  FiZap,
+} from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import remarkBreaks from 'remark-breaks'
 import rehypeHighlight from 'rehype-highlight'
+import remarkBreaks from 'remark-breaks'
+import remarkGfm from 'remark-gfm'
 import 'highlight.js/styles/github-dark.css'
-import MessageDetailModal from './MessageDetailModal'
 import ConfigurationModal from './ConfigurationModal'
+import MessageDetailModal from './MessageDetailModal'
 import Button from './ui/Button'
 import './ChatPanel.css'
 
 // Import Zustand stores
-import { useChatStore, useThemeStore, useProjectStore, useWorkspaceStore } from '../store'
+import { useChatStore, useProjectStore, useThemeStore, useWorkspaceStore } from '../store'
 
 // Animation variants defined outside component to prevent re-creation
 const planeIconVariants = {
@@ -41,12 +57,7 @@ const planeIconVariants = {
 // Memoized Send Button to prevent animation restarts on parent re-renders
 const AnimatedSendButton = memo(({ shouldAnimate, animationKey, onAnimationComplete }) => {
   return (
-    <Button
-      type="submit"
-      variant="soft"
-      size="md"
-      animated={false}
-    >
+    <Button type="submit" variant="soft" size="md" animated={false}>
       <motion.div
         key={`plane-animation-${animationKey}`}
         variants={planeIconVariants}
@@ -115,10 +126,7 @@ function ChatPanel() {
   // Detect new chat during render (before effect runs) OR use animating chat
   // This ensures the component mounts with correct initial state
   const newChatId =
-    chatSessions.length > prevChatCount && !animatingChatId
-      ? currentChatId
-      : animatingChatId
-
+    chatSessions.length > prevChatCount && !animatingChatId ? currentChatId : animatingChatId
 
   const plusButtonVariants = {
     normal: {
@@ -292,7 +300,7 @@ function ChatPanel() {
       sendMessage(inputValue, attachedFiles, {
         replyingToIndex: replyingToIndex,
         replyingToContent: replyingToContent,
-        attachedWorkspaces: attachedWorkspaces
+        attachedWorkspaces: attachedWorkspaces,
       })
       setInputValue('')
       setAttachedFiles([])
@@ -327,12 +335,12 @@ function ChatPanel() {
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files)
     if (files.length > 0) {
-      const fileData = files.map(file => ({
+      const fileData = files.map((file) => ({
         name: file.name,
         size: file.size,
         type: file.type,
         file: file,
-        preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null
+        preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
       }))
       setAttachedFiles([...attachedFiles, ...fileData])
     }
@@ -440,7 +448,7 @@ function ChatPanel() {
     const k = 1024
     const sizes = ['Bytes', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
+    return Math.round((bytes / k ** i) * 100) / 100 + ' ' + sizes[i]
   }
 
   const getFileIcon = (fileType) => {
@@ -499,25 +507,29 @@ function ChatPanel() {
         iconPath = '/sample_assets/dione/tool_error.png'
       } else {
         // Tool success
-        iconPath = theme === 'dark'
-          ? '/sample_assets/dione/tool_dark.png'
-          : '/sample_assets/dione/tool_light.png'
+        iconPath =
+          theme === 'dark'
+            ? '/sample_assets/dione/tool_dark.png'
+            : '/sample_assets/dione/tool_light.png'
       }
     } else if (messageType === 'thinking') {
       // Thinking (usually success state)
-      iconPath = theme === 'dark'
-        ? '/sample_assets/dione/dione_thinking_dark.png'
-        : '/sample_assets/dione/dione_thinking_light.png'
+      iconPath =
+        theme === 'dark'
+          ? '/sample_assets/dione/dione_thinking_dark.png'
+          : '/sample_assets/dione/dione_thinking_light.png'
     } else {
       // Dione type (normal AI response)
       if (messageStatus === 'error') {
-        iconPath = theme === 'dark'
-          ? '/sample_assets/dione/dione_error_dark.png'
-          : '/sample_assets/dione/dione_error_light.png'
+        iconPath =
+          theme === 'dark'
+            ? '/sample_assets/dione/dione_error_dark.png'
+            : '/sample_assets/dione/dione_error_light.png'
       } else {
-        iconPath = theme === 'dark'
-          ? '/sample_assets/dione/dione_dark.png'
-          : '/sample_assets/dione/dione_light.png'
+        iconPath =
+          theme === 'dark'
+            ? '/sample_assets/dione/dione_dark.png'
+            : '/sample_assets/dione/dione_light.png'
       }
     }
 
@@ -569,7 +581,7 @@ function ChatPanel() {
     const timeString = date.toLocaleTimeString('ja-JP', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: false,
     })
 
     if (isToday) {
@@ -578,7 +590,7 @@ function ChatPanel() {
       // Show date and time for older messages
       const dateString = date.toLocaleDateString('ja-JP', {
         month: 'numeric',
-        day: 'numeric'
+        day: 'numeric',
       })
       return `${dateString} ${timeString}`
     }
@@ -586,7 +598,10 @@ function ChatPanel() {
 
   const handleMessageClick = (message) => {
     // Only show modal for AI messages that have detailed info
-    if (message.role === 'ai' && (message.trace || message.traceback || message.toolArgs || message.toolResults)) {
+    if (
+      message.role === 'ai' &&
+      (message.trace || message.traceback || message.toolArgs || message.toolResults)
+    ) {
       setSelectedMessage(message)
     }
   }
@@ -626,15 +641,14 @@ function ChatPanel() {
         <div className="chat-history-header">
           <h3>チャット履歴</h3>
           <div className="chat-history-header-buttons">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
               <Button
                 variant="surface"
                 size="md"
                 onClick={() => setShowProjectInput(!showProjectInput)}
-                title={showProjectInput ? 'プロジェクト作成をキャンセル' : '新しいプロジェクトを作成'}
+                title={
+                  showProjectInput ? 'プロジェクト作成をキャンセル' : '新しいプロジェクトを作成'
+                }
                 className="project-toggle-button"
               >
                 <FiFolder size={20} />
@@ -709,7 +723,7 @@ function ChatPanel() {
                     </div>
                     {/* Chats in this project */}
                     {chatSessions
-                      .filter(chat => chat.projectId === project.id)
+                      .filter((chat) => chat.projectId === project.id)
                       .map((chat) => {
                         const isNewChat = chat.id === newChatId
                         return (
@@ -723,15 +737,17 @@ function ChatPanel() {
                             transition={isNewChat ? undefined : springTransition}
                             initial={isNewChat ? newChatVariants.initial : false}
                             animate={
-                              isNewChat
-                                ? newChatVariants.animate
-                                : { opacity: 1, y: 0, scale: 1 }
+                              isNewChat ? newChatVariants.animate : { opacity: 1, y: 0, scale: 1 }
                             }
                             exit={newChatVariants.exit}
                           >
                             <div className="chat-history-compact">
-                              <div className="chat-compact-time">{formatDateCompact(chat.createdAt)}</div>
-                              <div className="chat-compact-icon"><FiMessageSquare size={20} /></div>
+                              <div className="chat-compact-time">
+                                {formatDateCompact(chat.createdAt)}
+                              </div>
+                              <div className="chat-compact-icon">
+                                <FiMessageSquare size={20} />
+                              </div>
                               <div className="chat-compact-count">{chat.messages.length}</div>
                             </div>
 
@@ -771,59 +787,55 @@ function ChatPanel() {
             >
               <span className="ungrouped-label">PJ外のチャット</span>
             </div>
-            {chatSessions.filter(chat => !chat.projectId).map((chat) => {
-              const isNewChat = chat.id === newChatId
-              return (
-                <motion.div
-                  key={chat.id}
-                  className={`chat-history-item ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
-                  onClick={() => setCurrentChatId(chat.id)}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, chat.id)}
-                  onDragEnd={handleDragEnd}
-                  transition={isNewChat ? undefined : springTransition}
-                  initial={
-                    isNewChat
-                      ? newChatVariants.initial
-                      : false
-                  }
-                  animate={
-                    isNewChat
-                      ? newChatVariants.animate
-                      : { opacity: 1, y: 0, scale: 1 }
-                  }
-                  exit={newChatVariants.exit}
-                >
-                  {/* Compact view (shown when sidebar is collapsed) */}
-                  <div className="chat-history-compact">
-                    <div className="chat-compact-time">{formatDateCompact(chat.createdAt)}</div>
-                    <div className="chat-compact-icon"><FiMessageSquare size={20} /></div>
-                    <div className="chat-compact-count">{chat.messages.length}</div>
-                  </div>
-
-                  {/* Expanded view (shown when sidebar is hovered) */}
-                  <div className="chat-history-content">
-                    <div className="chat-history-title">{chat.title}</div>
-                    <div className="chat-history-meta">
-                      <span className="chat-message-count">{chat.messages.length}件</span>
-                      <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
-                    </div>
-                  </div>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      deleteChat(chat.id)
-                    }}
-                    title="削除"
-                    className="chat-delete-button"
+            {chatSessions
+              .filter((chat) => !chat.projectId)
+              .map((chat) => {
+                const isNewChat = chat.id === newChatId
+                return (
+                  <motion.div
+                    key={chat.id}
+                    className={`chat-history-item ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
+                    onClick={() => setCurrentChatId(chat.id)}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, chat.id)}
+                    onDragEnd={handleDragEnd}
+                    transition={isNewChat ? undefined : springTransition}
+                    initial={isNewChat ? newChatVariants.initial : false}
+                    animate={isNewChat ? newChatVariants.animate : { opacity: 1, y: 0, scale: 1 }}
+                    exit={newChatVariants.exit}
                   >
-                    ×
-                  </Button>
-                </motion.div>
-              )
-            })}
+                    {/* Compact view (shown when sidebar is collapsed) */}
+                    <div className="chat-history-compact">
+                      <div className="chat-compact-time">{formatDateCompact(chat.createdAt)}</div>
+                      <div className="chat-compact-icon">
+                        <FiMessageSquare size={20} />
+                      </div>
+                      <div className="chat-compact-count">{chat.messages.length}</div>
+                    </div>
+
+                    {/* Expanded view (shown when sidebar is hovered) */}
+                    <div className="chat-history-content">
+                      <div className="chat-history-title">{chat.title}</div>
+                      <div className="chat-history-meta">
+                        <span className="chat-message-count">{chat.messages.length}件</span>
+                        <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
+                      </div>
+                    </div>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        deleteChat(chat.id)
+                      }}
+                      title="削除"
+                      className="chat-delete-button"
+                    >
+                      ×
+                    </Button>
+                  </motion.div>
+                )
+              })}
           </AnimatePresence>
         </motion.div>
       </div>
@@ -889,7 +901,9 @@ function ChatPanel() {
           />
 
           {currentMessages.map((message, index) => {
-            const hasDetails = message.role === 'ai' && (message.trace || message.traceback || message.toolArgs || message.toolResults)
+            const hasDetails =
+              message.role === 'ai' &&
+              (message.trace || message.traceback || message.toolArgs || message.toolResults)
             return (
               <div
                 key={index}
@@ -913,7 +927,10 @@ function ChatPanel() {
                     <div className="message-reply-context">
                       <FiCornerDownLeft size={12} className="reply-context-icon" />
                       <span className="reply-context-label">返信:</span>
-                      <span className="reply-context-preview">{message.replyingTo.substring(0, 60)}{message.replyingTo.length > 60 ? '...' : ''}</span>
+                      <span className="reply-context-preview">
+                        {message.replyingTo.substring(0, 60)}
+                        {message.replyingTo.length > 60 ? '...' : ''}
+                      </span>
                     </div>
                   )}
                   {/* Attachment Contexts */}
@@ -969,7 +986,9 @@ function ChatPanel() {
                             e.stopPropagation()
                             handleCopyMessage(message.content, index)
                           }}
-                          title={copiedMessageIndex === index ? "コピーしました！" : "メッセージをコピー"}
+                          title={
+                            copiedMessageIndex === index ? 'コピーしました！' : 'メッセージをコピー'
+                          }
                         >
                           {copiedMessageIndex === index ? (
                             <FiCheck size={14} />
@@ -1022,7 +1041,10 @@ function ChatPanel() {
                 <FiCornerDownLeft size={16} className="reply-indicator-icon" />
                 <div className="reply-indicator-text">
                   <span className="reply-label">返信:</span>
-                  <span className="reply-preview">{replyingToContent?.substring(0, 50)}{replyingToContent?.length > 50 ? '...' : ''}</span>
+                  <span className="reply-preview">
+                    {replyingToContent?.substring(0, 50)}
+                    {replyingToContent?.length > 50 ? '...' : ''}
+                  </span>
                 </div>
               </div>
               <Button
@@ -1101,11 +1123,7 @@ function ChatPanel() {
 
       {/* Message Detail Modal */}
       {selectedMessage && (
-        <MessageDetailModal
-          message={selectedMessage}
-          onClose={handleCloseModal}
-          theme={theme}
-        />
+        <MessageDetailModal message={selectedMessage} onClose={handleCloseModal} theme={theme} />
       )}
 
       {openConfigModal && (

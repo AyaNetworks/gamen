@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
-import { FiFileText, FiShare2, FiHeart, FiEye, FiLock } from 'react-icons/fi'
+import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { FiEye, FiFileText, FiHeart, FiLock, FiShare2 } from 'react-icons/fi'
 import Button from './ui/Button'
 import './StatsPanel.css'
 
@@ -10,7 +10,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
     words: 0,
     shared: 0,
     likes: 0,
-    impressions: 0
+    impressions: 0,
   })
   const [isPublishedState, setIsPublishedState] = useState(isPublished)
   const [isLiked, setIsLiked] = useState(false)
@@ -33,22 +33,22 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
     const characters = content.length
     const words = content.trim().length === 0 ? 0 : content.trim().split(/\s+/).length
 
-    setStats(prev => ({
+    setStats((prev) => ({
       ...prev,
       characters,
-      words
+      words,
     }))
 
     // Animate character count
     const charControls = animate(charCount, characters, {
       duration: 0.3,
-      ease: 'easeOut'
+      ease: 'easeOut',
     })
 
     // Animate word count
     const wordControls = animate(wordCount, words, {
       duration: 0.3,
-      ease: 'easeOut'
+      ease: 'easeOut',
     })
 
     return () => {
@@ -87,20 +87,20 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
     if (newLikedState) {
       animate(likesCount, stats.likes + 1, {
         duration: 0.3,
-        ease: 'easeOut'
+        ease: 'easeOut',
       })
-      setStats(prev => ({
+      setStats((prev) => ({
         ...prev,
-        likes: prev.likes + 1
+        likes: prev.likes + 1,
       }))
     } else {
       animate(likesCount, Math.max(0, stats.likes - 1), {
         duration: 0.3,
-        ease: 'easeOut'
+        ease: 'easeOut',
       })
-      setStats(prev => ({
+      setStats((prev) => ({
         ...prev,
-        likes: Math.max(0, prev.likes - 1)
+        likes: Math.max(0, prev.likes - 1),
       }))
     }
   }
@@ -117,24 +117,24 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
         // Mock data - only fetch if published
         const mockData = {
           likes: isPublishedState ? Math.floor(Math.random() * 500) : 0,
-          impressions: isPublishedState ? Math.floor(Math.random() * 2000) : 0
+          impressions: isPublishedState ? Math.floor(Math.random() * 2000) : 0,
         }
 
-        setStats(prev => ({
+        setStats((prev) => ({
           ...prev,
           likes: mockData.likes,
-          impressions: mockData.impressions
+          impressions: mockData.impressions,
         }))
 
         // Animate social metrics
         animate(likesCount, mockData.likes, {
           duration: 0.5,
-          ease: 'easeOut'
+          ease: 'easeOut',
         })
 
         animate(impressionsCount, mockData.impressions, {
           duration: 0.5,
-          ease: 'easeOut'
+          ease: 'easeOut',
         })
       } catch (error) {
         console.error('Failed to fetch social metrics:', error)
@@ -151,28 +151,21 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
         <div className="stat-item">
           <FiFileText size={16} className="stat-icon" />
           <span className="stat-label">文字</span>
-          <motion.span className="stat-value">
-            {animatedChars}
-          </motion.span>
+          <motion.span className="stat-value">{animatedChars}</motion.span>
         </div>
 
         {/* Word Count */}
         <div className="stat-item">
           <FiFileText size={16} className="stat-icon" />
           <span className="stat-label">単語</span>
-          <motion.span className="stat-value">
-            {animatedWords}
-          </motion.span>
+          <motion.span className="stat-value">{animatedWords}</motion.span>
         </div>
 
         {/* Divider */}
         <div className="stat-divider" />
 
         {/* Publish State Toggle */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
             variant="toggle"
             onClick={handlePublishToggle}
@@ -190,17 +183,12 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
             >
               {isPublishedState ? <FiShare2 size={16} /> : <FiLock size={16} />}
             </motion.div>
-            <span className="publish-label">
-              {isPublishedState ? '共有中' : '非公開'}
-            </span>
+            <span className="publish-label">{isPublishedState ? '共有中' : '非公開'}</span>
           </Button>
         </motion.div>
 
         {/* Likes Count - Interactive */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
             variant="toggle"
             onClick={handleLikeToggle}
@@ -216,9 +204,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
               <FiHeart size={16} className={`stat-icon ${isLiked ? 'liked-heart' : ''}`} />
             </motion.div>
             <span className="stat-label">いいね</span>
-            <motion.span className="stat-value">
-              {animatedLikes}
-            </motion.span>
+            <motion.span className="stat-value">{animatedLikes}</motion.span>
           </Button>
         </motion.div>
 
@@ -226,9 +212,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
         <div className="stat-item">
           <FiEye size={16} className="stat-icon" />
           <span className="stat-label">表示</span>
-          <motion.span className="stat-value">
-            {animatedImpressions}
-          </motion.span>
+          <motion.span className="stat-value">{animatedImpressions}</motion.span>
         </div>
       </div>
     </div>

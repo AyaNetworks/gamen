@@ -7,13 +7,15 @@ export const useWorkspaceStore = create(
     attachedWorkspaces: [],
 
     // Actions
-    attachWorkspace: (workspace) => set((state) => ({
-      attachedWorkspaces: [...state.attachedWorkspaces, workspace]
-    })),
+    attachWorkspace: (workspace) =>
+      set((state) => ({
+        attachedWorkspaces: [...state.attachedWorkspaces, workspace],
+      })),
 
-    removeAttachment: (index) => set((state) => ({
-      attachedWorkspaces: state.attachedWorkspaces.filter((_, i) => i !== index)
-    })),
+    removeAttachment: (index) =>
+      set((state) => ({
+        attachedWorkspaces: state.attachedWorkspaces.filter((_, i) => i !== index),
+      })),
 
     clearAllAttachments: () => set({ attachedWorkspaces: [] }),
   }))

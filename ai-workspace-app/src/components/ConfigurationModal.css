@@ -115,7 +115,12 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, rgba(100, 108, 255, 0.6), rgba(100, 108, 255, 1), rgba(100, 108, 255, 0.6));
+  background: linear-gradient(
+    90deg,
+    rgba(100, 108, 255, 0.6),
+    rgba(100, 108, 255, 1),
+    rgba(100, 108, 255, 0.6)
+  );
   border-radius: 1px;
 }
 

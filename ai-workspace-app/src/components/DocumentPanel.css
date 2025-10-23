@@ -278,7 +278,9 @@
 .document-item-details {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition:
+    max-height 0.3s ease,
+    padding 0.3s ease;
   padding: 0 0.875rem;
 }
 
@@ -291,7 +293,7 @@
   font-size: 0.75rem;
   color: #888;
   margin-bottom: 0.5rem;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .detail-label {
@@ -315,7 +317,7 @@
   border-radius: 4px;
   font-size: 0.7rem;
   color: #ddd;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   box-shadow: 0 0 5px rgba(100, 108, 255, 0.2);
 }
 
@@ -454,7 +456,9 @@
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(100, 108, 255, 0.2);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(100, 108, 255, 0.2);
 }
 
 .preview-header {

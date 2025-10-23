@@ -22,23 +22,17 @@
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(100, 108, 255, 0.3);
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 30px rgba(100, 108, 255, 0.2);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(100, 108, 255, 0.2);
 }
 
 .publish-notification.published {
-  background: linear-gradient(
-    135deg,
-    rgba(30, 80, 120, 0.8) 0%,
-    rgba(40, 60, 100, 0.8) 100%
-  );
+  background: linear-gradient(135deg, rgba(30, 80, 120, 0.8) 0%, rgba(40, 60, 100, 0.8) 100%);
 }
 
 .publish-notification.private {
-  background: linear-gradient(
-    135deg,
-    rgba(120, 70, 30, 0.8) 0%,
-    rgba(100, 60, 40, 0.8) 100%
-  );
+  background: linear-gradient(135deg, rgba(120, 70, 30, 0.8) 0%, rgba(100, 60, 40, 0.8) 100%);
 }
 
 .notification-header {
@@ -136,7 +130,7 @@
   border-radius: 6px;
   color: white;
   font-size: 0.85rem;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -204,20 +198,12 @@
 
 /* Light Theme */
 .light-theme .publish-notification.published {
-  background: linear-gradient(
-    135deg,
-    rgba(200, 220, 255, 0.9) 0%,
-    rgba(220, 235, 255, 0.9) 100%
-  );
+  background: linear-gradient(135deg, rgba(200, 220, 255, 0.9) 0%, rgba(220, 235, 255, 0.9) 100%);
   border-color: rgba(100, 150, 255, 0.5);
 }
 
 .light-theme .publish-notification.private {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 220, 200, 0.9) 0%,
-    rgba(255, 235, 220, 0.9) 100%
-  );
+  background: linear-gradient(135deg, rgba(255, 220, 200, 0.9) 0%, rgba(255, 235, 220, 0.9) 100%);
   border-color: rgba(255, 150, 100, 0.5);
 }
 

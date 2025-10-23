@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import mammoth from 'mammoth'
+import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import * as XLSX from 'xlsx'
-import mammoth from 'mammoth'
 import { getFileType } from '../utils/fileTypeDetector'
 import 'highlight.js/styles/github-dark.css'
 import './FilePreview.css'
@@ -94,9 +94,7 @@ function FilePreview({ item }) {
   if (fileType === 'markdown') {
     return (
       <div className="preview-markdown">
-        <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-          {item.content}
-        </ReactMarkdown>
+        <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{item.content}</ReactMarkdown>
       </div>
     )
   }
@@ -118,11 +116,7 @@ function FilePreview({ item }) {
     if (pdfUrl || item.filePath) {
       return (
         <div className="preview-pdf-container">
-          <iframe
-            src={pdfUrl || item.filePath}
-            className="pdf-iframe"
-            title={item.name}
-          />
+          <iframe src={pdfUrl || item.filePath} className="pdf-iframe" title={item.name} />
         </div>
       )
     }
@@ -132,18 +126,14 @@ function FilePreview({ item }) {
     if (loading) {
       return <div className="preview-loading">Excelファイルを読み込んでいます...</div>
     }
-    return (
-      <div className="preview-excel" dangerouslySetInnerHTML={{ __html: parsedContent }} />
-    )
+    return <div className="preview-excel" dangerouslySetInnerHTML={{ __html: parsedContent }} />
   }
 
   if (fileType === 'word') {
     if (loading) {
       return <div className="preview-loading">Wordファイルを読み込んでいます...</div>
     }
-    return (
-      <div className="preview-word" dangerouslySetInnerHTML={{ __html: parsedContent }} />
-    )
+    return <div className="preview-word" dangerouslySetInnerHTML={{ __html: parsedContent }} />
   }
 
   if (fileType === 'image') {
@@ -163,10 +153,18 @@ function FilePreview({ item }) {
       <div className="preview-unsupported">
         <div className="unsupported-icon">📽️</div>
         <h3>PowerPointファイル</h3>
-        <p className="unsupported-message">PowerPointファイルのプレビューは現在対応していません。</p>
+        <p className="unsupported-message">
+          PowerPointファイルのプレビューは現在対応していません。
+        </p>
         <div className="file-info">
-          <p><strong>ファイル名:</strong> {item.name}</p>
-          {file && <p><strong>サイズ:</strong> {(file.size / 1024).toFixed(2)} KB</p>}
+          <p>
+            <strong>ファイル名:</strong> {item.name}
+          </p>
+          {file && (
+            <p>
+              <strong>サイズ:</strong> {(file.size / 1024).toFixed(2)} KB
+            </p>
+          )}
         </div>
         <p className="unsupported-note">
           ファイルをダウンロードして、PowerPointアプリで開いてください。

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { FiShare2, FiCopy, FiCheck, FiLock, FiX } from 'react-icons/fi'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { FiCheck, FiCopy, FiLock, FiShare2, FiX } from 'react-icons/fi'
 import Button from './ui/Button'
 import './PublishNotification.css'
 
@@ -102,12 +102,7 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                     </motion.div>
                   </div>
                   <div className="notification-title">ドキュメントを共有中</div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={onClose}
-                    title="閉じる"
-                  >
+                  <Button variant="ghost" size="sm" onClick={onClose} title="閉じる">
                     <FiX size={18} />
                   </Button>
                 </div>
@@ -123,16 +118,8 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                   </p>
 
                   <div className="share-url-container">
-                    <input
-                      type="text"
-                      className="share-url-input"
-                      value={shareUrl}
-                      readOnly
-                    />
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
+                    <input type="text" className="share-url-input" value={shareUrl} readOnly />
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
                         variant="action"
                         size="md"
@@ -147,11 +134,7 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                           exit={{ opacity: 0, scale: 0.5 }}
                           transition={{ duration: 0.2 }}
                         >
-                          {copied ? (
-                            <FiCheck size={18} />
-                          ) : (
-                            <FiCopy size={18} />
-                          )}
+                          {copied ? <FiCheck size={18} /> : <FiCopy size={18} />}
                         </motion.div>
                       </Button>
                     </motion.div>
@@ -172,12 +155,7 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                     </motion.div>
                   </div>
                   <div className="notification-title">非公開に設定</div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={onClose}
-                    title="閉じる"
-                  >
+                  <Button variant="ghost" size="sm" onClick={onClose} title="閉じる">
                     <FiX size={18} />
                   </Button>
                 </div>

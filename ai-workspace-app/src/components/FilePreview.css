@@ -35,7 +35,7 @@
   background-color: #1a1a1a;
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .preview-markdown pre {
@@ -161,7 +161,7 @@
   white-space: pre-wrap;
   word-wrap: break-word;
   color: #d4d4d4;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 0.9rem;
   line-height: 1.6;
 }
@@ -175,7 +175,7 @@
   white-space: pre-wrap;
   word-wrap: break-word;
   color: #d4d4d4;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 0.9rem;
   line-height: 1.6;
 }
