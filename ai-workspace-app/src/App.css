@@ -10,9 +10,14 @@
   }
 }
 
-/* Resize handle styling - using Tailwind-like approach */
+/* Resize handle styling */
 .resize-handle {
-  @apply w-1 bg-transparent border-none cursor-col-resize transition-all duration-200 relative;
+  width: 4px;
+  background: transparent;
+  border: none;
+  cursor: col-resize;
+  transition: all 0.2s;
+  position: relative;
 }
 
 .resize-handle:hover {
@@ -26,8 +31,14 @@
 /* Visual indicator on hover */
 .resize-handle::after {
   content: '';
-  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
-  @apply w-[3px] h-10 rounded-sm transition-opacity duration-200;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px;
+  height: 40px;
+  border-radius: 2px;
+  transition: opacity 0.2s;
   background: linear-gradient(180deg, rgba(100, 108, 255, 0.6), rgba(100, 108, 255, 0.9), rgba(100, 108, 255, 0.6));
   opacity: 0;
   box-shadow: 0 0 8px rgba(100, 108, 255, 0.5);

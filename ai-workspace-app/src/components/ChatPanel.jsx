@@ -40,8 +40,6 @@ const planeIconVariants = {
 
 // Memoized Send Button to prevent animation restarts on parent re-renders
 const AnimatedSendButton = memo(({ shouldAnimate, animationKey, onAnimationComplete }) => {
-  console.log('🎨 AnimatedSendButton render', { shouldAnimate, animationKey, timestamp: Date.now() })
-
   return (
     <Button
       type="submit"
@@ -54,20 +52,7 @@ const AnimatedSendButton = memo(({ shouldAnimate, animationKey, onAnimationCompl
         variants={planeIconVariants}
         initial="normal"
         animate={shouldAnimate ? 'launch' : 'normal'}
-        onAnimationStart={() => {
-          console.log('🛫 Animation STARTED', {
-            animationKey,
-            timestamp: Date.now()
-          })
-        }}
-        onAnimationComplete={(definition) => {
-          console.log('🛬 Animation COMPLETED', {
-            definition,
-            animationKey,
-            timestamp: Date.now()
-          })
-          onAnimationComplete()
-        }}
+        onAnimationComplete={onAnimationComplete}
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <FiSend size={20} />
@@ -235,14 +220,6 @@ function ChatPanel() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Debug: Component mount tracking
-  useEffect(() => {
-    console.log('🎬 ChatPanel mounted/remounted', {
-      timestamp: Date.now(),
-      chatId: currentChatId
-    })
-  }, [])
-
   useEffect(() => {
     scrollToBottom()
   }, [currentMessages])
@@ -296,44 +273,21 @@ function ChatPanel() {
     }
   }, [inputValue])
 
-  // Debug: Track animation state changes
-  useEffect(() => {
-    console.log('📊 shouldAnimateSendBtn changed to:', shouldAnimateSendBtn, {
-      timestamp: Date.now(),
-      animationKey: animationKeyRef.current,
-      isAnimatingRef: isAnimatingSendRef.current
-    })
-  }, [shouldAnimateSendBtn])
-
   // Stable callback for animation completion
   const handleAnimationComplete = useCallback(() => {
-    console.log('🔄 handleAnimationComplete called')
     setShouldAnimateSendBtn(false)
     isAnimatingSendRef.current = false
   }, [])
 
   const handleSubmit = (e) => {
-    console.log('🚀 handleSubmit called', {
-      timestamp: Date.now(),
-      eventType: e?.type,
-      isAnimating: isAnimatingSendRef.current,
-      animationKey: animationKeyRef.current,
-      shouldAnimateSendBtn
-    })
     e.preventDefault()
     if (inputValue.trim() || attachedFiles.length > 0 || attachedWorkspaces.length > 0) {
       // Trigger paper plane animation only if not already animating
       // Use ref for synchronous check to prevent race conditions
       if (!isAnimatingSendRef.current) {
-        console.log('✅ Triggering animation', {
-          animationKey: animationKeyRef.current + 1,
-          timestamp: Date.now()
-        })
         isAnimatingSendRef.current = true
         animationKeyRef.current += 1 // Increment key to ensure unique animation instance
         setShouldAnimateSendBtn(true)
-      } else {
-        console.log('⛔ Animation blocked - already animating')
       }
       sendMessage(inputValue, attachedFiles, {
         replyingToIndex: replyingToIndex,
@@ -350,7 +304,6 @@ function ChatPanel() {
   const handleKeyDown = (e) => {
     // Ctrl+Enter or Cmd+Enter to submit
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      console.log('⌨️ Ctrl+Enter detected - calling handleSubmit')
       e.preventDefault()
       handleSubmit(e)
     }
@@ -824,7 +777,7 @@ function ChatPanel() {
                 <motion.div
                   key={chat.id}
                   className={`chat-history-item ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
-                  onClick={() => onSelectChat(chat.id)}
+                  onClick={() => setCurrentChatId(chat.id)}
                   draggable
                   onDragStart={(e) => handleDragStart(e, chat.id)}
                   onDragEnd={handleDragEnd}
@@ -861,7 +814,7 @@ function ChatPanel() {
                     size="sm"
                     onClick={(e) => {
                       e.stopPropagation()
-                      onDeleteChat(chat.id)
+                      deleteChat(chat.id)
                     }}
                     title="削除"
                     className="chat-delete-button"

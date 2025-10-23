@@ -1,7 +1,5 @@
-/* Tailwind CSS directives */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS v4 import */
+@import "tailwindcss";
 
 /* shadcn/ui CSS variables - Light mode */
 @layer base {
