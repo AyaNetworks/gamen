@@ -683,7 +683,7 @@ function App() {
   const currentScratchpadTab = scratchpadTabs.find(tab => tab.id === currentScratchpadTabId)
 
   return (
-    <div className={`app-container ${theme}-theme`}>
+    <div className={`app-container ${theme === 'dark' ? 'dark' : ''}`}>
       <PanelGroup direction="horizontal">
         <Panel defaultSize={35} minSize={15} maxSize={50}>
           {/* ChatPanel now gets ALL data from Zustand stores - no props needed! */}
