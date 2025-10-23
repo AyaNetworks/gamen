@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo, useCallback } from 'react'
 import { motion, AnimatePresence, useScroll } from 'framer-motion'
 import { FiPaperclip, FiSun, FiMoon, FiMessageSquare, FiZap, FiTool, FiUser, FiStar, FiCheckSquare, FiSend, FiCopy, FiCheck, FiCornerDownLeft, FiX, FiFolder } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
@@ -10,6 +10,70 @@ import MessageDetailModal from './MessageDetailModal'
 import ConfigurationModal from './ConfigurationModal'
 import Button from './ui/Button'
 import './ChatPanel.css'
+
+// Animation variants defined outside component to prevent re-creation
+const planeIconVariants = {
+  normal: {
+    x: 0,
+    y: 0,
+    rotate: 0,
+    scale: 1,
+    opacity: 1,
+  },
+  launch: {
+    // Path: Start → Flies up-right off-screen → Returns from bottom-left → Lands
+    x: [0, 60, 160, 100, -120, -40, 0],
+    y: [0, -80, -160, 80, 140, 40, 0],
+    rotate: [0, -25, -50, -20, 30, 10, 0],
+    scale: [1, 1.05, 0.8, 0.7, 0.9, 1, 1],
+    opacity: [1, 1, 0.3, 0.4, 0.8, 1, 1],
+    transition: {
+      duration: 1.5,
+      ease: 'easeInOut',
+      times: [0, 0.15, 0.4, 0.5, 0.75, 0.9, 1],
+    },
+  },
+}
+
+// Memoized Send Button to prevent animation restarts on parent re-renders
+const AnimatedSendButton = memo(({ shouldAnimate, animationKey, onAnimationComplete }) => {
+  console.log('🎨 AnimatedSendButton render', { shouldAnimate, animationKey, timestamp: Date.now() })
+
+  return (
+    <Button
+      type="submit"
+      variant="soft"
+      size="md"
+      animated={false}
+    >
+      <motion.div
+        key={`plane-animation-${animationKey}`}
+        variants={planeIconVariants}
+        initial="normal"
+        animate={shouldAnimate ? 'launch' : 'normal'}
+        onAnimationStart={() => {
+          console.log('🛫 Animation STARTED', {
+            animationKey,
+            timestamp: Date.now()
+          })
+        }}
+        onAnimationComplete={(definition) => {
+          console.log('🛬 Animation COMPLETED', {
+            definition,
+            animationKey,
+            timestamp: Date.now()
+          })
+          onAnimationComplete()
+        }}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <FiSend size={20} />
+      </motion.div>
+    </Button>
+  )
+})
+
+AnimatedSendButton.displayName = 'AnimatedSendButton'
 
 function ChatPanel({
   chatSessions,
@@ -40,6 +104,8 @@ function ChatPanel({
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
   const [shouldAnimateNewChatBtn, setShouldAnimateNewChatBtn] = useState(false)
   const [shouldAnimateSendBtn, setShouldAnimateSendBtn] = useState(false)
+  const isAnimatingSendRef = useRef(false) // Track animation state synchronously
+  const animationKeyRef = useRef(0) // Unique key for each animation to prevent re-render issues
   const [copiedMessageIndex, setCopiedMessageIndex] = useState(null)
   const [replyingToIndex, setReplyingToIndex] = useState(null)
   const [replyingToContent, setReplyingToContent] = useState(null)
@@ -81,29 +147,6 @@ function ChatPanel({
       transition: {
         duration: 0.5,
         ease: 'easeInOut',
-      },
-    },
-  }
-
-  const planeIconVariants = {
-    normal: {
-      x: 0,
-      y: 0,
-      rotate: 0,
-      scale: 1,
-      opacity: 1,
-    },
-    launch: {
-      // Path: Start → Flies up-right off-screen → Returns from bottom-left → Lands
-      x: [0, 60, 160, 100, -120, -40, 0],
-      y: [0, -80, -160, 80, 140, 40, 0],
-      rotate: [0, -25, -50, -20, 30, 10, 0],
-      scale: [1, 1.05, 0.8, 0.7, 0.9, 1, 1],
-      opacity: [1, 1, 0.3, 0.4, 0.8, 1, 1],
-      transition: {
-        duration: 1.5,
-        ease: 'easeInOut',
-        times: [0, 0.15, 0.4, 0.5, 0.75, 0.9, 1],
       },
     },
   }
@@ -184,6 +227,14 @@ function ChatPanel({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Debug: Component mount tracking
+  useEffect(() => {
+    console.log('🎬 ChatPanel mounted/remounted', {
+      timestamp: Date.now(),
+      chatId: currentChatId
+    })
+  }, [])
+
   useEffect(() => {
     scrollToBottom()
   }, [currentMessages])
@@ -237,11 +288,45 @@ function ChatPanel({
     }
   }, [inputValue])
 
+  // Debug: Track animation state changes
+  useEffect(() => {
+    console.log('📊 shouldAnimateSendBtn changed to:', shouldAnimateSendBtn, {
+      timestamp: Date.now(),
+      animationKey: animationKeyRef.current,
+      isAnimatingRef: isAnimatingSendRef.current
+    })
+  }, [shouldAnimateSendBtn])
+
+  // Stable callback for animation completion
+  const handleAnimationComplete = useCallback(() => {
+    console.log('🔄 handleAnimationComplete called')
+    setShouldAnimateSendBtn(false)
+    isAnimatingSendRef.current = false
+  }, [])
+
   const handleSubmit = (e) => {
+    console.log('🚀 handleSubmit called', {
+      timestamp: Date.now(),
+      eventType: e?.type,
+      isAnimating: isAnimatingSendRef.current,
+      animationKey: animationKeyRef.current,
+      shouldAnimateSendBtn
+    })
     e.preventDefault()
     if (inputValue.trim() || attachedFiles.length > 0 || attachedWorkspaces.length > 0) {
-      // Trigger paper plane animation
-      setShouldAnimateSendBtn(true)
+      // Trigger paper plane animation only if not already animating
+      // Use ref for synchronous check to prevent race conditions
+      if (!isAnimatingSendRef.current) {
+        console.log('✅ Triggering animation', {
+          animationKey: animationKeyRef.current + 1,
+          timestamp: Date.now()
+        })
+        isAnimatingSendRef.current = true
+        animationKeyRef.current += 1 // Increment key to ensure unique animation instance
+        setShouldAnimateSendBtn(true)
+      } else {
+        console.log('⛔ Animation blocked - already animating')
+      }
       onSendMessage(inputValue, attachedFiles, {
         replyingToIndex: replyingToIndex,
         replyingToContent: replyingToContent,
@@ -257,6 +342,7 @@ function ChatPanel({
   const handleKeyDown = (e) => {
     // Ctrl+Enter or Cmd+Enter to submit
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      console.log('⌨️ Ctrl+Enter detected - calling handleSubmit')
       e.preventDefault()
       handleSubmit(e)
     }
@@ -1043,22 +1129,11 @@ function ChatPanel({
               className="chat-input"
               rows="1"
             />
-            <Button
-              type="submit"
-              variant="soft"
-              size="md"
-              animated={false}
-            >
-              <motion.div
-                variants={planeIconVariants}
-                initial="normal"
-                animate={shouldAnimateSendBtn ? 'launch' : 'normal'}
-                onAnimationComplete={() => setShouldAnimateSendBtn(false)}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                <FiSend size={20} />
-              </motion.div>
-            </Button>
+            <AnimatedSendButton
+              shouldAnimate={shouldAnimateSendBtn}
+              animationKey={animationKeyRef.current}
+              onAnimationComplete={handleAnimationComplete}
+            />
           </div>
         </form>
       </div>
