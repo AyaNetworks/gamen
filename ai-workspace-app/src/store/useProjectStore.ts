@@ -1,7 +1,16 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import type { Project } from '../types'
 
-export const useProjectStore = create(
+interface ProjectStoreState {
+  chatProjects: Project[]
+  createProject: (projectName: string) => void
+  deleteProject: (projectId: number) => void
+  renameProject: (projectId: number, newName: string) => void
+  getProjectById: (projectId: number) => Project | undefined
+}
+
+export const useProjectStore = create<ProjectStoreState>()(
   devtools(
     persist(
       (set, get) => ({
@@ -11,7 +20,7 @@ export const useProjectStore = create(
         // Actions
         createProject: (projectName) =>
           set((state) => {
-            const newProject = {
+            const newProject: Project = {
               id: Date.now(),
               name: projectName,
               createdAt: new Date().toISOString(),

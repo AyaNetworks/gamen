@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import type { ChatSession, Message, Attachment, Workspace, ReplyContext } from '../types'
 
-const initialChatSessions = [
+const initialChatSessions: ChatSession[] = [
   {
     id: 1,
     title: 'Q2マーケティング分析',
@@ -46,7 +47,27 @@ const initialChatSessions = [
   },
 ]
 
-export const useChatStore = create(
+interface ChatStoreState {
+  // State
+  chatSessions: ChatSession[]
+  currentChatId: number
+
+  // Computed (getters)
+  getCurrentChat: () => ChatSession | undefined
+  getCurrentMessages: () => Message[]
+
+  // Actions
+  setCurrentChatId: (id: number) => void
+  addMessage: (message: Message) => void
+  sendMessage: (userMessage: string, attachments?: File[], replyContext?: ReplyContext) => void
+  createNewChat: () => void
+  deleteChat: (chatId: number) => void
+  updateChatTitle: (chatId: number, newTitle: string) => void
+  addChatToProject: (chatId: number, projectId: number) => void
+  removeChatFromProject: (chatId: number) => void
+}
+
+export const useChatStore = create<ChatStoreState>()(
   devtools(
     persist(
       (set, get) => ({
@@ -79,7 +100,7 @@ export const useChatStore = create(
 
         sendMessage: (userMessage, attachments = [], replyContext = null) =>
           set((state) => {
-            const newMessage = {
+            const newMessage: Message = {
               role: 'user',
               content: userMessage,
               timestamp: new Date().toISOString(),
@@ -89,7 +110,7 @@ export const useChatStore = create(
               newMessage.replyingTo = replyContext.replyingToContent
             }
 
-            if (replyContext?.attachedWorkspaces?.length > 0) {
+            if (replyContext?.attachedWorkspaces?.length) {
               newMessage.attachedWorkspaces = replyContext.attachedWorkspaces
             }
 
@@ -98,12 +119,12 @@ export const useChatStore = create(
                 name: file.name,
                 size: file.size,
                 type: file.type,
-                preview: file.preview,
+                preview: undefined,
               }))
             }
 
             // AI response (mock)
-            const aiResponse = {
+            const aiResponse: Message = {
               role: 'ai',
               type: 'dione',
               status: 'success',
@@ -127,7 +148,7 @@ export const useChatStore = create(
         createNewChat: () =>
           set((state) => {
             const newChatId = Math.max(...state.chatSessions.map((c) => c.id)) + 1
-            const newChat = {
+            const newChat: ChatSession = {
               id: newChatId,
               title: `新しいチャット ${newChatId}`,
               messages: [],

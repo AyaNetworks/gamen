@@ -1,16 +1,19 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import type { Theme } from '../types'
 
-export const useThemeStore = create(
+interface ThemeStoreState {
+  theme: Theme
+  setTheme: (theme: Theme) => void
+  toggleTheme: () => void
+}
+
+export const useThemeStore = create<ThemeStoreState>()(
   devtools(
     persist(
       (set) => ({
-        // State
-        theme: 'dark', // 'light' or 'dark'
-
-        // Actions
+        theme: 'dark',
         setTheme: (theme) => set({ theme }),
-
         toggleTheme: () =>
           set((state) => ({
             theme: state.theme === 'dark' ? 'light' : 'dark',

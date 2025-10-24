@@ -1,7 +1,15 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
+import type { Workspace } from '../types'
 
-export const useWorkspaceStore = create(
+interface WorkspaceStoreState {
+  attachedWorkspaces: Workspace[]
+  attachWorkspace: (workspace: Workspace) => void
+  removeAttachment: (index: number) => void
+  clearAllAttachments: () => void
+}
+
+export const useWorkspaceStore = create<WorkspaceStoreState>()(
   devtools((set) => ({
     // State
     attachedWorkspaces: [],
