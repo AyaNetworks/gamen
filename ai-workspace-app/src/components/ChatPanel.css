@@ -1078,7 +1078,6 @@ button.radix-button.project-toggle-button {
   background-color: rgba(100, 150, 255, 1);
   border-color: rgba(100, 150, 255, 0.9);
   box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
-  transform: scale(1.1);
 }
 
 .chat-attach-button svg {
@@ -1128,6 +1127,15 @@ button.radix-button.project-toggle-button {
   border-color: rgba(100, 108, 255, 0.8);
   box-shadow: 0 0 15px rgba(100, 108, 255, 0.5);
 }
+
+/* Chat input actions container - holds augmentation and send buttons */
+.chat-input-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 
 /* File Attachments Preview (before sending) */
 .attached-files-preview {
@@ -1534,7 +1542,6 @@ button.radix-button.project-toggle-button {
   background-color: rgba(66, 71, 217, 1);
   border-color: rgba(66, 71, 217, 1);
   box-shadow: 0 0 18px rgba(83, 91, 242, 0.6);
-  transform: scale(1.1);
 }
 
 .light-theme .chat-attach-button svg {

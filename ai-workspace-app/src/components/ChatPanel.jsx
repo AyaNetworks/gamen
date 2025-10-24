@@ -359,6 +359,28 @@ function ChatPanel() {
     fileInputRef.current?.click()
   }
 
+  const handleAugmentInput = () => {
+    if (!inputValue.trim()) return
+
+    // Fine-tune the input by adding clarity and context
+    const fineTunedPrompt = `${inputValue.trim()}
+
+Please provide a detailed, clear, and actionable response.`
+
+    setInputValue(fineTunedPrompt)
+    textareaRef.current?.focus()
+
+    // Auto-resize textarea
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + 'px'
+        }
+      }, 0)
+    }
+  }
+
   const handleCopyMessage = async (content, index) => {
     try {
       await navigator.clipboard.writeText(content)
@@ -1135,11 +1157,23 @@ function ChatPanel() {
               className="chat-input"
               rows="1"
             />
-            <AnimatedSendButton
-              shouldAnimate={shouldAnimateSendBtn}
-              animationKey={animationKeyRef.current}
-              onAnimationComplete={handleAnimationComplete}
-            />
+            <div className="chat-input-actions">
+              <Button
+                type="button"
+                variant="soft"
+                size="md"
+                onClick={handleAugmentInput}
+                title="メッセージを最適化"
+                disabled={!inputValue.trim()}
+              >
+                <FiZap size={20} />
+              </Button>
+              <AnimatedSendButton
+                shouldAnimate={shouldAnimateSendBtn}
+                animationKey={animationKeyRef.current}
+                onAnimationComplete={handleAnimationComplete}
+              />
+            </div>
           </div>
         </form>
       </div>
