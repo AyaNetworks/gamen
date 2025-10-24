@@ -1847,14 +1847,33 @@ button.radix-button.project-toggle-button {
   flex-shrink: 0;
 }
 
+.project-toggle {
+  display: none;
+}
+
 .project-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: none;
+}
+
+/* When sidebar is hovered (expanded state), show toggle button and project name */
+.chat-history-sidebar:hover .project-toggle {
+  display: flex;
+}
+
+.chat-history-sidebar:hover .project-name {
+  display: block;
+}
+
+/* When sidebar is collapsed (not hovered), show only folder icon */
+.chat-history-sidebar:not(:hover) .project-header {
+  padding: 0.5rem;
+  justify-content: center;
 }
 
 .project-chat {
-  margin-left: 1rem;
   border-left: 2px solid rgba(100, 150, 255, 0.2);
   padding-left: 0.5rem;
 }
@@ -1948,6 +1967,18 @@ button.radix-button.project-toggle-button {
 
 .light-theme .project-header {
   color: rgba(83, 120, 242, 0.9);
+}
+
+.light-theme .chat-history-sidebar:hover .project-toggle {
+  color: rgba(83, 120, 242, 0.7);
+}
+
+.light-theme .chat-history-sidebar:hover .project-toggle:hover {
+  color: rgba(83, 120, 242, 1);
+}
+
+.light-theme .chat-history-sidebar:not(:hover) .project-header {
+  color: rgba(83, 120, 242, 0.7);
 }
 
 .light-theme .project-chat {
