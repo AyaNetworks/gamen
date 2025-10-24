@@ -31,9 +31,9 @@
   align-items: center;
   padding: 0;
   border-bottom: 1px solid rgba(100, 108, 255, 0.2);
-  background-color: rgba(32, 32, 32, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   height: 64px;
   min-height: 64px;
   flex-shrink: 0;
@@ -382,9 +382,9 @@ button.radix-button.project-toggle-button {
   justify-content: space-between;
   padding: 0 1.5rem;
   border-bottom: 1px solid rgba(100, 108, 255, 0.2);
-  background-color: rgba(42, 42, 42, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   height: 64px;
   min-height: 64px;
   flex-shrink: 0;
@@ -1349,6 +1349,15 @@ button.radix-button.project-toggle-button {
   box-shadow: 0 0 10px rgba(255, 120, 80, 0.3);
 }
 
+/* Dark Theme Styles */
+.dark-theme .chat-history-header,
+.dark-theme .chat-header {
+  background-color: rgba(30, 30, 50, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.25);
+}
+
 /* Light Theme Styles */
 .light-theme .chat-panel {
   background-color: rgba(255, 255, 255, 0.08);
@@ -1360,9 +1369,10 @@ button.radix-button.project-toggle-button {
   background-color: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-right: 1px solid rgba(100, 108, 255, 0.15);
+  border-right: 1px solid rgba(100, 108, 255, 0.12);
 }
 
+/* Chat headers - transparent like other panels */
 .light-theme .chat-history-header,
 .light-theme .chat-header {
   background-color: rgba(255, 255, 255, 0.05);
@@ -1455,6 +1465,11 @@ button.radix-button.project-toggle-button {
   color: #333;
 }
 
+.light-theme .message-content strong {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.95);
+}
+
 .light-theme .message-timestamp {
   color: rgba(0, 0, 0, 0.5);
 }
@@ -1466,8 +1481,8 @@ button.radix-button.project-toggle-button {
 
 .light-theme .chat-input-form {
   background-color: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border-top: 1px solid rgba(100, 108, 255, 0.15);
 }
 
