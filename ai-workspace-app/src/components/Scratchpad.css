@@ -1252,6 +1252,7 @@ button.radix-button.new-tab-button {
   position: relative;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .artifact-menu {

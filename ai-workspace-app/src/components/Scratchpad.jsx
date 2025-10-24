@@ -603,7 +603,10 @@ function Scratchpad({
             <Button
               variant="surface"
               size="md"
-              onClick={() => setShowArtifactMenu(!showArtifactMenu)}
+              onClick={(e) => {
+                e.stopPropagation()
+                setShowArtifactMenu(!showArtifactMenu)
+              }}
               title="アーティファクトメニュー"
               animated={false}
             >
