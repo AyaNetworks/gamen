@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
   FiCheck,
   FiCheckSquare,
+  FiChevronDown,
   FiCopy,
   FiCornerDownLeft,
   FiFolder,
@@ -117,6 +118,7 @@ function ChatPanel() {
   const [projectInputValue, setProjectInputValue] = useState('')
   const [draggedChatId, setDraggedChatId] = useState(null)
   const [hoveredProjectId, setHoveredProjectId] = useState(null)
+  const [expandedProjects, setExpandedProjects] = useState({}) // Track expanded state for each project
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
   const textareaRef = useRef(null)
@@ -750,75 +752,105 @@ Please provide a detailed, clear, and actionable response.`
             </div>
           )}
 
+
           <AnimatePresence>
             {/* Projects Section */}
             {chatProjects && chatProjects.length > 0 && (
               <div className="chat-projects-section">
-                {chatProjects.map((project) => (
-                  <div key={project.id} className="chat-project-group">
-                    <div
-                      className={`project-header ${hoveredProjectId === project.id ? 'drag-over' : ''}`}
-                      onDragOver={(e) => handleProjectDragOver(e, project.id)}
-                      onDragLeave={handleProjectDragLeave}
-                      onDrop={(e) => handleProjectDrop(e, project.id)}
-                    >
-                      <FiFolder size={16} />
-                      <span className="project-name">{project.name}</span>
-                    </div>
-                    {/* Chats in this project */}
-                    {chatSessions
-                      .filter((chat) => chat.projectId === project.id)
-                      .map((chat) => {
-                        const isNewChat = chat.id === newChatId
-                        return (
-                          <motion.div
-                            key={chat.id}
-                            className={`chat-history-item project-chat ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
-                            onClick={() => setCurrentChatId(chat.id)}
-                            draggable
-                            onDragStart={(e) => handleDragStart(e, chat.id)}
-                            onDragEnd={handleDragEnd}
-                            transition={isNewChat ? undefined : springTransition}
-                            initial={isNewChat ? newChatVariants.initial : false}
-                            animate={
-                              isNewChat ? newChatVariants.animate : { opacity: 1, y: 0, scale: 1 }
-                            }
-                            exit={newChatVariants.exit}
-                          >
-                            <div className="chat-history-compact">
-                              <div className="chat-compact-time">
-                                {formatDateCompact(chat.createdAt)}
-                              </div>
-                              <div className="chat-compact-icon">
-                                <FiMessageSquare size={20} />
-                              </div>
-                              <div className="chat-compact-count">{chat.messages.length}</div>
-                            </div>
+                {chatProjects.map((project) => {
+                  const isExpanded = expandedProjects[project.id] !== false
+                  const projectChats = chatSessions.filter((chat) => chat.projectId === project.id)
 
-                            <div className="chat-history-content">
-                              <div className="chat-history-title">{chat.title}</div>
-                              <div className="chat-history-meta">
-                                <span className="chat-message-count">{chat.messages.length}件</span>
-                                <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
-                              </div>
-                            </div>
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                deleteChat(chat.id)
-                              }}
-                              title="削除"
-                              className="chat-delete-button"
-                            >
-                              ×
-                            </Button>
+                  return (
+                    <div key={project.id} className="chat-project-group">
+                      <motion.div
+                        className={`project-header ${hoveredProjectId === project.id ? 'drag-over' : ''}`}
+                        onDragOver={(e) => handleProjectDragOver(e, project.id)}
+                        onDragLeave={handleProjectDragLeave}
+                        onDrop={(e) => handleProjectDrop(e, project.id)}
+                      >
+                        <motion.button
+                          className="project-toggle"
+                          onClick={() => setExpandedProjects((prev) => ({
+                            ...prev,
+                            [project.id]: !prev[project.id],
+                          }))}
+                          type="button"
+                          animate={{ rotate: isExpanded ? 0 : -90 }}
+                          transition={{ duration: 0.2 }}
+                          title={isExpanded ? 'プロジェクトを閉じる' : 'プロジェクトを開く'}
+                        >
+                          <FiChevronDown size={16} />
+                        </motion.button>
+                        <FiFolder size={16} />
+                        <span className="project-name">{project.name}</span>
+                      </motion.div>
+
+                      {/* Chats in this project */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            style={{ overflow: 'hidden' }}
+                          >
+                            {projectChats.map((chat) => {
+                              const isNewChat = chat.id === newChatId
+                              return (
+                                <motion.div
+                                  key={chat.id}
+                                  className={`chat-history-item project-chat ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
+                                  onClick={() => setCurrentChatId(chat.id)}
+                                  draggable
+                                  onDragStart={(e) => handleDragStart(e, chat.id)}
+                                  onDragEnd={handleDragEnd}
+                                  transition={isNewChat ? undefined : springTransition}
+                                  initial={isNewChat ? newChatVariants.initial : false}
+                                  animate={
+                                    isNewChat ? newChatVariants.animate : { opacity: 1, y: 0, scale: 1 }
+                                  }
+                                  exit={newChatVariants.exit}
+                                >
+                                  <div className="chat-history-compact">
+                                    <div className="chat-compact-time">
+                                      {formatDateCompact(chat.createdAt)}
+                                    </div>
+                                    <div className="chat-compact-icon">
+                                      <FiMessageSquare size={20} />
+                                    </div>
+                                    <div className="chat-compact-count">{chat.messages.length}</div>
+                                  </div>
+
+                                  <div className="chat-history-content">
+                                    <div className="chat-history-title">{chat.title}</div>
+                                    <div className="chat-history-meta">
+                                      <span className="chat-message-count">{chat.messages.length}件</span>
+                                      <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
+                                    </div>
+                                  </div>
+                                  <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      deleteChat(chat.id)
+                                    }}
+                                    title="削除"
+                                    className="chat-delete-button"
+                                  >
+                                    ×
+                                  </Button>
+                                </motion.div>
+                              )
+                            })}
                           </motion.div>
-                        )
-                      })}
-                  </div>
-                ))}
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )
+                })}
               </div>
             )}
 

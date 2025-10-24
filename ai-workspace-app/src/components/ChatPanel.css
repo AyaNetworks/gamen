@@ -1795,14 +1795,34 @@ button.radix-button.project-toggle-button {
   color: rgba(83, 120, 242, 1);
 }
 
+/* Project Toggle Button */
+.project-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: rgba(100, 150, 255, 0.8);
+  cursor: pointer;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.project-toggle:hover {
+  color: rgba(100, 150, 255, 1);
+}
+
 /* Chat Projects Section */
 .chat-projects-section {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  border-top: 1px solid rgba(100, 108, 255, 0.2);
-  padding-top: 0.5rem;
+  padding-top: 0.25rem;
   margin-bottom: 0.5rem;
+  overflow: hidden;
 }
 
 .chat-project-group {
@@ -1914,8 +1934,16 @@ button.radix-button.project-toggle-button {
 }
 
 /* Light Theme Project Styles */
+.light-theme .project-toggle {
+  color: rgba(83, 120, 242, 0.7);
+}
+
+.light-theme .project-toggle:hover {
+  color: rgba(83, 120, 242, 1);
+}
+
 .light-theme .chat-projects-section {
-  border-top: 1px solid rgba(100, 108, 255, 0.2);
+  border-top: none;
 }
 
 .light-theme .project-header {
