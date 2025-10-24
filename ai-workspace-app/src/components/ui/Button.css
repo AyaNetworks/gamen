@@ -250,6 +250,17 @@
   color: white;
 }
 
+/* Make small destructive buttons square (for icon-only usage) */
+.button-variant-destructive.button-size-sm {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
 /* ============================================
    Variant: GHOST (Minimal)
    ============================================ */
