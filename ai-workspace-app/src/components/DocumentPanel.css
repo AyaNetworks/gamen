@@ -420,6 +420,7 @@
 .document-icon,
 .library-icon {
   font-size: 1.25rem;
+  color: #ddd;
 }
 
 .document-name,
@@ -604,6 +605,11 @@
   background-color: rgba(255, 255, 255, 0.1);
   border-color: rgba(100, 108, 255, 0.25);
   box-shadow: 0 0 8px rgba(100, 108, 255, 0.15);
+}
+
+.light-theme .document-icon,
+.light-theme .library-icon {
+  color: #1a1a1a;
 }
 
 .light-theme .document-name,
