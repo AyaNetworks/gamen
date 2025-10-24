@@ -596,7 +596,29 @@ function ChatPanel() {
     }
   }
 
-  const handleMessageClick = (message) => {
+  // Track mouse position to detect text selection vs click
+  const mouseDownPos = useRef({ x: 0, y: 0 })
+
+  const handleMessageMouseDown = (event) => {
+    mouseDownPos.current = { x: event.clientX, y: event.clientY }
+  }
+
+  const handleMessageClick = (message, event) => {
+    // Calculate mouse movement between mousedown and click
+    const mouseMoved = Math.abs(event.clientX - mouseDownPos.current.x) > 5 ||
+                       Math.abs(event.clientY - mouseDownPos.current.y) > 5
+
+    // Don't open modal if user dragged (text selection)
+    if (mouseMoved) {
+      return
+    }
+
+    // Don't open modal if user has selected text
+    const selection = window.getSelection()
+    if (selection && selection.toString().length > 0) {
+      return
+    }
+
     // Only show modal for AI messages that have detailed info
     if (
       message.role === 'ai' &&
@@ -908,7 +930,8 @@ function ChatPanel() {
               <div
                 key={index}
                 className={`message ${message.role} ${message.role === 'ai' ? `message-${message.type || 'dione'}` : ''} ${message.role === 'ai' ? `message-${message.status || 'success'}` : ''} ${hasDetails ? 'message-clickable' : ''}`}
-                onClick={() => handleMessageClick(message)}
+                onMouseDown={handleMessageMouseDown}
+                onClick={(e) => handleMessageClick(message, e)}
               >
                 {message.role === 'ai' && (
                   <img
