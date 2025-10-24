@@ -1177,6 +1177,7 @@ Please provide a detailed, clear, and actionable response.`
               size="md"
               onClick={handleAttachClick}
               title="ファイルを添付"
+              animated={false}
             >
               <FiPaperclip size={20} />
             </Button>

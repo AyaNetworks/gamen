@@ -1246,3 +1246,82 @@ button.radix-button.new-tab-button {
     drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) !important;
   color: #fff !important;
 }
+
+/* Artifact Menu Dropdown */
+.artifact-menu-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.artifact-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background-color: rgba(42, 42, 62, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(100, 108, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(100, 108, 255, 0.15);
+  z-index: 100;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+.artifact-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(100, 108, 255, 0.1);
+}
+
+.artifact-menu-item:last-child {
+  border-bottom: none;
+}
+
+.artifact-menu-item:hover {
+  background-color: rgba(100, 108, 255, 0.15);
+}
+
+.artifact-menu-item:active {
+  background-color: rgba(100, 108, 255, 0.25);
+}
+
+.artifact-menu-item svg {
+  flex-shrink: 0;
+}
+
+/* Light theme artifact menu */
+.light-theme .artifact-menu {
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 20px rgba(100, 108, 255, 0.1);
+}
+
+.light-theme .artifact-menu-item {
+  color: #333;
+  border-bottom: 1px solid rgba(100, 108, 255, 0.1);
+}
+
+.light-theme .artifact-menu-item:last-child {
+  border-bottom: none;
+}
+
+.light-theme .artifact-menu-item:hover {
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+.light-theme .artifact-menu-item:active {
+  background-color: rgba(100, 108, 255, 0.15);
+}

@@ -3,9 +3,11 @@ import { useEffect, useRef, useState } from 'react'
 import {
   FiChevronLeft,
   FiChevronRight,
+  FiCopy,
   FiDownload,
   FiEdit2,
   FiEye,
+  FiMoreVertical,
   FiPaperclip,
   FiRotateCcw,
   FiRotateCw,
@@ -48,10 +50,27 @@ function Scratchpad({
   })
   const [showNotification, setShowNotification] = useState(false)
   const [notificationIsPublished, setNotificationIsPublished] = useState(false)
+  const [showArtifactMenu, setShowArtifactMenu] = useState(false)
+  const [copiedMessage, setCopiedMessage] = useState(false)
   const [attachmentNotification, setAttachmentNotification] = useState(false)
   const editorRef = useRef(null)
   const previewRef = useRef(null)
+  const artifactMenuRef = useRef(null)
   const { scrollYProgress } = useScroll({ container: previewRef })
+
+  // Close artifact menu when clicking outside
+  useEffect(() => {
+    if (!showArtifactMenu) return
+
+    const handleClickOutside = (event) => {
+      if (artifactMenuRef.current && !artifactMenuRef.current.contains(event.target)) {
+        setShowArtifactMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showArtifactMenu])
 
   // Detect new tab during render OR use animating tab
   const newTabId = tabs.length > prevTabCount && !animatingTabId ? currentTabId : animatingTabId
@@ -296,6 +315,24 @@ function Scratchpad({
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
+
+    // Close menu after download
+    setShowArtifactMenu(false)
+  }
+
+  const handleCopyContent = async () => {
+    if (!currentTab) return
+
+    try {
+      await navigator.clipboard.writeText(currentTab.content || '')
+      setCopiedMessage(true)
+      setTimeout(() => {
+        setCopiedMessage(false)
+      }, 2000)
+      setShowArtifactMenu(false)
+    } catch (err) {
+      console.error('Failed to copy content:', err)
+    }
   }
 
   const handlePublishToggle = (tabId, isPublished) => {
@@ -561,14 +598,47 @@ function Scratchpad({
           >
             <FiRotateCw size={18} />
           </Button>
-          <Button
-            variant="surface"
-            size="md"
-            onClick={handleDownload}
-            title="ダウンロード (Download)"
-          >
-            <FiDownload size={18} />
-          </Button>
+          {/* Artifact Menu Dropdown */}
+          <div className="artifact-menu-wrapper" ref={artifactMenuRef}>
+            <Button
+              variant="surface"
+              size="md"
+              onClick={() => setShowArtifactMenu(!showArtifactMenu)}
+              title="アーティファクトメニュー"
+              animated={false}
+            >
+              <FiMoreVertical size={18} />
+            </Button>
+
+            <AnimatePresence>
+              {showArtifactMenu && (
+                <motion.div
+                  className="artifact-menu"
+                  initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <button
+                    className="artifact-menu-item"
+                    onClick={handleDownload}
+                    type="button"
+                  >
+                    <FiDownload size={16} />
+                    <span>ダウンロード</span>
+                  </button>
+                  <button
+                    className="artifact-menu-item"
+                    onClick={handleCopyContent}
+                    type="button"
+                  >
+                    <FiCopy size={16} />
+                    <span>{copiedMessage ? 'コピー完了' : 'コピー'}</span>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {isPreviewMode ? (
