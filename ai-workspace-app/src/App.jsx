@@ -701,7 +701,7 @@ function App() {
   const currentScratchpadTab = scratchpadTabs.find((tab) => tab.id === currentScratchpadTabId)
 
   return (
-    <div className={`h-screen relative overflow-hidden ${theme === 'dark' ? 'dark' : ''}`}>
+    <div className={`h-screen relative overflow-hidden ${theme === 'dark' ? 'dark dark-theme' : 'light-theme'}`}>
       {/* Background gradients */}
       <div
         className={`absolute inset-0 pointer-events-none z-0 animate-[theme-fade-in_0.6s_ease-out] ${
