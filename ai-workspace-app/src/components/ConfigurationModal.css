@@ -251,3 +251,33 @@
 .config-modal-overlay.light-theme .config-modal-body::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 108, 255, 0.6);
 }
+
+/* Dione Powers Screen inside modal wrapper */
+.config-dione-screen-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.config-dione-screen-wrapper .dione-powers-overlay {
+  position: static;
+  background: none;
+  backdrop-filter: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  padding: 0;
+}
+
+.config-dione-screen-wrapper .dione-powers-monitor {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

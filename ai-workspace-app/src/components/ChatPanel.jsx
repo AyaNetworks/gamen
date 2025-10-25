@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useScroll } from 'framer-motion'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   FiCheck,
   FiCheckSquare,
@@ -80,7 +80,13 @@ function ChatPanel() {
   // Zustand stores - replace all props!
   const chatSessions = useChatStore((state) => state.chatSessions)
   const currentChatId = useChatStore((state) => state.currentChatId)
-  const currentMessages = useChatStore((state) => state.getCurrentMessages())
+  const getMessages = useChatStore((state) => state.getCurrentMessages)
+
+  // Memoize currentMessages to avoid Zustand snapshot caching issues
+  const currentMessages = useMemo(() => {
+    return getMessages ? getMessages() : []
+  }, [getMessages, chatSessions, currentChatId])
+
   const sendMessage = useChatStore((state) => state.sendMessage)
   const createNewChat = useChatStore((state) => state.createNewChat)
   const setCurrentChatId = useChatStore((state) => state.setCurrentChatId)
@@ -111,8 +117,8 @@ function ChatPanel() {
   const [taskMentionHighlightIndex, setTaskMentionHighlightIndex] = useState(0)
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [attachedFiles, setAttachedFiles] = useState([])
-  const [openConfigModal, setOpenConfigModal] = useState(null) // 'dione', 'tool', 'task', or null
-  const [showDionePowersScreen, setShowDionePowersScreen] = useState(false)
+  const [openConfigModal, setOpenConfigModal] = useState(null) // 'user', 'tool', 'task', or null
+  const [showDionePowersScreen, setShowDionePowersScreen] = useState(false) // For guideline editor
   const [prevChatCount, setPrevChatCount] = useState(0) // Track previous chat count
   const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
@@ -917,7 +923,7 @@ Please provide a detailed, clear, and actionable response.`
           <AnimatePresence>
             {/* Projects Section */}
             {chatProjects && chatProjects.length > 0 && (
-              <div className="chat-projects-section">
+              <div key="projects-section" className="chat-projects-section">
                 {chatProjects.map((project) => {
                   const isExpanded = expandedProjects[project.id] !== false
                   const projectChats = chatSessions.filter((chat) => chat.projectId === project.id)
@@ -957,11 +963,11 @@ Please provide a detailed, clear, and actionable response.`
                             transition={{ duration: 0.2 }}
                             style={{ overflow: 'hidden' }}
                           >
-                            {projectChats.map((chat) => {
+                            {projectChats.map((chat, idx) => {
                               const isNewChat = chat.id === newChatId
                               return (
                                 <motion.div
-                                  key={chat.id}
+                                  key={chat.id || `project-${project.id}-${idx}`}
                                   className={`chat-history-item project-chat ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
                                   onClick={() => setCurrentChatId(chat.id)}
                                   draggable
@@ -1017,6 +1023,7 @@ Please provide a detailed, clear, and actionable response.`
 
             {/* Ungrouped Chats Section - Always visible as drop target */}
             <div
+              key="ungrouped-header"
               className={`ungrouped-chats-header ${hoveredProjectId === 'ungrouped' ? 'drag-over' : ''}`}
               onDragOver={handleUngroupedDragOver}
               onDragLeave={handleUngroupedDragLeave}
@@ -1026,11 +1033,11 @@ Please provide a detailed, clear, and actionable response.`
             </div>
             {chatSessions
               .filter((chat) => !chat.projectId)
-              .map((chat) => {
+              .map((chat, idx) => {
                 const isNewChat = chat.id === newChatId
                 return (
                   <motion.div
-                    key={chat.id}
+                    key={chat.id || `ungrouped-${idx}`}
                     className={`chat-history-item ${chat.id === currentChatId ? 'active' : ''} ${draggedChatId === chat.id ? 'dragging' : ''}`}
                     onClick={() => setCurrentChatId(chat.id)}
                     draggable
@@ -1085,8 +1092,8 @@ Please provide a detailed, clear, and actionable response.`
             <Button
               variant="surface"
               size="md"
-              onClick={() => setShowDionePowersScreen(true)}
-              title="Dione設定"
+              onClick={() => setOpenConfigModal('user')}
+              title="ユーザー設定"
             >
               <FiUser size={20} />
             </Button>
@@ -1436,16 +1443,19 @@ Please provide a detailed, clear, and actionable response.`
           configType={openConfigModal}
           onClose={() => setOpenConfigModal(null)}
           theme={theme}
+          currentChatHistory={currentMessages}
+          onOpenDionePowersScreen={() => setShowDionePowersScreen(true)}
         />
       )}
 
-      {/* Dione Powers Screen - Full-screen personality configuration */}
+      {/* Dione Powers Screen for guideline editing */}
       {showDionePowersScreen && (
         <DionePowersScreen
           onClose={() => setShowDionePowersScreen(false)}
           theme={theme}
           currentChatHistory={currentMessages}
           currentArtifact={null}
+          source="chat"
         />
       )}
     </div>

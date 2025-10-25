@@ -775,6 +775,7 @@ function Scratchpad({
           theme={theme}
           currentChatHistory={null}
           currentArtifact={currentTab}
+          source="artifact"
         />
       )}
     </div>

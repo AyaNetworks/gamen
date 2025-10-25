@@ -266,6 +266,76 @@
   transform: scale(0.98);
 }
 
+/* Essence Panel - System Prompt Display */
+.essence-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.08) 0%, rgba(79, 255, 143, 0.04) 100%);
+  border: 1px solid rgba(100, 108, 255, 0.15);
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.essence-panel h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.essence-content {
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 12px;
+  background: rgba(26, 26, 46, 0.4);
+  border-radius: 6px;
+  border: 1px solid rgba(100, 108, 255, 0.1);
+  max-height: 180px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 108, 255, 0.2) transparent;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.essence-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.essence-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.essence-content::-webkit-scrollbar-thumb {
+  background: rgba(100, 108, 255, 0.2);
+  border-radius: 2px;
+}
+
+.essence-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 108, 255, 0.3);
+}
+
+/* Light theme overrides for essence panel */
+.light-theme .essence-panel {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.08) 0%, rgba(79, 255, 143, 0.06) 100%);
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .essence-panel h3 {
+  color: rgba(30, 30, 60, 0.8);
+}
+
+.light-theme .essence-content {
+  background: rgba(248, 249, 255, 0.5);
+  border-color: rgba(100, 108, 255, 0.15);
+  color: rgba(30, 30, 60, 0.65);
+}
+
 /* Conversation area */
 .conversation-area {
   flex: 1;

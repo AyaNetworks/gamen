@@ -4,9 +4,10 @@ import { createPortal } from 'react-dom'
 import Button from './ui/Button'
 import ToolsPanel from './ToolsPanel'
 import TasksPanel from './TasksPanel'
+import UserPreferencesPanel from './UserPreferencesPanel'
 import './ConfigurationModal.css'
 
-function ConfigurationModal({ configType, onClose, theme }) {
+function ConfigurationModal({ configType, onClose, theme, currentChatHistory, onOpenDionePowersScreen }) {
   const [activeTab, setActiveTab] = useState(0)
   const modalRef = useRef(null)
 
@@ -50,8 +51,8 @@ function ConfigurationModal({ configType, onClose, theme }) {
 
   const getModalTitle = () => {
     switch (configType) {
-      case 'dione':
-        return 'Dione設定'
+      case 'user':
+        return 'ユーザー設定'
       case 'tool':
         return 'ツール設定'
       case 'task':
@@ -81,6 +82,11 @@ function ConfigurationModal({ configType, onClose, theme }) {
           { name: 'タスク管理', id: 'manage' },
           { name: 'タスク実行', id: 'execute' },
         ]
+      case 'user':
+        return [
+          { name: 'ユーザー設定', id: 'preferences' },
+          { name: 'ガイドラインの編集', id: 'guideline' },
+        ]
       default:
         return []
     }
@@ -91,6 +97,34 @@ function ConfigurationModal({ configType, onClose, theme }) {
     const currentTab = tabs[activeTab]
 
     switch (configType) {
+      case 'user':
+        return (
+          <div className="tab-content">
+            {currentTab && currentTab.id === 'preferences' && <UserPreferencesPanel />}
+            {currentTab && currentTab.id === 'guideline' && (
+              <div className="guideline-tab-content">
+                <div className="config-section">
+                  <h4>ガイドラインの編集</h4>
+                  <p>Dioneのパーソナリティを定義するガイドラインを作成・編集します。</p>
+                  <p style={{ marginTop: '1rem' }}>下のボタンをクリックしてガイドラインエディタを開きます。</p>
+                </div>
+                <div style={{ marginTop: '1.5rem' }}>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      onClose()
+                      if (onOpenDionePowersScreen) {
+                        onOpenDionePowersScreen()
+                      }
+                    }}
+                  >
+                    ガイドラインを編集する
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        )
       case 'dione':
         return (
           <div className="tab-content">
@@ -153,7 +187,7 @@ function ConfigurationModal({ configType, onClose, theme }) {
           </Button>
         </div>
 
-        {configType === 'dione' && (
+        {(configType === 'dione' || configType === 'user') && (
           <div className="config-modal-tabs">
             {tabs.map((tab, index) => (
               <motion.div

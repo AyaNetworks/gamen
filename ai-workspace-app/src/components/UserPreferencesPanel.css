@@ -1,0 +1,162 @@
+/* User Preferences Panel */
+
+.user-preferences-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 24px;
+}
+
+/* Preference Group */
+.preference-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.preference-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.3px;
+}
+
+/* Preference Options Container */
+.preference-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Individual Preference Option Button */
+.preference-option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 12px 16px;
+  background: rgba(40, 40, 70, 0.5);
+  border: 1px solid rgba(100, 108, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.preference-option:hover {
+  background: rgba(40, 40, 70, 0.7);
+  border-color: rgba(100, 108, 255, 0.25);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Active State */
+.preference-option.active {
+  background: rgba(100, 108, 255, 0.2);
+  border-color: rgba(100, 108, 255, 0.4);
+  color: rgba(100, 200, 255, 0.95);
+  box-shadow: 0 0 12px rgba(100, 108, 255, 0.15);
+}
+
+.preference-option.active:hover {
+  background: rgba(100, 108, 255, 0.3);
+  border-color: rgba(100, 108, 255, 0.5);
+}
+
+/* Current Settings Display */
+.current-settings {
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.08) 0%, rgba(79, 255, 143, 0.04) 100%);
+  border: 1px solid rgba(100, 108, 255, 0.15);
+  border-radius: 10px;
+}
+
+.current-settings h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(26, 26, 46, 0.5);
+  border-radius: 6px;
+  border: 1px solid rgba(100, 108, 255, 0.1);
+  font-size: 12px;
+}
+
+.setting-key {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.setting-value {
+  color: rgba(100, 200, 255, 0.8);
+  font-weight: 600;
+}
+
+/* Preference Actions */
+.preference-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Light Theme Overrides */
+.light-theme .preference-label {
+  color: rgba(30, 30, 60, 0.9);
+}
+
+.light-theme .preference-option {
+  background: rgba(248, 249, 255, 0.6);
+  border-color: rgba(100, 108, 255, 0.2);
+  color: rgba(30, 30, 60, 0.7);
+}
+
+.light-theme .preference-option:hover {
+  background: rgba(248, 249, 255, 0.8);
+  border-color: rgba(100, 108, 255, 0.3);
+  color: rgba(30, 30, 60, 0.85);
+}
+
+.light-theme .preference-option.active {
+  background: rgba(100, 108, 255, 0.15);
+  border-color: rgba(100, 108, 255, 0.4);
+  color: rgba(100, 108, 255, 0.9);
+  box-shadow: 0 0 12px rgba(100, 108, 255, 0.12);
+}
+
+.light-theme .current-settings {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.08) 0%, rgba(79, 255, 143, 0.06) 100%);
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .current-settings h3 {
+  color: rgba(30, 30, 60, 0.8);
+}
+
+.light-theme .setting-item {
+  background: rgba(248, 249, 255, 0.5);
+  border-color: rgba(100, 108, 255, 0.15);
+}
+
+.light-theme .setting-key {
+  color: rgba(30, 30, 60, 0.6);
+}
+
+.light-theme .setting-value {
+  color: rgba(100, 108, 255, 0.85);
+}

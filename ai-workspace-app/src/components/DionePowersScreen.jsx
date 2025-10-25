@@ -5,7 +5,8 @@ import { FiX, FiPlus, FiTrash2 } from 'react-icons/fi'
 import Button from './ui/Button'
 import './DionePowersScreen.css'
 
-function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact }) {
+function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact, source = 'chat' }) {
+  // source can be 'chat' (from ChatPanel) or 'artifact' (from Scratchpad)
   const [messages, setMessages] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [dioneState, setDioneState] = useState('idle') // idle, thinking, listening
@@ -19,6 +20,7 @@ function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact
     content: currentArtifact.content || '',
     contentPreview: currentArtifact.content ? currentArtifact.content.substring(0, 100) + '...' : 'No content'
   } : null)
+  const [systemPrompt, setSystemPrompt] = useState('Building Dione\'s personality profile...\n\nAs we talk, I\'ll learn about your role, team, preferences, and how you work. This will shape how I support you.')
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
 
@@ -97,7 +99,7 @@ Please help me understand so I can better support you.`,
       >
         {/* Monitor Bezel Header */}
         <div className="monitor-header">
-          <h1 className="monitor-title">Dione Personality Configuration</h1>
+          <h1 className="monitor-title">ガイドラインの作成</h1>
           <Button
             variant="ghost"
             size="sm"
@@ -168,6 +170,14 @@ Please help me understand so I can better support you.`,
                 <FiPlus size={16} />
                 Add More Context
               </button>
+            </div>
+
+            {/* System Prompt Display - Title changes based on source */}
+            <div className="essence-panel">
+              <h3>{source === 'artifact' ? 'ガイドライン' : 'Dione Profile'}</h3>
+              <div className="essence-content">
+                {systemPrompt}
+              </div>
             </div>
           </div>
 
