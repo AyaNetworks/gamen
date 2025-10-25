@@ -24,6 +24,7 @@ import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 import 'highlight.js/styles/github-dark.css'
 import ConfigurationModal from './ConfigurationModal'
+import DionePowersScreen from './DionePowersScreen'
 import MessageDetailModal from './MessageDetailModal'
 import Button from './ui/Button'
 import './ChatPanel.css'
@@ -111,6 +112,7 @@ function ChatPanel() {
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [attachedFiles, setAttachedFiles] = useState([])
   const [openConfigModal, setOpenConfigModal] = useState(null) // 'dione', 'tool', 'task', or null
+  const [showDionePowersScreen, setShowDionePowersScreen] = useState(false)
   const [prevChatCount, setPrevChatCount] = useState(0) // Track previous chat count
   const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
@@ -1083,7 +1085,7 @@ Please provide a detailed, clear, and actionable response.`
             <Button
               variant="surface"
               size="md"
-              onClick={() => setOpenConfigModal('dione')}
+              onClick={() => setShowDionePowersScreen(true)}
               title="Dione設定"
             >
               <FiUser size={20} />
@@ -1434,6 +1436,16 @@ Please provide a detailed, clear, and actionable response.`
           configType={openConfigModal}
           onClose={() => setOpenConfigModal(null)}
           theme={theme}
+        />
+      )}
+
+      {/* Dione Powers Screen - Full-screen personality configuration */}
+      {showDionePowersScreen && (
+        <DionePowersScreen
+          onClose={() => setShowDionePowersScreen(false)}
+          theme={theme}
+          currentChatHistory={currentMessages}
+          currentArtifact={null}
         />
       )}
     </div>

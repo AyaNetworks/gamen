@@ -19,8 +19,10 @@ import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 import 'highlight.js/styles/github-dark.css'
 import PublishNotification from './PublishNotification'
+import DionePowersScreen from './DionePowersScreen'
 import StatsPanel from './StatsPanel'
 import Button from './ui/Button'
+import { useThemeStore } from '../store'
 import './Scratchpad.css'
 
 function Scratchpad({
@@ -53,6 +55,8 @@ function Scratchpad({
   const [showArtifactMenu, setShowArtifactMenu] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
   const [attachmentNotification, setAttachmentNotification] = useState(false)
+  const [showDionePowersScreen, setShowDionePowersScreen] = useState(false)
+  const theme = useThemeStore((state) => state.theme)
   const editorRef = useRef(null)
   const previewRef = useRef(null)
   const artifactMenuRef = useRef(null)
@@ -285,8 +289,10 @@ function Scratchpad({
         }
         break
       case 'top':
-        // Placeholder for future feature
-        console.log('Top button action - to be implemented')
+        // Open Dione Personality Configuration Screen with current artifact
+        if (currentTab) {
+          setShowDionePowersScreen(true)
+        }
         break
       default:
         break
@@ -761,6 +767,16 @@ function Scratchpad({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Dione Powers Screen - Opened from artifact controller */}
+      {showDionePowersScreen && (
+        <DionePowersScreen
+          onClose={() => setShowDionePowersScreen(false)}
+          theme={theme}
+          currentChatHistory={null}
+          currentArtifact={currentTab}
+        />
+      )}
     </div>
   )
 }
