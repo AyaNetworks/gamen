@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FiSearch, FiEdit2, FiTrash2, FiCheck, FiX, FiCheckCircle } from 'react-icons/fi'
 import Button from './ui/Button'
+import { useTaskStore } from '../store'
 import './TasksPanel.css'
 
 function TasksPanel() {
@@ -8,40 +9,9 @@ function TasksPanel() {
   const [filterStatus, setFilterStatus] = useState('all')
   const [filterPriority, setFilterPriority] = useState('all')
   const [selectedTaskEdit, setSelectedTaskEdit] = useState(null)
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: '新機能リリースのスケジュール調整',
-      description:
-        '次回のスプリントで予定している新機能のリリーススケジュールを調整し、各チームメンバーのタスク配分を最適化してください。',
-      priority: 'high',
-      status: 'in_progress',
-      createdAt: '2025/1/28',
-      scope: 'project',
-      projectId: 1,
-    },
-    {
-      id: 2,
-      title: 'リスク評価レポートの作成',
-      description:
-        '現在進行中のプロジェクトについて、技術的リスク、スケジュールリスク、リソースリスクを評価し、対策案を含むレポートを作成してください。',
-      priority: 'medium',
-      status: 'not_started',
-      createdAt: '2025/1/29',
-      scope: 'project',
-      projectId: 1,
-    },
-    {
-      id: 3,
-      title: 'ステークホルダー向け進捗報告書',
-      description:
-        '経営層向けに今四半期のプロジェクト進捗状況をまとめ、主要なマイルストーンの達成状況と今後の見通しを報告する資料を作成してください。',
-      priority: 'high',
-      status: 'not_started',
-      createdAt: '2025/1/30',
-      scope: 'global',
-    },
-  ])
+  const tasks = useTaskStore((state) => state.tasks)
+  const updateTask = useTaskStore((state) => state.updateTask)
+  const deleteTask = useTaskStore((state) => state.deleteTask)
   const [activeTab, setActiveTab] = useState('list')
 
   const filteredTasks = tasks.filter((task) => {
@@ -61,22 +31,18 @@ function TasksPanel() {
   })
 
   const handleDeleteTask = (taskId) => {
-    setTasks(tasks.filter((t) => t.id !== taskId))
+    deleteTask(taskId)
   }
 
   const handleToggleStatus = (taskId) => {
-    setTasks(
-      tasks.map((t) => {
-        if (t.id === taskId) {
-          let newStatus = 'not_started'
-          if (t.status === 'not_started') newStatus = 'in_progress'
-          else if (t.status === 'in_progress') newStatus = 'completed'
-          else if (t.status === 'completed') newStatus = 'not_started'
-          return { ...t, status: newStatus }
-        }
-        return t
-      })
-    )
+    const task = tasks.find((t) => t.id === taskId)
+    if (task) {
+      let newStatus = 'not_started'
+      if (task.status === 'not_started') newStatus = 'in_progress'
+      else if (task.status === 'in_progress') newStatus = 'completed'
+      else if (task.status === 'completed') newStatus = 'not_started'
+      updateTask(taskId, { status: newStatus })
+    }
   }
 
   const getPriorityColor = (priority) => {
@@ -311,7 +277,7 @@ function TasksPanel() {
                 <Button
                   variant="primary"
                   onClick={() => {
-                    setTasks(tasks.map((t) => (t.id === selectedTaskEdit.id ? selectedTaskEdit : t)))
+                    updateTask(selectedTaskEdit.id, selectedTaskEdit)
                     setSelectedTaskEdit(null)
                   }}
                 >

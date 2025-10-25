@@ -29,7 +29,7 @@ import Button from './ui/Button'
 import './ChatPanel.css'
 
 // Import Zustand stores
-import { useChatStore, useProjectStore, useThemeStore, useWorkspaceStore } from '../store'
+import { useChatStore, useProjectStore, useThemeStore, useWorkspaceStore, useTaskStore } from '../store'
 
 // Animation variants defined outside component to prevent re-creation
 const planeIconVariants = {
@@ -99,8 +99,15 @@ function ChatPanel() {
   const removeAttachment = useWorkspaceStore((state) => state.removeAttachment)
   const clearAllAttachments = useWorkspaceStore((state) => state.clearAllAttachments)
 
+  const tasks = useTaskStore((state) => state.tasks)
+  const getSortedTasks = useTaskStore((state) => state.getSortedTasks)
+
   // Local UI state (these stay as useState since they're component-specific)
   const [inputValue, setInputValue] = useState('')
+  const [showTaskMention, setShowTaskMention] = useState(false)
+  const [taskMentionQuery, setTaskMentionQuery] = useState('')
+  const [taskMentionCursorPos, setTaskMentionCursorPos] = useState(0)
+  const [taskMentionHighlightIndex, setTaskMentionHighlightIndex] = useState(0)
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [attachedFiles, setAttachedFiles] = useState([])
   const [openConfigModal, setOpenConfigModal] = useState(null) // 'dione', 'tool', 'task', or null
@@ -311,7 +318,110 @@ function ChatPanel() {
     }
   }
 
+  const handleTaskMention = (value, cursorPos) => {
+    // Find the last @ before cursor position
+    const lastAtPos = value.lastIndexOf('@', cursorPos - 1)
+
+    if (lastAtPos !== -1) {
+      // Check if there's a space before @  or if it's at the start
+      const beforeAt = lastAtPos === 0 ? '' : value[lastAtPos - 1]
+      if (lastAtPos === 0 || beforeAt === ' ' || beforeAt === '\n') {
+        // Extract query after @
+        const query = value.substring(lastAtPos + 1, cursorPos)
+
+        // If query doesn't contain space, show mention dropdown
+        if (!query.includes(' ')) {
+          setShowTaskMention(true)
+          setTaskMentionQuery(query)
+          setTaskMentionCursorPos(lastAtPos)
+          setTaskMentionHighlightIndex(0) // Reset highlight when showing dropdown
+          return
+        }
+      }
+    }
+
+    setShowTaskMention(false)
+    setTaskMentionQuery('')
+  }
+
+  const handleTaskSelection = (task) => {
+    // Create a detailed task reference with all information
+    const getPriorityLabel = (priority) => {
+      const labels = { high: '高', medium: '中', low: '低' }
+      return labels[priority] || priority
+    }
+
+    const getStatusLabel = (status) => {
+      const labels = { in_progress: '進行中', not_started: '未着手', completed: '完了' }
+      return labels[status] || status
+    }
+
+    const taskInfo = `【タスク】${task.title}
+優先度: ${getPriorityLabel(task.priority)} | ステータス: ${getStatusLabel(task.status)}
+説明: ${task.description}`
+
+    // Replace @ and query with detailed task reference
+    const beforeMention = inputValue.substring(0, taskMentionCursorPos)
+    const afterMention = inputValue.substring(taskMentionCursorPos + 1 + taskMentionQuery.length)
+    const newValue = beforeMention + taskInfo + afterMention
+
+    setInputValue(newValue)
+    setShowTaskMention(false)
+    setTaskMentionQuery('')
+    setTaskMentionHighlightIndex(0) // Reset highlight
+
+    // Move cursor after the inserted task reference
+    setTimeout(() => {
+      if (textareaRef.current) {
+        const newPos = beforeMention.length + taskInfo.length
+        textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newPos
+        textareaRef.current.focus()
+      }
+    }, 0)
+  }
+
   const handleKeyDown = (e) => {
+    // If mention dropdown is open and arrow keys pressed
+    if (showTaskMention && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      e.preventDefault()
+      const filteredTasks = getSortedTasks()
+        .filter((task) =>
+          task.title.toLowerCase().includes(taskMentionQuery.toLowerCase())
+        )
+        .slice(0, 5)
+
+      if (e.key === 'ArrowDown') {
+        setTaskMentionHighlightIndex((prev) =>
+          prev < filteredTasks.length - 1 ? prev + 1 : prev
+        )
+      } else if (e.key === 'ArrowUp') {
+        setTaskMentionHighlightIndex((prev) => (prev > 0 ? prev - 1 : 0))
+      }
+      return
+    }
+
+    // If mention dropdown is open and Enter is pressed, select highlighted task
+    if (showTaskMention && e.key === 'Enter') {
+      e.preventDefault()
+      const filteredTasks = getSortedTasks()
+        .filter((task) =>
+          task.title.toLowerCase().includes(taskMentionQuery.toLowerCase())
+        )
+        .slice(0, 5)
+
+      if (filteredTasks.length > 0 && taskMentionHighlightIndex < filteredTasks.length) {
+        handleTaskSelection(filteredTasks[taskMentionHighlightIndex])
+      }
+      return
+    }
+
+    // Close mention dropdown on Escape
+    if (e.key === 'Escape' && showTaskMention) {
+      e.preventDefault()
+      setShowTaskMention(false)
+      setTaskMentionHighlightIndex(0)
+    }
+
     // Ctrl+Enter or Cmd+Enter to submit
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault()
@@ -320,6 +430,10 @@ function ChatPanel() {
     // Shift+Enter for line break - let default behavior happen
     // Regular Enter for line break - prevent form submission
     if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+      if (showTaskMention) {
+        e.preventDefault()
+        return
+      }
       e.preventDefault()
       // Insert line break manually
       const textarea = e.target
@@ -1184,7 +1298,10 @@ Please provide a detailed, clear, and actionable response.`
             <textarea
               ref={textareaRef}
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => {
+                setInputValue(e.target.value)
+                handleTaskMention(e.target.value, e.target.selectionStart)
+              }}
               onKeyDown={handleKeyDown}
               placeholder="Dioneと何をしますか？ (Ctrl+Enter で送信)"
               className="chat-input"
@@ -1207,6 +1324,54 @@ Please provide a detailed, clear, and actionable response.`
                 onAnimationComplete={handleAnimationComplete}
               />
             </div>
+
+            {/* Task Mention Dropdown */}
+            {showTaskMention && (
+              <div className="task-mention-dropdown">
+                {getSortedTasks()
+                  .filter((task) =>
+                    task.title.toLowerCase().includes(taskMentionQuery.toLowerCase())
+                  )
+                  .slice(0, 5)
+                  .map((task, index) => (
+                    <div
+                      key={task.id}
+                      className={`task-mention-item ${index === taskMentionHighlightIndex ? 'highlighted' : ''}`}
+                      onClick={() => handleTaskSelection(task)}
+                    >
+                      <div className="task-mention-title">{task.title}</div>
+                      <div className="task-mention-meta">
+                        <span className="task-mention-scope" style={{ borderLeftColor: task.scope === 'project' ? '#6c6cff' : '#999' }}>
+                          {task.scope === 'project' ? 'プロジェクト' : 'グローバル'}
+                        </span>
+                        <span
+                          className="task-mention-priority"
+                          style={{
+                            backgroundColor:
+                              task.priority === 'high'
+                                ? 'rgba(255, 107, 107, 0.2)'
+                                : task.priority === 'medium'
+                                ? 'rgba(255, 170, 77, 0.2)'
+                                : 'rgba(105, 219, 124, 0.2)',
+                            color:
+                              task.priority === 'high'
+                                ? '#ff6b6b'
+                                : task.priority === 'medium'
+                                ? '#ffa94d'
+                                : '#69db7c',
+                          }}
+                        >
+                          {task.priority === 'high'
+                            ? '高'
+                            : task.priority === 'medium'
+                            ? '中'
+                            : '低'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
           </div>
         </form>
       </div>
