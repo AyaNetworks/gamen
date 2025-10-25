@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Button from './ui/Button'
+import ToolsPanel from './ToolsPanel'
+import TasksPanel from './TasksPanel'
 import './ConfigurationModal.css'
 
 function ConfigurationModal({ configType, onClose, theme }) {
@@ -113,51 +115,9 @@ function ConfigurationModal({ configType, onClose, theme }) {
           </div>
         )
       case 'tool':
-        return (
-          <div className="tab-content">
-            {currentTab.id === 'list' && (
-              <div className="config-section">
-                <h4>ツール一覧</h4>
-                <p>利用可能なツールの一覧を表示し、有効/無効を切り替えられます。</p>
-              </div>
-            )}
-            {currentTab.id === 'add' && (
-              <div className="config-section">
-                <h4>ツール追加</h4>
-                <p>新しいカスタムツールを追加してDioneの機能を拡張できます。</p>
-              </div>
-            )}
-            {currentTab.id === 'details' && (
-              <div className="config-section">
-                <h4>ツール詳細</h4>
-                <p>各ツールの詳細設定とパラメータを構成できます。</p>
-              </div>
-            )}
-          </div>
-        )
+        return <ToolsPanel />
       case 'task':
-        return (
-          <div className="tab-content">
-            {currentTab.id === 'define' && (
-              <div className="config-section">
-                <h4>タスク定義</h4>
-                <p>Dioneが実行するタスクを定義し、その内容と要件を指定します。</p>
-              </div>
-            )}
-            {currentTab.id === 'manage' && (
-              <div className="config-section">
-                <h4>タスク管理</h4>
-                <p>既存のタスク、スケジュール、優先度を管理できます。</p>
-              </div>
-            )}
-            {currentTab.id === 'execute' && (
-              <div className="config-section">
-                <h4>タスク実行</h4>
-                <p>タスクの実行設定、条件、トリガーをカスタマイズできます。</p>
-              </div>
-            )}
-          </div>
-        )
+        return <TasksPanel />
       default:
         return (
           <div className="tab-content">
@@ -193,39 +153,41 @@ function ConfigurationModal({ configType, onClose, theme }) {
           </Button>
         </div>
 
-        <div className="config-modal-tabs">
-          {tabs.map((tab, index) => (
-            <motion.div
-              key={tab.id}
-              initial={false}
-              animate={{
-                backgroundColor:
-                  activeTab === index ? 'rgba(100, 108, 255, 0.15)' : 'rgba(100, 108, 255, 0)',
-              }}
-              transition={{ duration: 0.2 }}
-            >
-              <Button
-                variant="tab"
-                onClick={() => setActiveTab(index)}
-                className={activeTab === index ? 'active' : ''}
-                animated={false}
+        {configType === 'dione' && (
+          <div className="config-modal-tabs">
+            {tabs.map((tab, index) => (
+              <motion.div
+                key={tab.id}
+                initial={false}
+                animate={{
+                  backgroundColor:
+                    activeTab === index ? 'rgba(100, 108, 255, 0.15)' : 'rgba(100, 108, 255, 0)',
+                }}
+                transition={{ duration: 0.2 }}
               >
-                {tab.name}
-              </Button>
-              {activeTab === index && (
-                <motion.div
-                  className="config-tab-underline"
-                  layoutId="config-tab-underline"
-                  transition={{
-                    type: 'spring',
-                    stiffness: 500,
-                    damping: 30,
-                  }}
-                />
-              )}
-            </motion.div>
-          ))}
-        </div>
+                <Button
+                  variant="tab"
+                  onClick={() => setActiveTab(index)}
+                  className={activeTab === index ? 'active' : ''}
+                  animated={false}
+                >
+                  {tab.name}
+                </Button>
+                {activeTab === index && (
+                  <motion.div
+                    className="config-tab-underline"
+                    layoutId="config-tab-underline"
+                    transition={{
+                      type: 'spring',
+                      stiffness: 500,
+                      damping: 30,
+                    }}
+                  />
+                )}
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         <div className="config-modal-body">{renderTabContent()}</div>
       </motion.div>

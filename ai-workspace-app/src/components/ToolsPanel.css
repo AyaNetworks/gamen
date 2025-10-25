@@ -1,0 +1,450 @@
+.tools-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tools-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.tools-search svg {
+  flex-shrink: 0;
+  color: rgba(100, 150, 255, 0.7);
+}
+
+.tools-search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.tools-search-input:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.tools-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.tools-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tools-category {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tools-category-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(100, 150, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.tools-category-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tool-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background-color: rgba(50, 50, 80, 0.3);
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.tool-item:hover {
+  background-color: rgba(50, 50, 80, 0.5);
+  border-color: rgba(100, 108, 255, 0.35);
+}
+
+.tool-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.tool-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.tool-description {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.tool-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-top: 8px;
+  background-color: rgba(100, 108, 255, 0.2);
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(100, 150, 255, 0.9);
+}
+
+.tool-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.tools-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}
+
+.tools-add-form {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.tools-add-form h3 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0 0 20px 0;
+}
+
+.tools-add-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tools-add-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tools-add-form label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(100, 150, 255, 0.9);
+}
+
+.tools-add-form input,
+.tools-add-form textarea,
+.tools-add-form select {
+  padding: 10px 12px;
+  border: 1px solid rgba(100, 108, 255, 0.25);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.tools-add-form input:focus,
+.tools-add-form textarea:focus,
+.tools-add-form select:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.tools-add-form input::placeholder,
+.tools-add-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.tools-add-form .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Light theme */
+.light-theme .tools-search-input {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(100, 108, 255, 0.2);
+  color: #333;
+}
+
+.light-theme .tools-search-input:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .tools-search-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.light-theme .tool-item {
+  background-color: rgba(100, 108, 255, 0.08);
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .tool-item:hover {
+  background-color: rgba(100, 108, 255, 0.12);
+  border-color: rgba(100, 108, 255, 0.35);
+}
+
+.light-theme .tool-name {
+  color: #333;
+}
+
+.light-theme .tool-description {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.light-theme .tools-add-form input,
+.light-theme .tools-add-form textarea,
+.light-theme .tools-add-form select {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .tools-add-form input:focus,
+.light-theme .tools-add-form textarea:focus,
+.light-theme .tools-add-form select:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Tool Config Modal */
+.tool-config-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.tool-config-modal {
+  background-color: rgba(26, 26, 46, 0.95);
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+.tool-config-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+.tool-config-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.tool-config-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.config-section h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(100, 150, 255, 0.9);
+  font-weight: 600;
+}
+
+.config-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.config-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: rgba(100, 108, 255, 0.8);
+}
+
+.config-toggle span {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.tool-config-content .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tool-config-content label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(100, 150, 255, 0.9);
+}
+
+.tool-config-content input {
+  padding: 10px 12px;
+  border: 1px solid rgba(100, 108, 255, 0.25);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.tool-config-content input:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.tool-config-content input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Dark theme number input spinners */
+.tool-config-content input[type="number"]::-webkit-outer-spin-button,
+.tool-config-content input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  opacity: 1;
+  background-color: rgba(100, 108, 255, 0.2);
+  border-radius: 3px;
+  color: #fff;
+}
+
+/* Dark theme password input */
+.tool-config-content input[type="password"] {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.config-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+/* Button vertical alignment fix */
+.tool-actions button,
+.tools-search button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Light theme for tool config modal */
+.light-theme .tool-config-modal {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .tool-config-header {
+  border-bottom-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .tool-config-header h3 {
+  color: #333;
+}
+
+.light-theme .tool-config-content input {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .tool-config-content input:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .tool-config-content input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* Light theme checkbox styling */
+.light-theme .config-toggle input[type="checkbox"] {
+  accent-color: rgba(100, 108, 255, 0.9);
+}
+
+/* Light theme number input spinners */
+.light-theme .tool-config-content input[type="number"] {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+/* Webkit spinners for number input in light mode */
+.light-theme .tool-config-content input[type="number"]::-webkit-outer-spin-button,
+.light-theme .tool-config-content input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  opacity: 1;
+  background-color: rgba(100, 108, 255, 0.15);
+  border-radius: 3px;
+  color: #333;
+}
+
+.light-theme .config-toggle span {
+  color: #333;
+}
+
+/* Password input light mode */
+.light-theme .tool-config-content input[type="password"] {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+  border-color: rgba(100, 108, 255, 0.2);
+}
