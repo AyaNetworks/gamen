@@ -58,6 +58,120 @@ export const useTaskStore = create<TaskStoreState>()(
             createdAt: '2025/1/30',
             scope: 'global',
           },
+          {
+            id: 4,
+            title: 'UIデザインシステムの構築',
+            description:
+              'プロジェクト全体で使用するUIコンポーネント、カラーパレット、タイポグラフィーをまとめたデザインシステムを構築し、ドキュメント化してください。',
+            priority: 'high',
+            status: 'in_progress',
+            createdAt: '2025/1/25',
+            scope: 'project',
+            projectId: 1,
+          },
+          {
+            id: 5,
+            title: 'バグ修正: ログイン画面の不具合',
+            description:
+              'モバイルデバイスからのログイン時に、認証トークンが正しく保存されないバグを修正してください。iOS とAndroidの両プラットフォームでテストしてください。',
+            priority: 'high',
+            status: 'in_progress',
+            createdAt: '2025/1/31',
+            scope: 'project',
+            projectId: 1,
+          },
+          {
+            id: 6,
+            title: 'データベースパフォーマンス最適化',
+            description:
+              'ユーザーデータクエリの処理時間が多く、全体的なシステムパフォーマンスに影響を与えています。インデックスの最適化とクエリの改善を実施してください。',
+            priority: 'medium',
+            status: 'not_started',
+            createdAt: '2025/2/1',
+            scope: 'global',
+          },
+          {
+            id: 7,
+            title: 'APIドキュメント作成',
+            description:
+              '新しく開発したREST APIの完全なドキュメントを作成してください。エンドポイント、パラメータ、レスポンス形式、エラーコードを含めてください。',
+            priority: 'medium',
+            status: 'completed',
+            createdAt: '2025/1/15',
+            scope: 'global',
+          },
+          {
+            id: 8,
+            title: 'チームミーティング議事録作成',
+            description:
+              '先週のスプリント計画ミーティングの議事録を作成し、決定事項とアクションアイテムをまとめてください。',
+            priority: 'low',
+            status: 'completed',
+            createdAt: '2025/1/20',
+            scope: 'global',
+          },
+          {
+            id: 9,
+            title: 'ユーザーフィードバック分析',
+            description:
+              'アプリストアのレビューとサポートチケットから顧客の主な不満点と要望を抽出し、優先度付けして報告してください。',
+            priority: 'medium',
+            status: 'not_started',
+            createdAt: '2025/2/2',
+            scope: 'global',
+          },
+          {
+            id: 10,
+            title: 'セキュリティ監査の実施',
+            description:
+              'システム全体のセキュリティ脆弱性をチェックし、潜在的なリスクを特定して対策案を提示してください。OWASP Top 10をベースにしてください。',
+            priority: 'high',
+            status: 'not_started',
+            createdAt: '2025/2/3',
+            scope: 'global',
+          },
+          {
+            id: 11,
+            title: 'テスト環境のセットアップ',
+            description:
+              'CI/CDパイプライン用の新しいテスト環境を構築し、既存のテストスイートが正しく動作することを確認してください。',
+            priority: 'medium',
+            status: 'in_progress',
+            createdAt: '2025/1/27',
+            scope: 'project',
+            projectId: 1,
+          },
+          {
+            id: 12,
+            title: 'ウェビナー資料の準備',
+            description:
+              '来月のウェビナー「APIセキュリティベストプラクティス」のスライドと説明資料を準備してください。',
+            priority: 'low',
+            status: 'not_started',
+            createdAt: '2025/2/4',
+            scope: 'global',
+          },
+          {
+            id: 13,
+            title: 'クライアント要件ヒアリング',
+            description:
+              '新規プロジェクト案件の技術要件を詳しくヒアリングし、実装可能性を検討してレポートを作成してください。',
+            priority: 'high',
+            status: 'not_started',
+            createdAt: '2025/2/5',
+            scope: 'global',
+          },
+          {
+            id: 14,
+            title: 'パフォーマンス測定とモニタリング',
+            description:
+              'アプリケーションのCPU使用率、メモリ消費量、レスポンスタイムを監視するダッシュボードを構築してください。',
+            priority: 'low',
+            status: 'in_progress',
+            createdAt: '2025/1/26',
+            scope: 'project',
+            projectId: 1,
+          },
         ],
 
         // Actions

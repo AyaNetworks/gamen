@@ -130,6 +130,8 @@ function ChatPanel() {
   const fileInputRef = useRef(null)
   const textareaRef = useRef(null)
   const messagesContainerRef = useRef(null)
+  const taskMentionDropdownRef = useRef(null)
+  const taskMentionItemsRef = useRef([])
   const { scrollYProgress } = useScroll({ container: messagesContainerRef })
 
   // Detect new chat during render (before effect runs) OR use animating chat
@@ -290,6 +292,49 @@ function ChatPanel() {
     }
   }, [inputValue])
 
+  // Auto-scroll task mention dropdown to keep highlighted item visible
+  useEffect(() => {
+    if (!showTaskMention || !taskMentionDropdownRef.current) {
+      // Clean up refs when dropdown is closed
+      if (!showTaskMention) {
+        taskMentionItemsRef.current = []
+      }
+      return
+    }
+
+    // Get the currently filtered tasks to validate highlight index
+    const filteredTasks = getSortedTasks()
+      .filter((task) =>
+        task.title.toLowerCase().includes(taskMentionQuery.toLowerCase())
+      )
+      .slice(0, 10)
+
+    // If highlight index is out of bounds, don't scroll
+    if (taskMentionHighlightIndex >= filteredTasks.length) {
+      return
+    }
+
+    const highlightedItem = taskMentionItemsRef.current[taskMentionHighlightIndex]
+    if (!highlightedItem) return
+
+    const dropdownRect = taskMentionDropdownRef.current.getBoundingClientRect()
+    const itemRect = highlightedItem.getBoundingClientRect()
+
+    // Check if item is above the dropdown
+    if (itemRect.top < dropdownRect.top) {
+      highlightedItem.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    // Check if item is below the dropdown
+    else if (itemRect.bottom > dropdownRect.bottom) {
+      highlightedItem.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }
+  }, [taskMentionHighlightIndex, showTaskMention, taskMentionQuery])
+
+  // Clean up task mention refs when query changes to prevent stale refs
+  useEffect(() => {
+    taskMentionItemsRef.current = []
+  }, [taskMentionQuery])
+
   // Stable callback for animation completion
   const handleAnimationComplete = useCallback(() => {
     setShouldAnimateSendBtn(false)
@@ -388,7 +433,7 @@ function ChatPanel() {
         .filter((task) =>
           task.title.toLowerCase().includes(taskMentionQuery.toLowerCase())
         )
-        .slice(0, 5)
+        .slice(0, 10)
 
       if (e.key === 'ArrowDown') {
         setTaskMentionHighlightIndex((prev) =>
@@ -407,7 +452,7 @@ function ChatPanel() {
         .filter((task) =>
           task.title.toLowerCase().includes(taskMentionQuery.toLowerCase())
         )
-        .slice(0, 5)
+        .slice(0, 10)
 
       if (filteredTasks.length > 0 && taskMentionHighlightIndex < filteredTasks.length) {
         handleTaskSelection(filteredTasks[taskMentionHighlightIndex])
@@ -1327,15 +1372,18 @@ Please provide a detailed, clear, and actionable response.`
 
             {/* Task Mention Dropdown */}
             {showTaskMention && (
-              <div className="task-mention-dropdown">
+              <div className="task-mention-dropdown" ref={taskMentionDropdownRef}>
                 {getSortedTasks()
                   .filter((task) =>
                     task.title.toLowerCase().includes(taskMentionQuery.toLowerCase())
                   )
-                  .slice(0, 5)
+                  .slice(0, 10)
                   .map((task, index) => (
                     <div
                       key={task.id}
+                      ref={(el) => {
+                        if (el) taskMentionItemsRef.current[index] = el
+                      }}
                       className={`task-mention-item ${index === taskMentionHighlightIndex ? 'highlighted' : ''}`}
                       onClick={() => handleTaskSelection(task)}
                     >

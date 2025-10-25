@@ -2166,7 +2166,7 @@ button.radix-button.project-toggle-button {
   bottom: 100%;
   left: 50px;
   right: 0;
-  max-height: 200px;
+  max-height: 350px;
   overflow-y: auto;
   background-color: rgba(26, 26, 46, 0.95);
   border: 1px solid rgba(100, 108, 255, 0.2);
@@ -2174,6 +2174,25 @@ button.radix-button.project-toggle-button {
   margin-bottom: 8px;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
   z-index: 100;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 108, 255, 0.3) transparent;
+}
+
+.task-mention-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-mention-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-mention-dropdown::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 108, 255, 0.3);
+  border-radius: 3px;
+}
+
+.task-mention-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 108, 255, 0.5);
 }
 
 .task-mention-item {
@@ -2229,6 +2248,15 @@ button.radix-button.project-toggle-button {
 .light-theme .task-mention-dropdown {
   background-color: rgba(255, 255, 255, 0.95);
   border-color: rgba(100, 108, 255, 0.2);
+  scrollbar-color: rgba(100, 108, 255, 0.4) transparent;
+}
+
+.light-theme .task-mention-dropdown::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 108, 255, 0.4);
+}
+
+.light-theme .task-mention-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 108, 255, 0.6);
 }
 
 .light-theme .task-mention-item:hover,
