@@ -715,8 +715,12 @@ function App() {
       <div className="relative z-10 h-full">
         <PanelGroup direction="horizontal">
           <Panel defaultSize={35} minSize={15} maxSize={50}>
-            {/* ChatPanel now gets ALL data from Zustand stores - no props needed! */}
-            <ChatPanel />
+            {/* ChatPanel gets data from Zustand stores + documents/libraries from App state */}
+            <ChatPanel
+              documents={documents}
+              libraries={libraries}
+              scratchpadTabs={scratchpadTabs}
+            />
           </Panel>
           <PanelResizeHandle className="resize-handle" />
           <Panel defaultSize={40} minSize={25}>
@@ -733,6 +737,8 @@ function App() {
               onRenameTab={handleRenameScratchpadTab}
               onAddDocument={handleAddToScratchpad}
               onAttachToChat={handleAttachToChat}
+              documents={documents}
+              libraries={libraries}
             />
           </Panel>
           <PanelResizeHandle className="resize-handle" />

@@ -76,7 +76,11 @@ const AnimatedSendButton = memo(({ shouldAnimate, animationKey, onAnimationCompl
 
 AnimatedSendButton.displayName = 'AnimatedSendButton'
 
-function ChatPanel() {
+function ChatPanel({
+  documents = [],         // From App.jsx
+  libraries = [],         // From App.jsx
+  scratchpadTabs = []     // From App.jsx
+}) {
   // Zustand stores - replace all props!
   const chatSessions = useChatStore((state) => state.chatSessions)
   const currentChatId = useChatStore((state) => state.currentChatId)
@@ -1468,6 +1472,9 @@ Please provide a detailed, clear, and actionable response.`
           currentChatHistory={currentMessages}
           currentArtifact={null}
           source="chat"
+          documents={documents}
+          libraries={libraries}
+          scratchpadTabs={scratchpadTabs}
         />
       )}
     </div>

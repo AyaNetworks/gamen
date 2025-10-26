@@ -38,6 +38,8 @@ function Scratchpad({
   onRenameTab,
   onAddDocument,
   onAttachToChat,
+  documents = [],         // From App.jsx
+  libraries = [],         // From App.jsx
 }) {
   const [editingTabId, setEditingTabId] = useState(null)
   const [editingTitle, setEditingTitle] = useState('')
@@ -776,6 +778,9 @@ function Scratchpad({
           currentChatHistory={null}
           currentArtifact={currentTab}
           source="artifact"
+          documents={documents}
+          libraries={libraries}
+          scratchpadTabs={tabs}
         />
       )}
     </div>

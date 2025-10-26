@@ -5,11 +5,150 @@ import { FiX, FiPlus, FiTrash2, FiEdit2, FiCheck } from 'react-icons/fi'
 import Button from './ui/Button'
 import './DionePowersScreen.css'
 
-function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact, source = 'chat' }) {
+// Library Selection Modal Component
+function LibrarySelectionModal({ selectionType, items, onSelect, onClose, theme }) {
+  const [selectedIds, setSelectedIds] = useState([])
+
+  const handleSelect = (id) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    )
+  }
+
+  const handleSelectAll = () => {
+    if (selectedIds.length === items.length) {
+      setSelectedIds([])
+    } else {
+      setSelectedIds(items.map(item => item.id))
+    }
+  }
+
+  const getTypeLabel = () => {
+    if (selectionType === 'artifacts') return 'ワークスペースアーティファクト'
+    if (selectionType === 'sessions') return 'ライブラリドキュメント'
+    if (selectionType === 'knowledge') return 'ナレッジベース'
+    return 'コンテキストを選択'
+  }
+
+  return (
+    <motion.div
+      className="context-modal"
+      onClick={(e) => e.stopPropagation()}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className="context-modal-header">
+        <h3>{getTypeLabel()}</h3>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onClose}
+          animated={false}
+        >
+          <FiX size={20} />
+        </Button>
+      </div>
+      <div className="context-modal-content">
+        {items.length === 0 ? (
+          <div style={{ padding: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
+            利用可能なアイテムがありません
+          </div>
+        ) : (
+          <>
+            <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(100,108,255,0.2)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={selectedIds.length === items.length}
+                  onChange={handleSelectAll}
+                  style={{ width: '16px', height: '16px' }}
+                />
+                <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}>
+                  すべて選択 ({selectedIds.length}/{items.length})
+                </span>
+              </label>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '400px', overflowY: 'auto' }}>
+              {items.map((item) => (
+                <label
+                  key={item.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '10px',
+                    padding: '10px',
+                    background: 'rgba(50,50,80,0.3)',
+                    border: '1px solid rgba(100,108,255,0.2)',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(item.id)}
+                    onChange={() => handleSelect(item.id)}
+                    style={{ width: '16px', height: '16px', marginTop: '2px', flexShrink: 0 }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'rgba(255,255,255,0.95)' }}>
+                      {item.name}
+                    </div>
+                    <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginTop: '4px' }}>
+                      {selectionType === 'artifacts' && `${item.type} • ${item.size}`}
+                      {selectionType === 'sessions' && `${new Date(item.uploadedAt).toLocaleDateString('ja-JP')}`}
+                      {selectionType === 'knowledge' && `${item.category}`}
+                    </div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      <div style={{ padding: '16px', borderTop: '1px solid rgba(100,108,255,0.15)', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+        <Button
+          variant="ghost"
+          onClick={onClose}
+          animated={false}
+        >
+          キャンセル
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            if (selectedIds.length > 0) {
+              onSelect(selectedIds)
+            }
+          }}
+          disabled={selectedIds.length === 0}
+          animated={false}
+        >
+          選択 ({selectedIds.length})
+        </Button>
+      </div>
+    </motion.div>
+  )
+}
+
+function DionePowersScreen({
+  onClose,
+  theme,
+  currentChatHistory,
+  currentArtifact,
+  source = 'chat',
+  documents = [],           // Real documents from App.jsx
+  libraries = [],           // Real libraries from App.jsx
+  scratchpadTabs = []       // Real artifacts from App.jsx
+}) {
   // source can be 'chat' (from ChatPanel) or 'artifact' (from Scratchpad)
   const [messages, setMessages] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [dioneState, setDioneState] = useState('idle') // idle, thinking, listening
+  const [showLibrarySelectionModal, setShowLibrarySelectionModal] = useState(false)
+  const [librarySelectionType, setLibrarySelectionType] = useState(null) // 'artifacts' | 'sessions' | 'knowledge'
   const [attachedContext, setAttachedContext] = useState({
     chatHistory: true, // Always include chat history
     currentArtifact: currentArtifact ? true : false,
@@ -34,12 +173,10 @@ function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact
   const availableContexts = [
     // Direct uploads
     { id: 'file', label: 'ファイルをアップロード', description: '新しいファイルを添付', category: 'アップロード' },
-    { id: 'url', label: 'URLからコンテンツを追加', description: 'ウェブページのコンテンツを取得', category: 'アップロード' },
-    { id: 'notes', label: 'メモを追加', description: 'フリーテキストのメモを添付', category: 'アップロード' },
     // Workspace and Library sources
-    { id: 'workspace-artifacts', label: 'ワークスペースアーティファクト', description: 'Dioneワークスペースのアーティファクトを選択', category: 'ライブラリ' },
-    { id: 'session-files', label: 'セッションファイル', description: 'ライブラリからセッションファイルを選択', category: 'ライブラリ' },
-    { id: 'dione-knowledge', label: 'Dioneナレッジ', description: 'Dioneナレッジベースから選択', category: 'ライブラリ' },
+    { id: 'workspace-artifacts', label: 'ワークスペースアーティファクト', description: `${scratchpadTabs.length}個のアーティファクトから選択`, category: 'ライブラリ' },
+    { id: 'session-files', label: 'ライブラリドキュメント', description: `${libraries.length}個のドキュメントから選択`, category: 'ライブラリ' },
+    { id: 'dione-knowledge', label: 'ナレッジベース', description: `${documents.length}個のナレッジアイテムから選択`, category: 'ライブラリ' },
   ]
 
   // Handle prompt edit mode
@@ -58,27 +195,31 @@ function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact
     setEditingPrompt(systemPrompt)
   }
 
-  // Mock data for workspace and library items
-  const mockWorkspaceArtifacts = [
-    { id: 'art-1', name: 'API設計ドキュメント', type: 'document', size: '2.5MB' },
-    { id: 'art-2', name: 'フロントエンド実装ガイド', type: 'code', size: '1.2MB' },
-    { id: 'art-3', name: 'デザインシステム', type: 'design', size: '3.1MB' },
-    { id: 'art-4', name: 'テスト計画', type: 'document', size: '0.8MB' },
-  ]
+  // Use real data from props instead of mock data
+  const realWorkspaceArtifacts = scratchpadTabs.map((tab, idx) => ({
+    id: `tab-${tab.id}`,
+    name: tab.title,
+    type: tab.fileType || 'document',
+    content: tab.content,
+    size: `${Math.ceil(tab.content.length / 1024)}KB`,
+  }))
 
-  const mockSessionFiles = [
-    { id: 'sess-1', name: 'Q4プロダクトレビュー', date: '2025-10-20' },
-    { id: 'sess-2', name: '週次チェックイン', date: '2025-10-19' },
-    { id: 'sess-3', name: 'バグトリアージ会議', date: '2025-10-18' },
-    { id: 'sess-4', name: 'スプリント計画', date: '2025-10-17' },
-  ]
+  const realLibraries = libraries.map((lib) => ({
+    id: `lib-${lib.id}`,
+    name: lib.name,
+    type: lib.type,
+    content: lib.content,
+    filePath: lib.filePath,
+    uploadedAt: lib.tags?.uploadedAt || new Date().toISOString(),
+  }))
 
-  const mockDioneKnowledge = [
-    { id: 'know-1', name: '技術スタック概要', category: 'テクノロジー' },
-    { id: 'know-2', name: 'デプロイメント手順', category: 'インフラ' },
-    { id: 'know-3', name: 'ユーザー認証フロー', category: 'セキュリティ' },
-    { id: 'know-4', name: 'パフォーマンス最適化ガイド', category: 'パフォーマンス' },
-  ]
+  const realDocuments = documents.map((doc) => ({
+    id: `doc-${doc.id}`,
+    name: doc.name,
+    type: doc.type,
+    content: doc.content,
+    category: doc.tags?.category || 'その他',
+  }))
 
   // Handle context selection
   const handleAddContext = (contextType) => {
@@ -107,28 +248,46 @@ function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact
         setShowContextModal(false)
       }
     } else if (contextType === 'workspace-artifacts') {
-      // Store selected artifacts - would be a multi-select UI
-      // For now, add all as example
-      setAttachedContext({
-        ...attachedContext,
-        artifacts: mockWorkspaceArtifacts.slice(0, 2), // Add first 2 as example
-      })
+      // Close context modal and open library selection modal
       setShowContextModal(false)
+      setLibrarySelectionType('artifacts')
+      setShowLibrarySelectionModal(true)
     } else if (contextType === 'session-files') {
-      // Store selected sessions
-      setAttachedContext({
-        ...attachedContext,
-        sessions: mockSessionFiles.slice(0, 2), // Add first 2 as example
-      })
+      // Close context modal and open library selection modal
       setShowContextModal(false)
+      setLibrarySelectionType('sessions')
+      setShowLibrarySelectionModal(true)
     } else if (contextType === 'dione-knowledge') {
-      // Store selected knowledge
+      // Close context modal and open library selection modal
+      setShowContextModal(false)
+      setLibrarySelectionType('knowledge')
+      setShowLibrarySelectionModal(true)
+    }
+  }
+
+  // Handle library selection
+  const handleSelectLibraryItems = (selectedIds) => {
+    if (librarySelectionType === 'artifacts') {
+      const selected = realWorkspaceArtifacts.filter(a => selectedIds.includes(a.id))
       setAttachedContext({
         ...attachedContext,
-        knowledge: mockDioneKnowledge.slice(0, 2), // Add first 2 as example
+        artifacts: [...attachedContext.artifacts, ...selected],
       })
-      setShowContextModal(false)
+    } else if (librarySelectionType === 'sessions') {
+      const selected = realLibraries.filter(l => selectedIds.includes(l.id))
+      setAttachedContext({
+        ...attachedContext,
+        sessions: [...attachedContext.sessions, ...selected],
+      })
+    } else if (librarySelectionType === 'knowledge') {
+      const selected = realDocuments.filter(d => selectedIds.includes(d.id))
+      setAttachedContext({
+        ...attachedContext,
+        knowledge: [...attachedContext.knowledge, ...selected],
+      })
     }
+    setShowLibrarySelectionModal(false)
+    setLibrarySelectionType(null)
   }
 
   // Auto-scroll to bottom
@@ -504,6 +663,30 @@ function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact
             </div>
           </div>
         </div>
+
+        {/* Library Selection Modal */}
+        {showLibrarySelectionModal && (
+          <div className="context-modal-overlay" onClick={() => {
+            setShowLibrarySelectionModal(false)
+            setLibrarySelectionType(null)
+          }}>
+            <LibrarySelectionModal
+              selectionType={librarySelectionType}
+              items={
+                librarySelectionType === 'artifacts' ? realWorkspaceArtifacts :
+                librarySelectionType === 'sessions' ? realLibraries :
+                librarySelectionType === 'knowledge' ? realDocuments :
+                []
+              }
+              onSelect={handleSelectLibraryItems}
+              onClose={() => {
+                setShowLibrarySelectionModal(false)
+                setLibrarySelectionType(null)
+              }}
+              theme={theme}
+            />
+          </div>
+        )}
 
         {/* Context Modal */}
         {showContextModal && (
