@@ -1836,10 +1836,23 @@ button.radix-button.project-toggle-button {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+}
+
+.project-header:hover {
+  background-color: rgba(100, 150, 255, 0.1);
+  color: rgba(100, 150, 255, 1);
 }
 
 .project-header svg {
   flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.project-header:hover svg {
+  color: rgba(100, 150, 255, 1);
 }
 
 .project-toggle {
@@ -1962,6 +1975,15 @@ button.radix-button.project-toggle-button {
 
 .light-theme .project-header {
   color: rgba(83, 120, 242, 0.9);
+}
+
+.light-theme .project-header:hover {
+  background-color: rgba(83, 120, 242, 0.08);
+  color: rgba(83, 120, 242, 1);
+}
+
+.light-theme .project-header:hover svg {
+  color: rgba(83, 120, 242, 1);
 }
 
 .light-theme .chat-history-sidebar:hover .project-toggle {

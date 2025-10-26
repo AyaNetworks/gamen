@@ -932,16 +932,24 @@ Please provide a detailed, clear, and actionable response.`
                     <div key={project.id} className="chat-project-group">
                       <motion.div
                         className={`project-header ${hoveredProjectId === project.id ? 'drag-over' : ''}`}
+                        onClick={() => setExpandedProjects((prev) => ({
+                          ...prev,
+                          [project.id]: !prev[project.id],
+                        }))}
                         onDragOver={(e) => handleProjectDragOver(e, project.id)}
                         onDragLeave={handleProjectDragLeave}
                         onDrop={(e) => handleProjectDrop(e, project.id)}
+                        style={{ cursor: 'pointer' }}
                       >
                         <motion.button
                           className="project-toggle"
-                          onClick={() => setExpandedProjects((prev) => ({
-                            ...prev,
-                            [project.id]: !prev[project.id],
-                          }))}
+                          onClick={(e) => {
+                            e.stopPropagation() // Prevent double toggle
+                            setExpandedProjects((prev) => ({
+                              ...prev,
+                              [project.id]: !prev[project.id],
+                            }))
+                          }}
                           type="button"
                           animate={{ rotate: isExpanded ? 0 : -90 }}
                           transition={{ duration: 0.2 }}
