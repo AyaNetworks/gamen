@@ -1826,6 +1826,18 @@ button.radix-button.project-toggle-button {
   gap: 0.25rem;
 }
 
+/* Project Header Wrapper - handles click and drag events */
+.project-header-wrapper {
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.project-header-wrapper:hover {
+  background-color: rgba(100, 150, 255, 0.1);
+}
+
+/* Project Header - inner content styling */
 .project-header {
   display: flex;
   align-items: center;
@@ -1836,13 +1848,11 @@ button.radix-button.project-toggle-button {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  cursor: pointer;
   transition: all 0.2s ease;
   border-radius: 6px;
 }
 
-.project-header:hover {
-  background-color: rgba(100, 150, 255, 0.1);
+.project-header-wrapper:hover .project-header {
   color: rgba(100, 150, 255, 1);
 }
 
@@ -1851,7 +1861,7 @@ button.radix-button.project-toggle-button {
   transition: color 0.2s ease;
 }
 
-.project-header:hover svg {
+.project-header-wrapper:hover .project-header svg {
   color: rgba(100, 150, 255, 1);
 }
 
@@ -1973,16 +1983,19 @@ button.radix-button.project-toggle-button {
   border-top: none;
 }
 
+.light-theme .project-header-wrapper:hover {
+  background-color: rgba(83, 120, 242, 0.08);
+}
+
 .light-theme .project-header {
   color: rgba(83, 120, 242, 0.9);
 }
 
-.light-theme .project-header:hover {
-  background-color: rgba(83, 120, 242, 0.08);
+.light-theme .project-header-wrapper:hover .project-header {
   color: rgba(83, 120, 242, 1);
 }
 
-.light-theme .project-header:hover svg {
+.light-theme .project-header-wrapper:hover .project-header svg {
   color: rgba(83, 120, 242, 1);
 }
 

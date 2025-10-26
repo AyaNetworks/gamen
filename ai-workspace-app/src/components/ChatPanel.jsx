@@ -930,8 +930,8 @@ Please provide a detailed, clear, and actionable response.`
 
                   return (
                     <div key={project.id} className="chat-project-group">
-                      <motion.div
-                        className={`project-header ${hoveredProjectId === project.id ? 'drag-over' : ''}`}
+                      <div
+                        className="project-header-wrapper"
                         onClick={() => setExpandedProjects((prev) => ({
                           ...prev,
                           [project.id]: !prev[project.id],
@@ -939,27 +939,31 @@ Please provide a detailed, clear, and actionable response.`
                         onDragOver={(e) => handleProjectDragOver(e, project.id)}
                         onDragLeave={handleProjectDragLeave}
                         onDrop={(e) => handleProjectDrop(e, project.id)}
-                        style={{ cursor: 'pointer' }}
                       >
-                        <motion.button
-                          className="project-toggle"
-                          onClick={(e) => {
-                            e.stopPropagation() // Prevent double toggle
-                            setExpandedProjects((prev) => ({
-                              ...prev,
-                              [project.id]: !prev[project.id],
-                            }))
-                          }}
-                          type="button"
-                          animate={{ rotate: isExpanded ? 0 : -90 }}
-                          transition={{ duration: 0.2 }}
-                          title={isExpanded ? 'プロジェクトを閉じる' : 'プロジェクトを開く'}
+                        <motion.div
+                          className={`project-header ${hoveredProjectId === project.id ? 'drag-over' : ''}`}
+                          style={{ cursor: 'pointer' }}
                         >
-                          <FiChevronDown size={16} />
-                        </motion.button>
-                        <FiFolder size={16} />
-                        <span className="project-name">{project.name}</span>
-                      </motion.div>
+                          <motion.button
+                            className="project-toggle"
+                            onClick={(e) => {
+                              e.stopPropagation() // Prevent parent handler
+                              setExpandedProjects((prev) => ({
+                                ...prev,
+                                [project.id]: !prev[project.id],
+                              }))
+                            }}
+                            type="button"
+                            animate={{ rotate: isExpanded ? 0 : -90 }}
+                            transition={{ duration: 0.2 }}
+                            title={isExpanded ? 'プロジェクトを閉じる' : 'プロジェクトを開く'}
+                          >
+                            <FiChevronDown size={16} />
+                          </motion.button>
+                          <FiFolder size={16} />
+                          <span className="project-name">{project.name}</span>
+                        </motion.div>
+                      </div>
 
                       {/* Chats in this project */}
                       <AnimatePresence>
