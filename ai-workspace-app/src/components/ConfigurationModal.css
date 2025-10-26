@@ -37,6 +37,13 @@
   border-radius: 12px 12px 0 0;
 }
 
+.config-modal-header .radix-button {
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 1.5rem !important;
+  padding: 0 !important;
+}
+
 .config-modal-title {
   font-size: 1.25rem;
   color: #fff;
@@ -45,13 +52,13 @@
 }
 
 .config-modal-close-button {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 6px;
   background-color: rgba(255, 80, 80, 0.2);
   border: 1px solid rgba(255, 80, 80, 0.4);
   color: #ff8080;
-  font-size: 1.5rem;
+  font-size: 2rem;
   line-height: 1;
   cursor: pointer;
   transition: all 0.2s;
@@ -77,7 +84,7 @@
 
 .config-tab {
   flex: 1;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 2rem;
   background: none;
   border: none;
   color: #888;
