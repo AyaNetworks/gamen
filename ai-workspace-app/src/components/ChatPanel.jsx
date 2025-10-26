@@ -934,7 +934,7 @@ Please provide a detailed, clear, and actionable response.`
                         className="project-header-wrapper"
                         onClick={() => setExpandedProjects((prev) => ({
                           ...prev,
-                          [project.id]: !prev[project.id],
+                          [project.id]: !(prev[project.id] !== false),
                         }))}
                         onDragOver={(e) => handleProjectDragOver(e, project.id)}
                         onDragLeave={handleProjectDragLeave}
@@ -950,7 +950,7 @@ Please provide a detailed, clear, and actionable response.`
                               e.stopPropagation() // Prevent parent handler
                               setExpandedProjects((prev) => ({
                                 ...prev,
-                                [project.id]: !prev[project.id],
+                                [project.id]: !(prev[project.id] !== false),
                               }))
                             }}
                             type="button"
