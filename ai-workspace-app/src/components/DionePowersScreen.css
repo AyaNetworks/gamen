@@ -404,8 +404,8 @@
   margin-bottom: 0;
 }
 
-/* Message styling */
-.message {
+/* Message styling - SCOPED to only apply within DionePowersScreen */
+.dione-powers-overlay .message {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -423,29 +423,29 @@
   }
 }
 
-.message.user {
+.dione-powers-overlay .message.user {
   align-items: flex-end;
 }
 
-.message.user .message-content {
+.dione-powers-overlay .message.user .message-content {
   background: linear-gradient(135deg, rgba(100, 108, 255, 0.3) 0%, rgba(100, 108, 255, 0.15) 100%);
   border: 1px solid rgba(100, 108, 255, 0.3);
   color: rgba(255, 255, 255, 0.95);
   border-radius: 12px 12px 4px 12px;
 }
 
-.message.dione {
+.dione-powers-overlay .message.dione {
   align-items: flex-start;
 }
 
-.message.dione .message-content {
+.dione-powers-overlay .message.dione .message-content {
   background: rgba(26, 26, 46, 0.8);
   border: 1px solid rgba(100, 108, 255, 0.2);
   color: rgba(255, 255, 255, 0.85);
   border-radius: 12px 12px 12px 4px;
 }
 
-.message-content {
+.dione-powers-overlay .message-content {
   max-width: 80%;
   padding: 12px 16px;
   font-size: 14px;
@@ -455,16 +455,16 @@
   transition: all 0.2s ease;
 }
 
-.message.user .message-content:hover {
+.dione-powers-overlay .message.user .message-content:hover {
   background: linear-gradient(135deg, rgba(100, 108, 255, 0.4) 0%, rgba(100, 108, 255, 0.25) 100%);
 }
 
-.message.dione .message-content:hover {
+.dione-powers-overlay .message.dione .message-content:hover {
   background: rgba(40, 40, 70, 0.8);
   border-color: rgba(100, 108, 255, 0.3);
 }
 
-.message-time {
+.dione-powers-overlay .message-time {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.4);
   padding: 0 4px;
@@ -484,8 +484,8 @@
   flex-shrink: 0;
 }
 
-/* Message input textarea */
-.message-input {
+/* Message input textarea - SCOPED to DionePowersScreen */
+.dione-powers-overlay .message-input {
   flex: 1;
   padding: 12px 16px;
   background: rgba(40, 40, 70, 0.4);
@@ -502,27 +502,27 @@
   transition: all 0.2s ease;
 }
 
-.message-input::-webkit-scrollbar {
+.dione-powers-overlay .message-input::-webkit-scrollbar {
   width: 4px;
 }
 
-.message-input::-webkit-scrollbar-track {
+.dione-powers-overlay .message-input::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.message-input::-webkit-scrollbar-thumb {
+.dione-powers-overlay .message-input::-webkit-scrollbar-thumb {
   background: rgba(100, 108, 255, 0.2);
   border-radius: 2px;
 }
 
-.message-input:focus {
+.dione-powers-overlay .message-input:focus {
   outline: none;
   background: rgba(40, 40, 70, 0.6);
   border-color: rgba(100, 108, 255, 0.4);
   box-shadow: 0 0 12px rgba(100, 108, 255, 0.15);
 }
 
-.message-input::placeholder {
+.dione-powers-overlay .message-input::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
 
@@ -613,28 +613,28 @@
   color: rgba(30, 30, 60, 0.65);
 }
 
-.light-theme .message.user .message-content {
+.light-theme .dione-powers-overlay .message.user .message-content {
   background: linear-gradient(135deg, rgba(100, 108, 255, 0.25) 0%, rgba(100, 108, 255, 0.12) 100%);
   border-color: rgba(100, 108, 255, 0.35);
   color: rgba(30, 30, 60, 0.95);
 }
 
-.light-theme .message.dione .message-content {
+.light-theme .dione-powers-overlay .message.dione .message-content {
   background: rgba(248, 249, 255, 0.8);
   border-color: rgba(100, 108, 255, 0.25);
   color: rgba(30, 30, 60, 0.85);
 }
 
-.light-theme .message.user .message-content:hover {
+.light-theme .dione-powers-overlay .message.user .message-content:hover {
   background: linear-gradient(135deg, rgba(100, 108, 255, 0.35) 0%, rgba(100, 108, 255, 0.2) 100%);
 }
 
-.light-theme .message.dione .message-content:hover {
+.light-theme .dione-powers-overlay .message.dione .message-content:hover {
   background: rgba(240, 245, 255, 0.9);
   border-color: rgba(100, 108, 255, 0.35);
 }
 
-.light-theme .message-time {
+.light-theme .dione-powers-overlay .message-time {
   color: rgba(30, 30, 60, 0.4);
 }
 
@@ -647,19 +647,19 @@
   border-top-color: rgba(100, 108, 255, 0.15);
 }
 
-.light-theme .message-input {
+.light-theme .dione-powers-overlay .message-input {
   background: rgba(255, 255, 255, 0.6);
   border-color: rgba(100, 108, 255, 0.25);
   color: rgba(30, 30, 60, 0.95);
 }
 
-.light-theme .message-input:focus {
+.light-theme .dione-powers-overlay .message-input:focus {
   background: rgba(255, 255, 255, 0.8);
   border-color: rgba(100, 108, 255, 0.4);
   box-shadow: 0 0 12px rgba(100, 108, 255, 0.15);
 }
 
-.light-theme .message-input::placeholder {
+.light-theme .dione-powers-overlay .message-input::placeholder {
   color: rgba(30, 30, 60, 0.4);
 }
 
