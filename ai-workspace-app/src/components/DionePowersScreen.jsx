@@ -16,11 +16,11 @@ function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact
     uploadedFiles: [],
   })
   const [artifactInfo] = useState(currentArtifact ? {
-    title: currentArtifact.title || 'Untitled Artifact',
+    title: currentArtifact.title || 'タイトルなしのアーティファクト',
     content: currentArtifact.content || '',
-    contentPreview: currentArtifact.content ? currentArtifact.content.substring(0, 100) + '...' : 'No content'
+    contentPreview: currentArtifact.content ? currentArtifact.content.substring(0, 100) + '...' : 'コンテンツなし'
   } : null)
-  const [systemPrompt, setSystemPrompt] = useState('Building Dione\'s personality profile...\n\nAs we talk, I\'ll learn about your role, team, preferences, and how you work. This will shape how I support you.')
+  const [systemPrompt, setSystemPrompt] = useState('Dioneのパーソナリティプロフィールを構築しています...\n\n私たちが話し合う中で、あなたの役割、チーム、好み、そして仕事のやり方について学びます。これが私があなたをどのようにサポートするかを形作ります。')
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
 
@@ -56,14 +56,14 @@ function DionePowersScreen({ onClose, theme, currentChatHistory, currentArtifact
       const dioneMessage = {
         id: Date.now() + 1,
         role: 'dione',
-        content: `Thank you for sharing that. I understand you're working on ${inputValue.slice(0, 30)}...
+        content: `ご共有ありがとうございます。${inputValue.slice(0, 30)}...について取り組まれていることが理解できました。
 
-To better understand your situation, I'd like to ask:
-1. What is your current role and team structure?
-2. What are the key pain points or challenges you're facing?
-3. What would success look like for you in this area?
+あなたの状況をより良く理解するために、いくつかお尋ねしたいことがあります：
+1. 現在のあなたの役割とチーム構成は何ですか？
+2. 直面している主な課題や痛点は何ですか？
+3. この分野でのあなたにとって成功とはどのような形ですか？
 
-Please help me understand so I can better support you.`,
+教えていただければ、より良くあなたをサポートできます。`,
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, dioneMessage])
@@ -104,7 +104,7 @@ Please help me understand so I can better support you.`,
             variant="ghost"
             size="sm"
             onClick={onClose}
-            title="Close"
+            title="閉じる"
             animated={false}
           >
             <FiX size={24} />
@@ -124,18 +124,18 @@ Please help me understand so I can better support you.`,
               <div className="avatar-status">
                 <span className={`status-indicator ${dioneState}`}></span>
                 <span className="status-text">
-                  {dioneState === 'thinking' ? 'Dione is thinking...' : 'Ready to listen'}
+                  {dioneState === 'thinking' ? 'Dioneが考え中です...' : '聞く準備ができています'}
                 </span>
               </div>
             </div>
 
             {/* Context Panel */}
             <div className="context-panel">
-              <h3>Attached Context</h3>
+              <h3>添付されたコンテキスト</h3>
               <div className="context-list">
                 {attachedContext.chatHistory && (
                   <div className="context-item chat-history">
-                    <span className="context-label">Chat History</span>
+                    <span className="context-label">チャット履歴</span>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -168,13 +168,13 @@ Please help me understand so I can better support you.`,
 
               <button className="add-context-btn">
                 <FiPlus size={16} />
-                Add More Context
+                コンテキストをもっと追加
               </button>
             </div>
 
             {/* System Prompt Display - Title changes based on source */}
             <div className="essence-panel">
-              <h3>{source === 'artifact' ? 'ガイドライン' : 'Dione Profile'}</h3>
+              <h3>{source === 'chat' ? 'ガイドライン' : 'Dioneプロフィール'}</h3>
               <div className="essence-content">
                 {systemPrompt}
               </div>
@@ -187,18 +187,18 @@ Please help me understand so I can better support you.`,
             <div className="conversation-history">
               {messages.length === 0 ? (
                 <div className="welcome-message">
-                  <h2>Welcome to Dione Personality Configuration</h2>
+                  <h2>Dioneパーソナリティ設定へようこそ</h2>
                   <p>
-                    I'm here to understand your unique situation, team structure, and preferences.
-                    Through our conversation, I'll learn how to better support you and shape my personality to match your needs.
+                    あなたユニークな状況、チーム構成、好みを理解するためにここにいます。
+                    私たちの会話を通じて、あなたをより良くサポートする方法を学び、あなたのニーズに合わせてパーソナリティを形作ります。
                   </p>
                   {attachedContext.currentArtifact && artifactInfo && (
                     <p style={{ color: 'rgba(100, 108, 255, 0.8)', fontSize: '13px' }}>
-                      📎 I've loaded your artifact: <strong>{artifactInfo.title}</strong>
+                      📎 アーティファクトを読み込みました: <strong>{artifactInfo.title}</strong>
                     </p>
                   )}
                   <p>
-                    Start by telling me about your current project, role, or any challenge you're facing.
+                    まず、現在のプロジェクト、役割、または直面している課題についてお話しください。
                   </p>
                 </div>
               ) : (
@@ -221,7 +221,7 @@ Please help me understand so I can better support you.`,
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Tell me about your situation, role, team structure, or challenges... (Ctrl+Enter to send)"
+                placeholder="あなたの状況、役割、チーム構成、または課題についてお話しください... (Ctrl+Enterで送信)"
                 className="message-input"
                 rows="1"
               />
@@ -231,7 +231,7 @@ Please help me understand so I can better support you.`,
                 disabled={!inputValue.trim()}
                 animated={false}
               >
-                Send
+                送信
               </Button>
             </div>
           </div>
