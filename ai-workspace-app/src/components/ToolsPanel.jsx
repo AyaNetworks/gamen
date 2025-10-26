@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FiSearch, FiToggleLeft, FiToggleRight, FiSettings, FiTrash2, FiPlus } from 'react-icons/fi'
+import { FiSearch, FiPower, FiSettings, FiTrash2, FiPlus } from 'react-icons/fi'
 import Button from './ui/Button'
 import './ToolsPanel.css'
 
@@ -101,13 +101,14 @@ function ToolsPanel() {
                         </div>
                         <div className="tool-actions">
                           <Button
+                            className={`tool-toggle-btn ${tool.enabled ? 'enabled' : 'disabled'}`}
                             variant="ghost"
                             size="sm"
                             onClick={() => handleToggleTool(tool.id)}
                             title={tool.enabled ? '無効にする' : '有効にする'}
                             animated={false}
                           >
-                            {tool.enabled ? <FiToggleRight size={24} /> : <FiToggleLeft size={24} />}
+                            <FiPower size={24} />
                           </Button>
                           <Button
                             variant="ghost"

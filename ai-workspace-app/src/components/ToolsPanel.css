@@ -386,6 +386,32 @@
   justify-content: center;
 }
 
+/* Tool Toggle Button - Enabled/Disabled States */
+.tool-toggle-btn {
+  color: rgba(100, 108, 255, 0.6) !important;
+  transition: all 0.3s ease !important;
+}
+
+.tool-toggle-btn.enabled {
+  color: #4ade80 !important;
+  opacity: 1 !important;
+}
+
+.tool-toggle-btn.enabled:hover {
+  color: #22c55e !important;
+  transform: scale(1.1);
+}
+
+.tool-toggle-btn.disabled {
+  color: rgba(255, 80, 80, 0.5) !important;
+  opacity: 0.6 !important;
+}
+
+.tool-toggle-btn.disabled:hover {
+  color: rgba(255, 80, 80, 0.8) !important;
+  transform: scale(1.05);
+}
+
 /* Light theme for tool config modal */
 .light-theme .tool-config-modal {
   background-color: rgba(255, 255, 255, 0.95);
@@ -447,4 +473,27 @@
   background-color: rgba(0, 0, 0, 0.05);
   color: #333;
   border-color: rgba(100, 108, 255, 0.2);
+}
+
+/* Light theme - Tool Toggle Button */
+.light-theme .tool-toggle-btn {
+  color: rgba(100, 108, 255, 0.5) !important;
+}
+
+.light-theme .tool-toggle-btn.enabled {
+  color: #16a34a !important;
+  opacity: 1 !important;
+}
+
+.light-theme .tool-toggle-btn.enabled:hover {
+  color: #15803d !important;
+}
+
+.light-theme .tool-toggle-btn.disabled {
+  color: rgba(220, 38, 38, 0.4) !important;
+  opacity: 0.5 !important;
+}
+
+.light-theme .tool-toggle-btn.disabled:hover {
+  color: rgba(220, 38, 38, 0.7) !important;
 }
