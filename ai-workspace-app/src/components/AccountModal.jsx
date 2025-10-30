@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useAuthStore } from '../store'
 import { motion, AnimatePresence } from 'framer-motion'
+import { FiX, FiUser, FiLogOut } from 'react-icons/fi'
 import './AccountModal.css'
 
 export default function AccountModal({ isOpen, onClose }) {
@@ -63,7 +64,7 @@ export default function AccountModal({ isOpen, onClose }) {
             <div className="account-modal-header">
               <h2>Account Information</h2>
               <button className="close-button" onClick={onClose}>
-                ✕
+                <FiX size={20} />
               </button>
             </div>
 
@@ -71,7 +72,9 @@ export default function AccountModal({ isOpen, onClose }) {
             <div className="account-modal-content">
               {/* Profile Section */}
               <div className="profile-section">
-                <div className="avatar">👤</div>
+                <div className="avatar">
+                  <FiUser size={32} />
+                </div>
                 <div className="profile-info">
                   <h3>{user?.displayName || 'User'}</h3>
                   <p className="email">{user?.email}</p>
@@ -118,8 +121,8 @@ export default function AccountModal({ isOpen, onClose }) {
 
               {/* Logout Button */}
               <button className="logout-button" onClick={handleLogout}>
-                <span>🚪</span>
-                Logout
+                <FiLogOut size={20} />
+                <span>Logout</span>
               </button>
             </div>
           </motion.div>
