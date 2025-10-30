@@ -64,6 +64,91 @@
   border-color: rgba(100, 108, 255, 0.5);
 }
 
+/* Toggle Switch Container */
+.preference-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Toggle Switch Button */
+.toggle-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 120px;
+  height: 48px;
+  padding: 4px;
+  background: rgba(40, 40, 70, 0.5);
+  border: 1px solid rgba(100, 108, 255, 0.15);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch:hover {
+  background: rgba(40, 40, 70, 0.7);
+  border-color: rgba(100, 108, 255, 0.25);
+}
+
+/* Toggle Switch Active State */
+.toggle-switch.active {
+  background: rgba(100, 108, 255, 0.2);
+  border-color: rgba(100, 108, 255, 0.4);
+  box-shadow: 0 0 12px rgba(100, 108, 255, 0.15);
+}
+
+.toggle-switch.active:hover {
+  background: rgba(100, 108, 255, 0.3);
+  border-color: rgba(100, 108, 255, 0.5);
+}
+
+/* Toggle Slider (visual element) */
+.toggle-slider {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.3) 0%, rgba(79, 255, 143, 0.2) 100%);
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  border-radius: 50%;
+  left: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-slider {
+  left: 76px;
+  background: linear-gradient(135deg, rgba(100, 200, 255, 0.8) 0%, rgba(100, 108, 255, 0.6) 100%);
+  border-color: rgba(100, 200, 255, 0.6);
+  box-shadow: 0 2px 12px rgba(100, 108, 255, 0.3);
+}
+
+/* Toggle Label (ON/OFF text) */
+.toggle-label {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  padding: 0 12px;
+}
+
+.toggle-switch.active .toggle-label {
+  color: rgba(100, 200, 255, 0.95);
+}
+
+/* Preference Description */
+.preference-description {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 4px;
+}
+
 /* Current Settings Display */
 .current-settings {
   padding: 16px;
@@ -159,4 +244,49 @@
 
 .light-theme .setting-value {
   color: rgba(100, 108, 255, 0.85);
+}
+
+/* Light Theme - Toggle Switch */
+.light-theme .toggle-switch {
+  background: rgba(248, 249, 255, 0.6);
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .toggle-switch:hover {
+  background: rgba(248, 249, 255, 0.8);
+  border-color: rgba(100, 108, 255, 0.3);
+}
+
+.light-theme .toggle-switch.active {
+  background: rgba(100, 108, 255, 0.15);
+  border-color: rgba(100, 108, 255, 0.4);
+  box-shadow: 0 0 12px rgba(100, 108, 255, 0.12);
+}
+
+.light-theme .toggle-switch.active:hover {
+  background: rgba(100, 108, 255, 0.2);
+  border-color: rgba(100, 108, 255, 0.5);
+}
+
+.light-theme .toggle-slider {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.25) 0%, rgba(79, 255, 143, 0.15) 100%);
+  border-color: rgba(100, 108, 255, 0.25);
+}
+
+.light-theme .toggle-switch.active .toggle-slider {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.7) 0%, rgba(100, 108, 255, 0.5) 100%);
+  border-color: rgba(100, 108, 255, 0.6);
+  box-shadow: 0 2px 12px rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .toggle-label {
+  color: rgba(30, 30, 60, 0.5);
+}
+
+.light-theme .toggle-switch.active .toggle-label {
+  color: rgba(100, 108, 255, 0.9);
+}
+
+.light-theme .preference-description {
+  color: rgba(30, 30, 60, 0.6);
 }

@@ -69,6 +69,11 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
             detail="Invalid email or password",
         )
 
+    # Update last login timestamp
+    user.last_login_at = datetime.utcnow()
+    db.commit()
+    db.refresh(user)
+
     # Create tokens
     access_token = create_access_token(data={"sub": str(user.id), "email": user.email})
     refresh_token = create_refresh_token(data={"sub": str(user.id), "email": user.email})

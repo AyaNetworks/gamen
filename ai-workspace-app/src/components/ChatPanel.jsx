@@ -18,6 +18,7 @@ import {
   FiX,
   FiZap,
 } from 'react-icons/fi'
+import { GiSaturn } from 'react-icons/gi'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import remarkBreaks from 'remark-breaks'
@@ -1115,7 +1116,7 @@ Please provide a detailed, clear, and actionable response.`
               onClick={() => setOpenConfigModal('user')}
               title="ユーザー設定"
             >
-              <FiUser size={20} />
+              <GiSaturn size={20} />
             </Button>
             <Button
               variant="surface"

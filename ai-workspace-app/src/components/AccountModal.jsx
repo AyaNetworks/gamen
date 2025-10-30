@@ -109,6 +109,11 @@ export default function AccountModal({ isOpen, onClose }) {
                 </div>
 
                 <div className="detail-item">
+                  <label>Last Logged In</label>
+                  <div className="detail-value">{formatDate(user?.lastLoginAt)}</div>
+                </div>
+
+                <div className="detail-item">
                   <label>Account Created</label>
                   <div className="detail-value">{formatDate(user?.createdAt)}</div>
                 </div>

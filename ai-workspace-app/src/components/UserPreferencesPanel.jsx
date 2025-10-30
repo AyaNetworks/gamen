@@ -8,6 +8,7 @@ function UserPreferencesPanel() {
     communicationStyle: 'friendly',
     detailLevel: 'balanced',
     responseLength: 'medium',
+    autoGuidelineEdition: false,
   })
 
   const handlePreferenceChange = (key, value) => {
@@ -102,6 +103,29 @@ function UserPreferencesPanel() {
         </div>
       </div>
 
+      {/* Automatic Guideline Edition Toggle */}
+      <div className="preference-group">
+        <label className="preference-label">自動ガイドライン編集 (Automatic Guideline Edition)</label>
+        <div className="preference-toggle">
+          <button
+            className={`toggle-switch ${preferences.autoGuidelineEdition ? 'active' : ''}`}
+            onClick={() => handlePreferenceChange('autoGuidelineEdition', !preferences.autoGuidelineEdition)}
+            type="button"
+            aria-label="Toggle automatic guideline edition"
+          >
+            <span className="toggle-slider"></span>
+            <span className="toggle-label">
+              {preferences.autoGuidelineEdition ? 'ON' : 'OFF'}
+            </span>
+          </button>
+          <p className="preference-description">
+            {preferences.autoGuidelineEdition
+              ? 'ガイドラインが自動的に編集されます (Guidelines will be edited automatically)'
+              : 'ガイドラインの手動編集が必要です (Manual guideline editing required)'}
+          </p>
+        </div>
+      </div>
+
       {/* Current Settings Display */}
       <div className="current-settings">
         <h3>現在の設定 (Current Settings)</h3>
@@ -134,6 +158,12 @@ function UserPreferencesPanel() {
               {preferences.responseLength === 'short' && '短い'}
               {preferences.responseLength === 'medium' && '中程度'}
               {preferences.responseLength === 'long' && '長い'}
+            </span>
+          </div>
+          <div className="setting-item">
+            <span className="setting-key">自動ガイドライン編集:</span>
+            <span className="setting-value">
+              {preferences.autoGuidelineEdition ? 'ON' : 'OFF'}
             </span>
           </div>
         </div>

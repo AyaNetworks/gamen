@@ -41,6 +41,8 @@ class UserResponse(UserBase):
     role: str
     created_at: datetime
     updated_at: datetime
+    last_login_at: Optional[datetime] = None
+    password_last_updated: datetime
 
     class Config:
         from_attributes = True
