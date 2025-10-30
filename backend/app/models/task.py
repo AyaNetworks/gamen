@@ -22,7 +22,7 @@ class Task(Base):
     completed_at = Column(DateTime, nullable=True)
     archived_at = Column(DateTime, nullable=True)
     tags = Column(JSON, default=[])  # List of tags
-    metadata = Column(JSON, default={})
+    meta_data = Column(JSON, default={})
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

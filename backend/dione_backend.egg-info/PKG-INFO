@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: dione-backend
+Version: 1.0.0
+Summary: Dione Workspace FastAPI Backend
+Requires-Python: >=3.11
+Requires-Dist: fastapi>=0.104.1
+Requires-Dist: uvicorn[standard]>=0.24.0
+Requires-Dist: sqlalchemy>=2.0.23
+Requires-Dist: psycopg2-binary>=2.9.9
+Requires-Dist: pydantic>=2.5.0
+Requires-Dist: pydantic-settings>=2.1.0
+Requires-Dist: python-jose[cryptography]>=3.3.0
+Requires-Dist: passlib[bcrypt]>=1.7.4
+Requires-Dist: python-multipart>=0.0.6
+Requires-Dist: aiofiles>=23.2.1
+Requires-Dist: boto3>=1.29.7
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: PyJWT>=2.8.0
+Requires-Dist: email-validator>=2.1.0
+Requires-Dist: httpx>=0.25.1
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.3; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.1; extra == "dev"
+Requires-Dist: black>=23.12.0; extra == "dev"
+Requires-Dist: ruff>=0.1.8; extra == "dev"
+Requires-Dist: mypy>=1.7.1; extra == "dev"

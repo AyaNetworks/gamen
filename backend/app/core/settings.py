@@ -8,7 +8,9 @@ class Settings(BaseSettings):
     """Application settings from environment variables."""
 
     # Database
-    database_url: str = "postgresql://postgres:password@localhost:5432/dione_db"
+    # For development: SQLite (file-based, no server needed)
+    # For production: Use PostgreSQL (set via .env)
+    database_url: str = "sqlite:///./dione_dev.db"
 
     # JWT
     jwt_secret_key: str = "your-secret-key-min-32-chars-long"

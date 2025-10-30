@@ -160,7 +160,7 @@ def get_chat(
                 "type": msg.type,
                 "status": msg.status,
                 "attachments": [],
-                "metadata": msg.metadata,
+                "metadata": msg.meta_data,
                 "created_at": msg.created_at,
                 "updated_at": msg.updated_at,
             }
@@ -300,7 +300,7 @@ def send_message(
         "type": user_message.type,
         "status": user_message.status,
         "attachments": [],
-        "metadata": user_message.metadata,
+        "metadata": user_message.meta_data,
         "created_at": user_message.created_at,
         "updated_at": user_message.updated_at,
     }
@@ -349,7 +349,7 @@ def list_messages(
             "type": msg.type,
             "status": msg.status,
             "attachments": [],
-            "metadata": msg.metadata,
+            "metadata": msg.meta_data,
             "created_at": msg.created_at,
             "updated_at": msg.updated_at,
         }

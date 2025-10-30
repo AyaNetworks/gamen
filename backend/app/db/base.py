@@ -6,11 +6,20 @@ from sqlalchemy.orm import sessionmaker
 from app.core.settings import settings
 
 # Create database engine
-engine = create_engine(
-    settings.database_url,
-    pool_pre_ping=True,  # Verify connections before using
-    echo=settings.environment == "development",
-)
+# SQLite-specific configuration
+if "sqlite" in settings.database_url:
+    engine = create_engine(
+        settings.database_url,
+        connect_args={"check_same_thread": False},
+        echo=settings.environment == "development",
+    )
+else:
+    # PostgreSQL or other database
+    engine = create_engine(
+        settings.database_url,
+        pool_pre_ping=True,  # Verify connections before using
+        echo=settings.environment == "development",
+    )
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

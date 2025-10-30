@@ -36,7 +36,7 @@ class Message(Base):
     content = Column(Text, nullable=False)
     type = Column(String(50), default="dione")  # 'dione' or 'claude'
     status = Column(String(50), default="success")  # 'success', 'error', 'pending'
-    metadata = Column(JSON, default={})
+    meta_data = Column(JSON, default={})
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -54,7 +54,7 @@ class Attachment(Base):
     message_id = Column(Integer, ForeignKey("messages.id"), nullable=False)
     type = Column(String(50), nullable=False)  # 'document', 'artifact', 'workspace', 'code'
     reference_id = Column(Integer, nullable=False)  # ID of linked resource
-    metadata = Column(JSON, default={})
+    meta_data = Column(JSON, default={})
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     # Relationships
