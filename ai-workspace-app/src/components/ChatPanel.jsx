@@ -1153,35 +1153,17 @@ Please provide a detailed, clear, and actionable response.`
               </AnimatePresence>
             </Button>
             {user && (
-              <button
-                className="account-btn"
+              <Button
+                variant="surface"
+                size="md"
                 onClick={() => setShowAccountModal(true)}
                 title={user.displayName || user.email}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 0.75rem',
-                  background: 'rgba(108, 108, 255, 0.15)',
-                  border: '1px solid rgba(108, 108, 255, 0.3)',
-                  borderRadius: '8px',
-                  color: '#fff',
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(108, 108, 255, 0.25)'
-                  e.currentTarget.style.borderColor = 'rgba(108, 108, 255, 0.5)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(108, 108, 255, 0.15)'
-                  e.currentTarget.style.borderColor = 'rgba(108, 108, 255, 0.3)'
-                }}
               >
-                <span style={{ fontSize: '1.2rem' }}>👤</span>
-                <span>{user.displayName || user.email.split('@')[0]}</span>
-              </button>
+                <FiUser size={20} />
+                <span style={{ marginLeft: '0.5rem', fontSize: '0.9rem' }}>
+                  {user.displayName || user.email.split('@')[0]}
+                </span>
+              </Button>
             )}
           </div>
         </div>
