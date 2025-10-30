@@ -26,11 +26,12 @@ import 'highlight.js/styles/github-dark.css'
 import ConfigurationModal from './ConfigurationModal'
 import DionePowersScreen from './DionePowersScreen'
 import MessageDetailModal from './MessageDetailModal'
+import AccountModal from './AccountModal'
 import Button from './ui/Button'
 import './ChatPanel.css'
 
 // Import Zustand stores
-import { useChatStore, useProjectStore, useThemeStore, useWorkspaceStore, useTaskStore } from '../store'
+import { useChatStore, useProjectStore, useThemeStore, useWorkspaceStore, useTaskStore, useAuthStore } from '../store'
 
 // Animation variants defined outside component to prevent re-creation
 const planeIconVariants = {
@@ -101,6 +102,8 @@ function ChatPanel({
   const theme = useThemeStore((state) => state.theme)
   const toggleTheme = useThemeStore((state) => state.toggleTheme)
 
+  const user = useAuthStore((state) => state.user)
+
   const chatProjects = useProjectStore((state) => state.chatProjects)
   const createProject = useProjectStore((state) => state.createProject)
   const deleteProject = useProjectStore((state) => state.deleteProject)
@@ -123,6 +126,7 @@ function ChatPanel({
   const [attachedFiles, setAttachedFiles] = useState([])
   const [openConfigModal, setOpenConfigModal] = useState(null) // 'user', 'tool', 'task', or null
   const [showDionePowersScreen, setShowDionePowersScreen] = useState(false) // For guideline editor
+  const [showAccountModal, setShowAccountModal] = useState(false) // For account modal
   const [prevChatCount, setPrevChatCount] = useState(0) // Track previous chat count
   const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
@@ -1148,6 +1152,37 @@ Please provide a detailed, clear, and actionable response.`
                 </motion.div>
               </AnimatePresence>
             </Button>
+            {user && (
+              <button
+                className="account-btn"
+                onClick={() => setShowAccountModal(true)}
+                title={user.displayName || user.email}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 0.75rem',
+                  background: 'rgba(108, 108, 255, 0.15)',
+                  border: '1px solid rgba(108, 108, 255, 0.3)',
+                  borderRadius: '8px',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(108, 108, 255, 0.25)'
+                  e.currentTarget.style.borderColor = 'rgba(108, 108, 255, 0.5)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(108, 108, 255, 0.15)'
+                  e.currentTarget.style.borderColor = 'rgba(108, 108, 255, 0.3)'
+                }}
+              >
+                <span style={{ fontSize: '1.2rem' }}>👤</span>
+                <span>{user.displayName || user.email.split('@')[0]}</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -1475,6 +1510,14 @@ Please provide a detailed, clear, and actionable response.`
           documents={documents}
           libraries={libraries}
           scratchpadTabs={scratchpadTabs}
+        />
+      )}
+
+      {/* Account Modal */}
+      {showAccountModal && (
+        <AccountModal
+          isOpen={showAccountModal}
+          onClose={() => setShowAccountModal(false)}
         />
       )}
     </div>

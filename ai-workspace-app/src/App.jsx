@@ -4,7 +4,6 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import ChatPanel from './components/ChatPanel'
 import DocumentPanel from './components/DocumentPanel'
 import Scratchpad from './components/Scratchpad'
-import Header from './components/Header'
 import LoginScreen from './components/LoginScreen'
 import './App.css'
 
@@ -715,7 +714,7 @@ function App() {
   const currentScratchpadTab = scratchpadTabs.find((tab) => tab.id === currentScratchpadTabId)
 
   return (
-    <div className={`h-screen relative overflow-hidden flex flex-col ${theme === 'dark' ? 'dark dark-theme' : 'light-theme'}`}>
+    <div className={`h-screen relative overflow-hidden ${theme === 'dark' ? 'dark dark-theme' : 'light-theme'}`}>
       {/* Background gradients */}
       <div
         className={`absolute inset-0 pointer-events-none z-0 animate-[theme-fade-in_0.6s_ease-out] ${
@@ -725,11 +724,8 @@ function App() {
         }`}
       />
 
-      {/* Header */}
-      <Header />
-
       {/* Content with z-index above background */}
-      <div className="relative z-10 flex-1 overflow-hidden">
+      <div className="relative z-10 h-full overflow-hidden">
         <PanelGroup direction="horizontal">
           <Panel defaultSize={35} minSize={15} maxSize={50}>
             {/* ChatPanel gets data from Zustand stores + documents/libraries from App state */}
