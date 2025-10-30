@@ -25,26 +25,37 @@ router = APIRouter(prefix="/auth")
 @router.post("/signup", response_model=UserResponse)
 def signup(user_data: UserCreate, db: Session = Depends(get_db)):
     """Register a new user account."""
-    # Check if user already exists
-    existing_user = db.query(User).filter(User.email == user_data.email).first()
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="User with this email already exists",
+    try:
+        # Check if user already exists
+        existing_user = db.query(User).filter(User.email == user_data.email).first()
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="User with this email already exists",
+            )
+
+        # Create new user
+        new_user = User(
+            email=user_data.email,
+            display_name=user_data.display_name,
+            password_hash=hash_password(user_data.password),
+            theme="dark",
+            role="user",
         )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
 
-    # Create new user
-    new_user = User(
-        email=user_data.email,
-        display_name=user_data.display_name,
-        password_hash=hash_password(user_data.password),
-        theme="dark",
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
-    return new_user
+        return new_user
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        print(f"Signup error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error creating user: {str(e)}"
+        )
 
 
 @router.post("/login", response_model=LoginResponse)
