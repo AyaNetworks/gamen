@@ -22,11 +22,6 @@ function App() {
     setIsHydrated(true)
   }, [])
 
-  // If not hydrated yet or user is not logged in, show login screen
-  if (!isHydrated || !user) {
-    return <LoginScreen />
-  }
-
   // Keep local state for scratchpad and documents (can migrate later if needed)
   const [scratchpadTabs, setScratchpadTabs] = useState([
     {
@@ -361,6 +356,11 @@ function App() {
       },
     },
   ])
+
+  // If not hydrated yet or user is not logged in, show login screen
+  if (!isHydrated || !user) {
+    return <LoginScreen />
+  }
 
   // === OLD HANDLERS REMOVED - Now in Zustand stores ===
   // handleSendMessage, handleNewChat, handleSelectChat, handleDeleteChat
