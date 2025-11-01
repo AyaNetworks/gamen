@@ -97,9 +97,9 @@ const initialChatSessions: ChatSession[] = [
         type: 'dione',
         status: 'error',
         content:
-          'エラーが発生しました: GitHubへの接続に失敗しました。タイムアウト（30秒以上応答なし）',
+          'エラーが発生しました: GitHubへの接続に失敗しました。',
         timestamp: new Date(Date.now() - 355000).toISOString(),
-        trace: '❌ [Tool: GitHub] Connection timeout\n⚠️ Failed to fetch issues from repository\n🔄 Retry attempt 1/3 in 5 seconds...',
+        trace: '❌ [Tool: GitHub] Connection timeout (30+ seconds)\n⚠️ Failed to fetch issues from repository\n🔄 Retry attempt 1/3 in 5 seconds...\n\nエラー詳細:\n- タイムアウト: 30秒以上応答なし\n- エンドポイント: https://api.github.com/repos\n- 理由: ネットワーク接続の遅延またはサーバーダウン',
       },
       {
         role: 'user',

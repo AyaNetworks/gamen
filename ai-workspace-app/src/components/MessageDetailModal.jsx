@@ -100,12 +100,14 @@ function MessageDetailModal({ message, onClose, theme }) {
       )
     } else {
       // dione type
-      if (status === 'success' && message.trace) {
+      if (message.trace) {
+        const isError = status === 'error'
+        const title = isError ? 'Error Details' : 'Execution Trace'
         return (
           <div className="modal-content-sections">
             <div className="modal-section">
-              <h3 className="modal-section-title">Execution Trace</h3>
-              <pre className="modal-code-block">{message.trace}</pre>
+              <h3 className="modal-section-title">{title}</h3>
+              <pre className={`modal-code-block ${isError ? 'modal-error' : ''}`}>{message.trace}</pre>
             </div>
           </div>
         )
