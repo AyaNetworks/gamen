@@ -259,62 +259,45 @@ const initialChatSessions: ChatSession[] = [
     messages: [
       {
         role: 'user',
-        content: 'メールを送信してください。宛先: admin@example.com, 件名: テストメール',
+        content: 'メールを送信してください。宛先: admin@example.com, 件名: テストメール, 本文: これはテストメールです。',
         timestamp: new Date(Date.now() - 180000).toISOString(),
       },
       {
         role: 'ai',
-        type: 'tool',
+        type: 'dione',
         status: 'pending',
-        content: '[Tool: Gmail] メール送信を準備中...',
+        content: 'メール送信処理を開始しています...',
         timestamp: new Date(Date.now() - 175000).toISOString(),
-        toolArgs: JSON.stringify({
-          service: 'Gmail',
-          to: 'admin@example.com',
-          subject: 'テストメール',
-          body: 'これはテストメールです。',
-          attachments: [],
-        }, null, 2),
-        trace: '🔧 [Tool: Gmail] Authenticating with Gmail API...\n⏳ Preparing email composition...',
+        trace: '🔧 [Tool: Gmail] Authenticating with Gmail API...\n⏳ Preparing email composition...\n⏳ Building message...',
       },
       {
         role: 'ai',
-        type: 'tool',
+        type: 'dione',
         status: 'success',
-        content: '[Tool: Gmail] メール送信が完了しました。メッセージID: msg_12345',
+        content: 'メール送信が完了しました。\n\n📧 **送信結果**\n- 宛先: admin@example.com\n- 件名: テストメール\n- メッセージID: msg_12345\n- 配信状態: 送信済み\n- タイムスタンプ: 2024-11-01 10:30:00',
         timestamp: new Date(Date.now() - 170000).toISOString(),
-        toolArgs: JSON.stringify({
-          service: 'Gmail',
-          to: 'admin@example.com',
-          subject: 'テストメール',
-        }, null, 2),
-        toolResults: JSON.stringify({
-          status: 'success',
-          messageId: 'msg_12345',
-          timestamp: '2024-11-01T10:30:00Z',
-          recipient: 'admin@example.com',
-          subject: 'テストメール',
-          deliveryStatus: 'sent',
-        }, null, 2),
-        trace: '✅ [Tool: Gmail] Authentication successful\n✅ [Tool: Gmail] Email composed\n✅ [Tool: Gmail] Message sent successfully\n📊 Delivery confirmed to: admin@example.com',
+        trace: '✅ [Tool: Gmail] Authentication successful\n✅ [Tool: Gmail] Email composed\n✅ [Tool: Gmail] Message sent successfully\n📊 Delivery confirmed to: admin@example.com\n📨 Message ID: msg_12345',
       },
       {
         role: 'user',
-        content: '別のメールアドレスにも送ってください: user@example.com',
+        content: '別のメールアドレスにも同じメールを送ってください: user@example.com',
         timestamp: new Date(Date.now() - 165000).toISOString(),
       },
       {
         role: 'ai',
-        type: 'tool',
+        type: 'dione',
+        status: 'pending',
+        content: 'user@example.com へのメール送信を処理中...',
+        timestamp: new Date(Date.now() - 162000).toISOString(),
+        trace: '🔧 [Tool: Gmail] Preparing second message...\n⏳ Building message for user@example.com...',
+      },
+      {
+        role: 'ai',
+        type: 'dione',
         status: 'error',
-        content: '[Tool: Gmail] エラーが発生しました。',
+        content: 'エラーが発生しました。メール送信に失敗しました。',
         timestamp: new Date(Date.now() - 160000).toISOString(),
-        toolArgs: JSON.stringify({
-          service: 'Gmail',
-          to: 'user@example.com',
-          subject: 'テストメール',
-        }, null, 2),
-        trace: '❌ [Tool: Gmail] API rate limit exceeded\n⚠️ Error: Too many requests in a short period\n⚠️ Rate limit: 10 requests per minute\n⏳ Retry after: 45 seconds\n💡 Suggestion: Queue the request and retry later',
+        trace: '❌ [Tool: Gmail] API rate limit exceeded\n⚠️ Error: Too many requests in a short period\n📊 Rate limit: 10 requests per minute\n⏳ Retry after: 45 seconds\n\nエラー詳細:\n- エラーコード: RATE_LIMIT_EXCEEDED\n- 理由: 短時間に過度のリクエストを送信\n- 推奨: 45秒後に再実行してください\n- キューイングオプション: リクエストをキューに入れて自動リトライ',
       },
     ],
     createdAt: new Date().toISOString(),
@@ -523,14 +506,14 @@ export const useChatStore = create<ChatStoreState>()(
       }),
       {
         name: 'chat-storage', // localStorage key
-        version: 4,
+        version: 5,
         partialize: (state) => ({
           chatSessions: state.chatSessions,
           currentChatId: state.currentChatId,
         }),
         migrate: (persistedState: any, version: number) => {
           // Always reset to initial chats when version changes to load new sample data
-          if (version < 4) {
+          if (version < 5) {
             return {
               chatSessions: initialChatSessions,
               currentChatId: 1,
