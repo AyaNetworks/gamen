@@ -55,7 +55,7 @@ export default function LoginScreen() {
         >
           {/* Logo/Header */}
           <div className="login-header">
-            <div className="logo">🧠</div>
+            <img src="/sample_assets/dione/Dione-logo.png" alt="Dione Logo" className="logo" />
             <h1>Dione Workspace</h1>
             <p>AI-powered collaborative workspace</p>
           </div>
