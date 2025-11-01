@@ -266,17 +266,33 @@ const initialChatSessions: ChatSession[] = [
         role: 'ai',
         type: 'dione',
         status: 'pending',
-        content: 'メール送信処理を開始しています...',
+        content: 'メール送信リクエストを受け取りました。Gmailツールを使用して処理します...',
         timestamp: new Date(Date.now() - 175000).toISOString(),
-        trace: '🔧 [Tool: Gmail] Authenticating with Gmail API...\n⏳ Preparing email composition...\n⏳ Building message...',
+        trace: '🧠 Analyzing request: Email sending task detected\n🔧 Selected tool: Gmail\n⏳ Preparing parameters...',
+      },
+      {
+        role: 'ai',
+        type: 'tool',
+        status: 'pending',
+        content: '[Tool: Gmail] メール送信を実行中...',
+        timestamp: new Date(Date.now() - 173000).toISOString(),
+        trace: '🔧 [Tool: Gmail] Authenticating with Gmail API...\n⏳ Validating email address...\n⏳ Composing message...',
+      },
+      {
+        role: 'ai',
+        type: 'tool',
+        status: 'success',
+        content: '[Tool: Gmail] メール送信に成功しました。',
+        timestamp: new Date(Date.now() - 171000).toISOString(),
+        trace: '✅ [Tool: Gmail] Authentication successful\n✅ [Tool: Gmail] Email validated\n✅ [Tool: Gmail] Message sent successfully\n📊 Message ID: msg_12345\n📧 Delivery confirmed to: admin@example.com',
       },
       {
         role: 'ai',
         type: 'dione',
         status: 'success',
-        content: 'メール送信が完了しました。\n\n📧 **送信結果**\n- 宛先: admin@example.com\n- 件名: テストメール\n- メッセージID: msg_12345\n- 配信状態: 送信済み\n- タイムスタンプ: 2024-11-01 10:30:00',
+        content: 'メール送信が完了しました。\n\n📧 **送信結果**\n- 宛先: admin@example.com\n- 件名: テストメール\n- メッセージID: msg_12345\n- 配信状態: ✅ 送信済み',
         timestamp: new Date(Date.now() - 170000).toISOString(),
-        trace: '✅ [Tool: Gmail] Authentication successful\n✅ [Tool: Gmail] Email composed\n✅ [Tool: Gmail] Message sent successfully\n📊 Delivery confirmed to: admin@example.com\n📨 Message ID: msg_12345',
+        trace: '✅ Tool execution completed successfully\n✅ Processing results\n✅ Generating response',
       },
       {
         role: 'user',
@@ -287,17 +303,33 @@ const initialChatSessions: ChatSession[] = [
         role: 'ai',
         type: 'dione',
         status: 'pending',
-        content: 'user@example.com へのメール送信を処理中...',
+        content: 'user@example.com へのメール送信を処理します。Gmailツールを実行します...',
         timestamp: new Date(Date.now() - 162000).toISOString(),
-        trace: '🔧 [Tool: Gmail] Preparing second message...\n⏳ Building message for user@example.com...',
+        trace: '🧠 Processing second email request\n🔧 Selected tool: Gmail\n⏳ Preparing message for user@example.com...',
+      },
+      {
+        role: 'ai',
+        type: 'tool',
+        status: 'pending',
+        content: '[Tool: Gmail] メール送信を実行中...',
+        timestamp: new Date(Date.now() - 160000).toISOString(),
+        trace: '🔧 [Tool: Gmail] Authenticating with Gmail API...\n⏳ Building message...',
+      },
+      {
+        role: 'ai',
+        type: 'tool',
+        status: 'error',
+        content: '[Tool: Gmail] エラーが発生しました。',
+        timestamp: new Date(Date.now() - 158000).toISOString(),
+        trace: '❌ [Tool: Gmail] API rate limit exceeded\n⚠️ Error: Too many requests in a short period\n📊 Rate limit: 10 requests per minute\n⏳ Retry after: 45 seconds\n\nエラー詳細:\n- エラーコード: RATE_LIMIT_EXCEEDED\n- 理由: 短時間に過度のリクエストを送信\n- 推奨: 45秒後に再実行してください',
       },
       {
         role: 'ai',
         type: 'dione',
         status: 'error',
-        content: 'エラーが発生しました。メール送信に失敗しました。',
-        timestamp: new Date(Date.now() - 160000).toISOString(),
-        trace: '❌ [Tool: Gmail] API rate limit exceeded\n⚠️ Error: Too many requests in a short period\n📊 Rate limit: 10 requests per minute\n⏳ Retry after: 45 seconds\n\nエラー詳細:\n- エラーコード: RATE_LIMIT_EXCEEDED\n- 理由: 短時間に過度のリクエストを送信\n- 推奨: 45秒後に再実行してください\n- キューイングオプション: リクエストをキューに入れて自動リトライ',
+        content: 'メール送信に失敗しました。\n\n❌ **エラー情報**\n- 原因: Gmailツールがレート制限に達しました\n- メッセージ: 短時間に過度のリクエストを送信\n- 対処方法: 45秒後に再実行してください',
+        timestamp: new Date(Date.now() - 157000).toISOString(),
+        trace: '⚠️ Tool execution failed\n❌ Error: RATE_LIMIT_EXCEEDED\n💡 Suggestion: Implement exponential backoff retry strategy',
       },
     ],
     createdAt: new Date().toISOString(),
@@ -506,14 +538,14 @@ export const useChatStore = create<ChatStoreState>()(
       }),
       {
         name: 'chat-storage', // localStorage key
-        version: 5,
+        version: 6,
         partialize: (state) => ({
           chatSessions: state.chatSessions,
           currentChatId: state.currentChatId,
         }),
         migrate: (persistedState: any, version: number) => {
           // Always reset to initial chats when version changes to load new sample data
-          if (version < 5) {
+          if (version < 6) {
             return {
               chatSessions: initialChatSessions,
               currentChatId: 1,

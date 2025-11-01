@@ -65,8 +65,15 @@ function MessageDetailModal({ message, onClose, theme }) {
     const status = message.status || 'success'
 
     if (messageType === 'tool') {
+      const isError = status === 'error'
       return (
         <div className="modal-content-sections">
+          {message.trace && (
+            <div className="modal-section">
+              <h3 className="modal-section-title">{isError ? 'Tool Error Details' : 'Tool Execution Trace'}</h3>
+              <pre className={`modal-code-block ${isError ? 'modal-error' : ''}`}>{message.trace}</pre>
+            </div>
+          )}
           {message.toolArgs && (
             <div className="modal-section">
               <h3 className="modal-section-title">Tool Arguments</h3>
