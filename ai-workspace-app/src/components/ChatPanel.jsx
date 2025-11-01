@@ -152,6 +152,7 @@ function ChatPanel({
   const [draggedChatId, setDraggedChatId] = useState(null)
   const [hoveredProjectId, setHoveredProjectId] = useState(null)
   const [expandedProjects, setExpandedProjects] = useState({}) // Track expanded state for each project
+  const [isScrollable, setIsScrollable] = useState(false) // Check if chat history is scrollable
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
   const textareaRef = useRef(null)
@@ -268,6 +269,7 @@ function ChatPanel({
   useEffect(() => {
     scrollToBottom()
   }, [currentMessages])
+
 
   // Handle new chats - queue them if animation is running
   useEffect(() => {
@@ -934,7 +936,11 @@ Please provide a detailed, clear, and actionable response.`
   return (
     <div className="chat-panel">
       {/* Chat History Sidebar */}
-      <div className="chat-history-sidebar">
+      <div
+        className="chat-history-sidebar"
+        onMouseEnter={() => setIsScrollable(true)}
+        onMouseLeave={() => setIsScrollable(false)}
+      >
         <div className="chat-history-header">
           <h3>チャット履歴</h3>
           <div className="chat-history-header-buttons">
@@ -1182,13 +1188,18 @@ Please provide a detailed, clear, and actionable response.`
 
       {/* Main Chat Area */}
       <div className="chat-main">
-        {/* Invite Collaborator Floating Button */}
+        {/* Invite Collaborator Floating Button - Hidden when sidebar is hovered */}
         <motion.button
           className="invite-collaborator-floating-button"
           onClick={() => setShowInviteModal(true)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           title="Invite Collaborators"
+          animate={{
+            opacity: isScrollable ? 0 : 1,
+            pointerEvents: isScrollable ? 'none' : 'auto',
+          }}
+          transition={{ duration: 0.3 }}
         >
           <FiUserPlus size={24} />
         </motion.button>
