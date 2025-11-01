@@ -253,6 +253,72 @@ const initialChatSessions: ChatSession[] = [
     ],
     createdAt: new Date().toISOString(),
   },
+  {
+    id: 10,
+    title: 'ツール実行テスト',
+    messages: [
+      {
+        role: 'user',
+        content: 'メールを送信してください。宛先: admin@example.com, 件名: テストメール',
+        timestamp: new Date(Date.now() - 180000).toISOString(),
+      },
+      {
+        role: 'ai',
+        type: 'tool',
+        status: 'pending',
+        content: '[Tool: Gmail] メール送信を準備中...',
+        timestamp: new Date(Date.now() - 175000).toISOString(),
+        toolArgs: JSON.stringify({
+          service: 'Gmail',
+          to: 'admin@example.com',
+          subject: 'テストメール',
+          body: 'これはテストメールです。',
+          attachments: [],
+        }, null, 2),
+        trace: '🔧 [Tool: Gmail] Authenticating with Gmail API...\n⏳ Preparing email composition...',
+      },
+      {
+        role: 'ai',
+        type: 'tool',
+        status: 'success',
+        content: '[Tool: Gmail] メール送信が完了しました。メッセージID: msg_12345',
+        timestamp: new Date(Date.now() - 170000).toISOString(),
+        toolArgs: JSON.stringify({
+          service: 'Gmail',
+          to: 'admin@example.com',
+          subject: 'テストメール',
+        }, null, 2),
+        toolResults: JSON.stringify({
+          status: 'success',
+          messageId: 'msg_12345',
+          timestamp: '2024-11-01T10:30:00Z',
+          recipient: 'admin@example.com',
+          subject: 'テストメール',
+          deliveryStatus: 'sent',
+        }, null, 2),
+        trace: '✅ [Tool: Gmail] Authentication successful\n✅ [Tool: Gmail] Email composed\n✅ [Tool: Gmail] Message sent successfully\n📊 Delivery confirmed to: admin@example.com',
+      },
+      {
+        role: 'user',
+        content: '別のメールアドレスにも送ってください: user@example.com',
+        timestamp: new Date(Date.now() - 165000).toISOString(),
+      },
+      {
+        role: 'ai',
+        type: 'tool',
+        status: 'error',
+        content: '[Tool: Gmail] エラーが発生しました。',
+        timestamp: new Date(Date.now() - 160000).toISOString(),
+        toolArgs: JSON.stringify({
+          service: 'Gmail',
+          to: 'user@example.com',
+          subject: 'テストメール',
+        }, null, 2),
+        trace: '❌ [Tool: Gmail] API rate limit exceeded\n⚠️ Error: Too many requests in a short period\n⚠️ Rate limit: 10 requests per minute\n⏳ Retry after: 45 seconds\n💡 Suggestion: Queue the request and retry later',
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
 ]
 
 interface ChatStoreState {
@@ -457,14 +523,14 @@ export const useChatStore = create<ChatStoreState>()(
       }),
       {
         name: 'chat-storage', // localStorage key
-        version: 3,
+        version: 4,
         partialize: (state) => ({
           chatSessions: state.chatSessions,
           currentChatId: state.currentChatId,
         }),
         migrate: (persistedState: any, version: number) => {
           // Always reset to initial chats when version changes to load new sample data
-          if (version < 3) {
+          if (version < 4) {
             return {
               chatSessions: initialChatSessions,
               currentChatId: 1,
