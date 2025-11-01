@@ -7,6 +7,7 @@ function ToolsPanel() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedToolConfig, setSelectedToolConfig] = useState(null)
   const [tools, setTools] = useState([
+    // 検索ツール
     {
       id: 1,
       name: 'Google Search',
@@ -25,6 +26,15 @@ function ToolsPanel() {
     },
     {
       id: 3,
+      name: 'DuckDuckGo Search',
+      description: 'プライバシー重視のWeb検索',
+      category: '検索',
+      enabled: false,
+      type: 'builtin',
+    },
+    // クラウドストレージ
+    {
+      id: 4,
       name: 'Amazon S3',
       description: 'AWS S3バケットへのアクセスとファイル操作',
       category: 'クラウドストレージ',
@@ -32,10 +42,152 @@ function ToolsPanel() {
       type: 'addon',
     },
     {
-      id: 4,
+      id: 5,
+      name: 'Google Cloud Storage',
+      description: 'GCSバケットへのアクセスとファイル管理',
+      category: 'クラウドストレージ',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 6,
+      name: 'Dropbox',
+      description: 'Dropboxアカウントの接続とファイル操作',
+      category: 'クラウドストレージ',
+      enabled: false,
+      type: 'addon',
+    },
+    // データベース
+    {
+      id: 7,
       name: 'BigQuery',
       description: 'Google BigQueryへの接続とデータ分析',
       category: 'データベース',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 8,
+      name: 'PostgreSQL',
+      description: 'PostgreSQLデータベースへの接続',
+      category: 'データベース',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 9,
+      name: 'MongoDB',
+      description: 'MongoDBへの接続とドキュメント操作',
+      category: 'データベース',
+      enabled: false,
+      type: 'addon',
+    },
+    // コミュニケーション
+    {
+      id: 10,
+      name: 'Slack',
+      description: 'Slackワークスペースへのメッセージ送信',
+      category: 'コミュニケーション',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 11,
+      name: 'Gmail',
+      description: 'Gmailメール送受信とラベル管理',
+      category: 'コミュニケーション',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 12,
+      name: 'Teams',
+      description: 'Microsoft Teamsへのメッセージ送信',
+      category: 'コミュニケーション',
+      enabled: false,
+      type: 'addon',
+    },
+    // タスク管理
+    {
+      id: 13,
+      name: 'Jira',
+      description: 'Jiraプロジェクトのタスク管理と追跡',
+      category: 'タスク管理',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 14,
+      name: 'Asana',
+      description: 'Asanaプロジェクトの管理',
+      category: 'タスク管理',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 15,
+      name: 'GitHub Issues',
+      description: 'GitHubのIssueとプルリクエスト管理',
+      category: 'タスク管理',
+      enabled: false,
+      type: 'addon',
+    },
+    // API・ウェブサービス
+    {
+      id: 16,
+      name: 'OpenWeather API',
+      description: '天気予報と気象データの取得',
+      category: 'API・ウェブサービス',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 17,
+      name: 'REST API',
+      description: 'カスタムREST APIエンドポイントへのアクセス',
+      category: 'API・ウェブサービス',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 18,
+      name: 'GraphQL',
+      description: 'GraphQL APIエンドポイントへのクエリ実行',
+      category: 'API・ウェブサービス',
+      enabled: false,
+      type: 'addon',
+    },
+    // コード実行
+    {
+      id: 19,
+      name: 'Python Executor',
+      description: 'Pythonコードの実行と結果の取得',
+      category: 'コード実行',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 20,
+      name: 'Node.js Runtime',
+      description: 'JavaScriptコードの実行',
+      category: 'コード実行',
+      enabled: false,
+      type: 'addon',
+    },
+    // 分析・ビジュアライゼーション
+    {
+      id: 21,
+      name: 'Data Visualization',
+      description: 'データの可視化とグラフ生成',
+      category: '分析・ビジュアライゼーション',
+      enabled: false,
+      type: 'addon',
+    },
+    {
+      id: 22,
+      name: 'Analytics',
+      description: 'Google Analyticsのデータ取得',
+      category: '分析・ビジュアライゼーション',
       enabled: false,
       type: 'addon',
     },
@@ -156,10 +308,32 @@ function ToolsPanel() {
             <div className="form-group">
               <label>ツールタイプ</label>
               <select>
-                <option>API</option>
-                <option>データベース</option>
-                <option>MCP</option>
-                <option>その他</option>
+                <optgroup label="標準">
+                  <option value="api">API</option>
+                  <option value="webhook">Webhook</option>
+                  <option value="rest">REST API</option>
+                  <option value="graphql">GraphQL</option>
+                </optgroup>
+                <optgroup label="データ関連">
+                  <option value="database">データベース</option>
+                  <option value="dataprocessing">データ処理</option>
+                  <option value="analytics">分析</option>
+                </optgroup>
+                <optgroup label="統合">
+                  <option value="saas">SaaS統合</option>
+                  <option value="cloud">クラウドサービス</option>
+                  <option value="mcp">MCP</option>
+                </optgroup>
+                <optgroup label="実行環境">
+                  <option value="runtime">ランタイム</option>
+                  <option value="code">コード実行</option>
+                  <option value="script">スクリプト</option>
+                </optgroup>
+                <optgroup label="その他">
+                  <option value="custom">カスタム</option>
+                  <option value="plugin">プラグイン</option>
+                  <option value="other">その他</option>
+                </optgroup>
               </select>
             </div>
             <div className="form-actions">
@@ -202,14 +376,64 @@ function ToolsPanel() {
               </div>
 
               <div className="config-section">
-                <h4>詳細設定</h4>
+                <h4>認証設定</h4>
                 <div className="form-group">
-                  <label>APIキー（例）</label>
+                  <label>APIキー / トークン</label>
                   <input type="password" placeholder="APIキーを入力..." />
+                </div>
+                <div className="form-group">
+                  <label>認証方式</label>
+                  <select>
+                    <option>API Key</option>
+                    <option>Bearer Token</option>
+                    <option>OAuth 2.0</option>
+                    <option>Basic Auth</option>
+                    <option>Custom Headers</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="config-section">
+                <h4>接続設定</h4>
+                <div className="form-group">
+                  <label>ベースURL / エンドポイント</label>
+                  <input type="text" placeholder="https://api.example.com" />
                 </div>
                 <div className="form-group">
                   <label>タイムアウト（秒）</label>
                   <input type="number" placeholder="30" defaultValue="30" />
+                </div>
+                <div className="form-group">
+                  <label>リトライ回数</label>
+                  <input type="number" placeholder="3" defaultValue="3" />
+                </div>
+              </div>
+
+              <div className="config-section">
+                <h4>レート制限</h4>
+                <div className="form-group">
+                  <label>1時間あたりのリクエスト制限</label>
+                  <input type="number" placeholder="1000" defaultValue="1000" />
+                </div>
+                <div className="form-group">
+                  <label>バースト制限（秒）</label>
+                  <input type="number" placeholder="100" defaultValue="100" />
+                </div>
+              </div>
+
+              <div className="config-section">
+                <h4>ログ・デバッグ</h4>
+                <div className="form-group">
+                  <label>
+                    <input type="checkbox" defaultChecked={false} />
+                    {' '}詳細ログを有効にする
+                  </label>
+                </div>
+                <div className="form-group">
+                  <label>
+                    <input type="checkbox" defaultChecked={false} />
+                    {' '}リクエスト/レスポンスのログを保存
+                  </label>
                 </div>
               </div>
 
