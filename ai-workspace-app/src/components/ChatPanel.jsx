@@ -312,11 +312,14 @@ function ChatPanel({
     return () => clearTimeout(timer)
   }, [animatingChatId, pendingAnimationId])
 
-  // Auto-expand textarea based on content
+  // Auto-expand textarea based on content height until max-height is reached
   useEffect(() => {
     if (textareaRef.current) {
+      // Reset height to auto to get the true scrollHeight
       textareaRef.current.style.height = 'auto'
-      textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + 'px'
+      // Set height to scrollHeight but cap at 200px (max-height)
+      const newHeight = Math.min(textareaRef.current.scrollHeight, 200)
+      textareaRef.current.style.height = newHeight + 'px'
     }
   }, [inputValue])
 
@@ -410,12 +413,13 @@ Please provide a detailed, clear, and actionable response.`
     setInputValue(fineTunedPrompt)
     setSendConfirmationMode(false)
 
-    // Auto-resize textarea
+    // Auto-resize textarea after augmentation
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'
       setTimeout(() => {
         if (textareaRef.current) {
-          textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + 'px'
+          const newHeight = Math.min(textareaRef.current.scrollHeight, 200)
+          textareaRef.current.style.height = newHeight + 'px'
         }
       }, 0)
       textareaRef.current.focus()

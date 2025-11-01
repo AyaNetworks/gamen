@@ -1094,7 +1094,7 @@ button.radix-button.project-toggle-button {
   font-size: 0.95rem;
   font-family: inherit;
   resize: none;
-  overflow: hidden;
+  overflow-y: auto;
   max-height: 200px;
   line-height: 1.5;
 }
