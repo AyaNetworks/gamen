@@ -148,6 +148,7 @@ function ChatPanel({
   const [replyingToContent, setReplyingToContent] = useState(null)
   const [showProjectInput, setShowProjectInput] = useState(false)
   const [projectInputValue, setProjectInputValue] = useState('')
+  const [sendConfirmationMode, setSendConfirmationMode] = useState(false) // For augmentation feature
   const [draggedChatId, setDraggedChatId] = useState(null)
   const [hoveredProjectId, setHoveredProjectId] = useState(null)
   const [expandedProjects, setExpandedProjects] = useState({}) // Track expanded state for each project
@@ -369,22 +370,53 @@ function ChatPanel({
   const handleSubmit = (e) => {
     e.preventDefault()
     if (inputValue.trim() || attachedFiles.length > 0 || attachedWorkspaces.length > 0) {
-      // Trigger paper plane animation only if not already animating
-      // Use ref for synchronous check to prevent race conditions
-      if (!isAnimatingSendRef.current) {
-        isAnimatingSendRef.current = true
-        animationKeyRef.current += 1 // Increment key to ensure unique animation instance
-        setShouldAnimateSendBtn(true)
+      // If not in confirmation mode, enter confirmation mode (show augment option)
+      if (!sendConfirmationMode) {
+        setSendConfirmationMode(true)
+        return
       }
-      sendMessage(inputValue, attachedFiles, {
-        replyingToIndex: replyingToIndex,
-        replyingToContent: replyingToContent,
-        attachedWorkspaces: attachedWorkspaces,
-      })
-      setInputValue('')
-      setAttachedFiles([])
-      handleClearReply()
-      clearAllAttachments() // Clear all attachments after sending
+      // If in confirmation mode and user clicks send, send without augmentation
+      handleSendWithoutAugmentation()
+    }
+  }
+
+  const handleSendWithoutAugmentation = () => {
+    // Trigger paper plane animation only if not already animating
+    if (!isAnimatingSendRef.current) {
+      isAnimatingSendRef.current = true
+      animationKeyRef.current += 1
+      setShouldAnimateSendBtn(true)
+    }
+    sendMessage(inputValue, attachedFiles, {
+      replyingToIndex: replyingToIndex,
+      replyingToContent: replyingToContent,
+      attachedWorkspaces: attachedWorkspaces,
+    })
+    setInputValue('')
+    setAttachedFiles([])
+    handleClearReply()
+    clearAllAttachments()
+    setSendConfirmationMode(false)
+  }
+
+  const handleAugmentMessage = () => {
+    // Apply augmentation to the input field only (don't send yet)
+    const fineTunedPrompt = `${inputValue.trim()}
+
+Please provide a detailed, clear, and actionable response.`
+
+    setInputValue(fineTunedPrompt)
+    setSendConfirmationMode(false)
+
+    // Auto-resize textarea
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + 'px'
+        }
+      }, 0)
+      textareaRef.current.focus()
     }
   }
 
@@ -492,10 +524,25 @@ function ChatPanel({
       setTaskMentionHighlightIndex(0)
     }
 
-    // Ctrl+Enter or Cmd+Enter to submit
+    // Tab key to augment message in confirmation mode
+    if (e.key === 'Tab' && sendConfirmationMode) {
+      e.preventDefault()
+      handleAugmentMessage()
+      return
+    }
+
+    // Ctrl+Enter or Cmd+Enter to enter confirmation mode or send from confirmation mode
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault()
-      handleSubmit(e)
+      if (inputValue.trim() || attachedFiles.length > 0 || attachedWorkspaces.length > 0) {
+        if (!sendConfirmationMode) {
+          // First Ctrl+Enter: enter confirmation mode
+          setSendConfirmationMode(true)
+        } else {
+          // Second Ctrl+Enter: send without augmentation
+          handleSendWithoutAugmentation()
+        }
+      }
     }
     // Shift+Enter for line break - let default behavior happen
     // Regular Enter for line break - prevent form submission
@@ -543,28 +590,6 @@ function ChatPanel({
 
   const handleAttachClick = () => {
     fileInputRef.current?.click()
-  }
-
-  const handleAugmentInput = () => {
-    if (!inputValue.trim()) return
-
-    // Fine-tune the input by adding clarity and context
-    const fineTunedPrompt = `${inputValue.trim()}
-
-Please provide a detailed, clear, and actionable response.`
-
-    setInputValue(fineTunedPrompt)
-    textareaRef.current?.focus()
-
-    // Auto-resize textarea
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 200) + 'px'
-        }
-      }, 0)
-    }
   }
 
   const handleCopyMessage = async (content, index) => {
@@ -1480,23 +1505,31 @@ Please provide a detailed, clear, and actionable response.`
               onChange={(e) => {
                 setInputValue(e.target.value)
                 handleTaskMention(e.target.value, e.target.selectionStart)
+                // Exit confirmation mode if user starts editing the message
+                if (sendConfirmationMode && e.target.value !== inputValue) {
+                  setSendConfirmationMode(false)
+                }
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Dioneと何をしますか？ (Ctrl+Enter で送信)"
+              placeholder={sendConfirmationMode ? "Tab で最適化 / Ctrl+Enter で送信" : "Dioneと何をしますか？ (Ctrl+Enter で送信)"}
               className="chat-input"
               rows="1"
             />
             <div className="chat-input-actions">
-              <Button
-                type="button"
-                variant="soft"
-                size="md"
-                onClick={handleAugmentInput}
-                title="メッセージを最適化"
-                disabled={!inputValue.trim()}
-              >
-                <FiZap size={20} />
-              </Button>
+              {sendConfirmationMode && (
+                // Augment button shown only in confirmation mode
+                <Button
+                  type="button"
+                  variant="soft"
+                  size="md"
+                  onClick={handleAugmentMessage}
+                  title="メッセージを最適化"
+                  className="augment-option-button"
+                >
+                  <FiZap size={20} />
+                </Button>
+              )}
+              {/* Send button always shown */}
               <AnimatedSendButton
                 shouldAnimate={shouldAnimateSendBtn}
                 animationKey={animationKeyRef.current}
