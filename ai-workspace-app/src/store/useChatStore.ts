@@ -37,10 +37,19 @@ const initialChatSessions: ChatSession[] = [
       {
         role: 'ai',
         type: 'dione',
+        status: 'pending',
+        content: '分析を開始しています。データベースからVIPカスタマーのレコードを取得中...',
+        timestamp: new Date(Date.now() - 595000).toISOString(),
+        trace: '🔄 Retrieving VIP customer segments from database...\n⏳ Processing behavioral patterns...',
+      },
+      {
+        role: 'ai',
+        type: 'dione',
         status: 'success',
         content:
-          '👑 **VIPカスタマー層の分析結果**\n\n📈 **購買パターン**\n- 月平均購買回数: 8.2回\n- 平均注文額: ¥28,500\n- リピート率: 92%\n- LTV: ¥342,000',
+          '👑 **VIPカスタマー層の分析結果**\n\n📈 **購買パターン**\n- 月平均購買回数: 8.2回\n- 平均注文額: ¥28,500\n- リピート率: 92%\n- LTV: ¥342,000\n\n🎯 **セグメント特性**\n- 主な購入時間帯: 平日午後1-3時\n- 好む商品カテゴリ: プレミアム製品\n- 平均セッション継続時間: 12.5分',
         timestamp: new Date(Date.now() - 590000).toISOString(),
+        trace: 'Step 1: Segment VIP customers\nStep 2: Extract behavioral data\nStep 3: Analyze purchase patterns\nStep 4: Calculate LTV metrics',
       },
     ],
     createdAt: new Date().toISOString(),
@@ -51,16 +60,25 @@ const initialChatSessions: ChatSession[] = [
     messages: [
       {
         role: 'user',
-        content: 'Q3とQ4の開発優先順位を整理してください',
+        content: 'Q3とQ4の開発優先順位を整理してください。Jiraのチケットデータを参照してください。',
         timestamp: new Date(Date.now() - 480000).toISOString(),
+      },
+      {
+        role: 'ai',
+        type: 'dione',
+        status: 'pending',
+        content: 'Jiraに接続してプロジェクトデータを取得しています...',
+        timestamp: new Date(Date.now() - 475000).toISOString(),
+        trace: '🔧 [Tool: Jira] Connecting to Jira server...\n⏳ Fetching sprint data...',
       },
       {
         role: 'ai',
         type: 'dione',
         status: 'success',
         content:
-          '📋 **推奨ロードマップ**\n\n**Q3優先課題（8週間）**\n1. 🔴 APIレート制限機能（ユーザー要望多数）\n2. 🟡 ダッシュボード大幅改善\n3. 🟡 検索機能の最適化\n\n**Q4優先課題（8週間）**\n1. 🟢 モバイルアプリβ版\n2. 🟢 チーム協業機能\n3. 🟢 分析レポート強化',
+          '📋 **推奨ロードマップ（Jiraデータに基づく）**\n\n**Q3優先課題（8週間）**\n1. 🔴 APIレート制限機能（ユーザー要望: 47件）\n2. 🟡 ダッシュボード大幅改善（見積もり: 40h）\n3. 🟡 検索機能の最適化（見積もり: 32h）\n\n**Q4優先課題（8週間）**\n1. 🟢 モバイルアプリβ版\n2. 🟢 チーム協業機能\n3. 🟢 分析レポート強化\n\n📊 総タスク数: 24件 | 完了: 8件 | 進行中: 12件',
         timestamp: new Date(Date.now() - 470000).toISOString(),
+        trace: '✅ [Tool: Jira] Retrieved 24 issues from Q3-Q4 backlog\n📊 Analyzed sprint velocity\n🎯 Sorted by priority and dependencies',
       },
     ],
     createdAt: new Date().toISOString(),
@@ -77,10 +95,25 @@ const initialChatSessions: ChatSession[] = [
       {
         role: 'ai',
         type: 'dione',
+        status: 'error',
+        content:
+          'エラーが発生しました: GitHubへの接続に失敗しました。タイムアウト（30秒以上応答なし）',
+        timestamp: new Date(Date.now() - 355000).toISOString(),
+        trace: '❌ [Tool: GitHub] Connection timeout\n⚠️ Failed to fetch issues from repository\n🔄 Retry attempt 1/3 in 5 seconds...',
+      },
+      {
+        role: 'user',
+        content: 'もう一度試してみてください',
+        timestamp: new Date(Date.now() - 350000).toISOString(),
+      },
+      {
+        role: 'ai',
+        type: 'dione',
         status: 'success',
         content:
-          '🐛 **本番バグ・問題一覧**\n\n**重大度: 高**\n- ユーザー認証タイムアウト (影響: 3.2%)\n- データ同期遅延 (影響: 8.1%)\n\n**重大度: 中**\n- UI描画の不具合（特定ブラウザ）\n- 検索結果の順序異常\n\n**対応状況**\n✅ 認証タイムアウト → 本日修正完了\n🔄 データ同期 → QA中\n⏳ UI描画 → 来週着手予定',
-        timestamp: new Date(Date.now() - 350000).toISOString(),
+          '🐛 **本番バグ・問題一覧**\n\n**重大度: 高**\n- ユーザー認証タイムアウト (影響: 3.2%)\n- データ同期遅延 (影響: 8.1%)\n\n**重大度: 中**\n- UI描画の不具合（特定ブラウザ）\n- 検索結果の順序異常\n\n**対応状況**\n✅ 認証タイムアウト → 本日修正完了\n🔄 データ同期 → QA中\n⏳ UI描画 → 来週着手予定\n\n**進捗**: GitHub Issues から 8 件のバグを同期しました',
+        timestamp: new Date(Date.now() - 345000).toISOString(),
+        trace: '✅ [Tool: GitHub] Connection established (retry 2/3)\n📊 Retrieved 8 open issues\n✅ Filtered by priority and severity',
       },
     ],
     createdAt: new Date().toISOString(),
@@ -91,16 +124,25 @@ const initialChatSessions: ChatSession[] = [
     messages: [
       {
         role: 'user',
-        content: 'REST APIの新エンドポイント設計とドキュメントを作成してください',
+        content: 'REST APIの新エンドポイント設計とドキュメントを作成してください。GraphQL スキーマと REST API 仕様の差分を分析してください。',
         timestamp: new Date(Date.now() - 240000).toISOString(),
+      },
+      {
+        role: 'ai',
+        type: 'dione',
+        status: 'pending',
+        content: 'APIドキュメント生成中...',
+        timestamp: new Date(Date.now() - 235000).toISOString(),
+        trace: '🔧 [Tool: REST API] Retrieving endpoint definitions...\n🔧 [Tool: GraphQL] Fetching schema...\n⏳ Analyzing API differences...',
       },
       {
         role: 'ai',
         type: 'dione',
         status: 'success',
         content:
-          '📚 **新APIエンドポイント設計**\n\n**ユーザー管理API v2**\n- `GET /api/v2/users` - ユーザー一覧取得\n- `POST /api/v2/users` - ユーザー新規作成\n- `PUT /api/v2/users/{id}` - ユーザー情報更新\n\n**認証フロー**\n1. OAuth 2.0対応\n2. JWT トークン有効期限: 24時間\n3. Refresh token: 30日\n\n📖 完全なドキュメント: https://api.example.com/docs',
+          '📚 **新APIエンドポイント設計**\n\n**ユーザー管理API v2**\n- `GET /api/v2/users` - ユーザー一覧取得\n- `POST /api/v2/users` - ユーザー新規作成\n- `PUT /api/v2/users/{id}` - ユーザー情報更新\n\n**GraphQL クエリ例**\n```graphql\nquery GetUsers($limit: Int!) {\n  users(limit: $limit) {\n    id\n    email\n    displayName\n  }\n}\n```\n\n**認証フロー**\n1. OAuth 2.0対応\n2. JWT トークン有効期限: 24時間\n3. Refresh token: 30日\n\n📊 **スキーマ比較**: REST 12エンドポイント ↔ GraphQL 8クエリ+5ミューテーション\n📖 完全なドキュメント: https://api.example.com/docs',
         timestamp: new Date(Date.now() - 230000).toISOString(),
+        trace: '✅ [Tool: REST API] Retrieved 12 endpoints\n✅ [Tool: GraphQL] Analyzed 13 GraphQL operations\n✅ Generated comparison report\n📊 Created documentation',
       },
     ],
     createdAt: new Date().toISOString(),
@@ -141,6 +183,72 @@ const initialChatSessions: ChatSession[] = [
         content:
           '🔒 **2024年10月 セキュリティ監査報告**\n\n**脆弱性検出数**\n- 重大: 0\n- 高: 2 (修正完了)\n- 中: 5 (対応中)\n- 低: 12 (優先度付け済み)\n\n**対応状況**\n✅ SQL インジェクション対策: 完了\n✅ CORS設定: 完了\n🔄 レート制限: 実装中\n\n**推奨事項**\n1. 定期的なペネトレーションテスト実施\n2. WAFルール更新の自動化\n3. セキュリティトレーニング強化',
         timestamp: new Date(Date.now() - 50000).toISOString(),
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 8,
+    title: 'データ処理パイプラインの最適化',
+    messages: [
+      {
+        role: 'user',
+        content: 'PostgreSQLのログデータを処理して、パフォーマンス統計を生成してください。',
+        timestamp: new Date(Date.now() - 420000).toISOString(),
+      },
+      {
+        role: 'ai',
+        type: 'dione',
+        status: 'pending',
+        content: 'データ処理パイプラインを実行中です...',
+        timestamp: new Date(Date.now() - 415000).toISOString(),
+        trace: '🔧 [Tool: PostgreSQL] Connecting to database...\n⏳ Executing query to retrieve logs...',
+      },
+      {
+        role: 'ai',
+        type: 'dione',
+        status: 'pending',
+        content: 'クエリを実行していますー、データを処理中です...',
+        timestamp: new Date(Date.now() - 410000).toISOString(),
+        trace: '✅ [Tool: PostgreSQL] Retrieved 2.5M records\n🔄 [Tool: Python Executor] Processing data...\n⏳ Generating statistics...',
+      },
+      {
+        role: 'ai',
+        type: 'dione',
+        status: 'success',
+        content:
+          '📊 **パフォーマンス統計レポート**\n\n**クエリパフォーマンス分析**\n- 平均応答時間: 142ms → 87ms (38%改善)\n- 95パーセンタイル: 580ms → 320ms\n- ボトルネック: インデックス不足のテーブル 3 個\n\n**最適化推奨事項**\n1. `users` テーブルに複合インデックス追加\n2. `orders` テーブルに非クラスタ化インデックス追加\n3. クエリプランのリビルド\n\n**推定改善効果**: クエリ実行時間を全体で 45% 削減可能\n\n📈 **処理統計**\n- 処理件数: 2,532,847 件\n- 処理時間: 284秒\n- スループット: 8,912 件/秒',
+        timestamp: new Date(Date.now() - 405000).toISOString(),
+        trace: '✅ [Tool: PostgreSQL] Retrieved logs\n✅ [Tool: Python Executor] Processed and analyzed 2.5M records\n✅ [Tool: Data Visualization] Generated charts\n✅ Report generated successfully',
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 9,
+    title: 'リサーチエージェント実行',
+    messages: [
+      {
+        role: 'user',
+        content: '最新のAI技術トレンドについてリサーチエージェントに調査させてください。',
+        timestamp: new Date(Date.now() - 300000).toISOString(),
+      },
+      {
+        role: 'ai',
+        type: 'dione',
+        status: 'pending',
+        content: 'Research Agentを起動しています...',
+        timestamp: new Date(Date.now() - 295000).toISOString(),
+        trace: '🔧 [Agent: Research Agent] Starting...\n⏳ Initializing web search tools...\n⏳ Connecting to information sources...',
+      },
+      {
+        role: 'ai',
+        type: 'dione',
+        status: 'success',
+        content:
+          '🤖 **AI技術トレンド調査レポート**\n\n**主要なトレンド**\n\n1. 🧠 **大規模言語モデル（LLM）**\n   - マルチモーダル化: テキスト+画像+音声対応\n   - 推論能力の向上: 複雑な問題解決が可能に\n   - コンテキストウィンドウの拡張: 100K+ トークン対応\n\n2. ⚡ **効率化技術**\n   - LoRA / QLoRA: パラメータ効率的なファインチューニング\n   - 量子化: モデルサイズ削減（8bit, 4bit）\n   - グループクエリアテンション: 推論速度 2-3倍向上\n\n3. 🔗 **エージェント技術の進化**\n   - ReAct パターン: 思考と行動を統合\n   - ツールチェーン: 複数ツールの連携\n   - 自己改善メカニズム\n\n4. 🛡️ **セーフティと信頼性**\n   - 説明可能AI（XAI）の重要性\n   - アライメント技術の発展\n   - 偏見検出と軽減\n\n**市場動向**\n- 投資額: 前年比 +156%\n- 企業導入率: 62% (前年 38%)\n- 主要企業: OpenAI, Anthropic, Google, Meta, Alibaba\n\n**推奨事項**\n1. マルチモーダル対応の検討\n2. 量子化技術の導入評価\n3. エージェント型アーキテクチャの採用検討',
+        timestamp: new Date(Date.now() - 290000).toISOString(),
+        trace: '✅ [Agent: Research Agent] Completed\n✅ [Tool: Web Search] Fetched 47 articles\n✅ [Tool: Data Analysis] Analyzed trends\n✅ [Tool: Report Generation] Created comprehensive report',
       },
     ],
     createdAt: new Date().toISOString(),
