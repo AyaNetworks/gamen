@@ -150,14 +150,14 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
         {/* Character Count */}
         <div className="stat-item">
           <FiFileText size={16} className="stat-icon" />
-          <span className="stat-label">文字</span>
+          <span className="stat-label">Characters</span>
           <motion.span className="stat-value">{animatedChars}</motion.span>
         </div>
 
         {/* Word Count */}
         <div className="stat-item">
           <FiFileText size={16} className="stat-icon" />
-          <span className="stat-label">単語</span>
+          <span className="stat-label">Words</span>
           <motion.span className="stat-value">{animatedWords}</motion.span>
         </div>
 
@@ -169,7 +169,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
           <Button
             variant="toggle"
             onClick={handlePublishToggle}
-            title={isPublishedState ? '非公開にする' : '共有を開始する'}
+            title={isPublishedState ? 'Make Private' : 'Start Sharing'}
             animated={false}
             className={isPublishedState ? 'published' : 'private'}
           >
@@ -183,7 +183,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
             >
               {isPublishedState ? <FiShare2 size={16} /> : <FiLock size={16} />}
             </motion.div>
-            <span className="publish-label">{isPublishedState ? '共有中' : '非公開'}</span>
+            <span className="publish-label">{isPublishedState ? 'Shared' : 'Private'}</span>
           </Button>
         </motion.div>
 
@@ -192,7 +192,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
           <Button
             variant="toggle"
             onClick={handleLikeToggle}
-            title={isLiked ? 'いいねを削除' : 'いいねする'}
+            title={isLiked ? 'Unlike' : 'Like'}
             animated={false}
             className={isLiked ? 'liked' : ''}
           >
@@ -203,7 +203,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
             >
               <FiHeart size={16} className={`stat-icon ${isLiked ? 'liked-heart' : ''}`} />
             </motion.div>
-            <span className="stat-label">いいね</span>
+            <span className="stat-label">Likes</span>
             <motion.span className="stat-value">{animatedLikes}</motion.span>
           </Button>
         </motion.div>
@@ -211,7 +211,7 @@ function StatsPanel({ content = '', isPublished = false, onPublishToggle = null,
         {/* Impressions Count */}
         <div className="stat-item">
           <FiEye size={16} className="stat-icon" />
-          <span className="stat-label">表示</span>
+          <span className="stat-label">Views</span>
           <motion.span className="stat-value">{animatedImpressions}</motion.span>
         </div>
       </div>

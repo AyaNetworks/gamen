@@ -24,10 +24,10 @@ function LibrarySelectionModal({ selectionType, items, onSelect, onClose, theme 
   }
 
   const getTypeLabel = () => {
-    if (selectionType === 'artifacts') return 'ワークスペースアーティファクト'
-    if (selectionType === 'sessions') return 'ライブラリドキュメント'
-    if (selectionType === 'knowledge') return 'ナレッジベース'
-    return 'コンテキストを選択'
+    if (selectionType === 'artifacts') return 'Workspace Artifacts'
+    if (selectionType === 'sessions') return 'Library Documents'
+    if (selectionType === 'knowledge') return 'Knowledge Base'
+    return 'Select Context'
   }
 
   return (
@@ -53,7 +53,7 @@ function LibrarySelectionModal({ selectionType, items, onSelect, onClose, theme 
       <div className="context-modal-content">
         {items.length === 0 ? (
           <div style={{ padding: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
-            利用可能なアイテムがありません
+            No items available
           </div>
         ) : (
           <>
@@ -66,7 +66,7 @@ function LibrarySelectionModal({ selectionType, items, onSelect, onClose, theme 
                   style={{ width: '16px', height: '16px' }}
                 />
                 <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}>
-                  すべて選択 ({selectedIds.length}/{items.length})
+                  Select All ({selectedIds.length}/{items.length})
                 </span>
               </label>
             </div>
@@ -126,7 +126,7 @@ function LibrarySelectionModal({ selectionType, items, onSelect, onClose, theme 
           disabled={selectedIds.length === 0}
           animated={false}
         >
-          選択 ({selectedIds.length})
+          Select ({selectedIds.length})
         </Button>
       </div>
     </motion.div>
@@ -158,11 +158,11 @@ function DionePowersScreen({
     uploadedFiles: [],
   })
   const [artifactInfo] = useState(currentArtifact ? {
-    title: currentArtifact.title || 'タイトルなしのアーティファクト',
+    title: currentArtifact.title || 'Untitled Artifact',
     content: currentArtifact.content || '',
-    contentPreview: currentArtifact.content ? currentArtifact.content.substring(0, 100) + '...' : 'コンテンツなし'
+    contentPreview: currentArtifact.content ? currentArtifact.content.substring(0, 100) + '...' : 'No Content'
   } : null)
-  const [systemPrompt, setSystemPrompt] = useState('Dioneのパーソナリティプロフィールを構築しています...\n\n私たちが話し合う中で、あなたの役割、チーム、好み、そして仕事のやり方について学びます。これが私があなたをどのようにサポートするかを形作ります。')
+  const [systemPrompt, setSystemPrompt] = useState('Building Dione\'s personality profile...\n\nAs we work together, I will learn about your role, team, preferences, and work style. This will shape how I support you.')
   const [isEditingPrompt, setIsEditingPrompt] = useState(false)
   const [editingPrompt, setEditingPrompt] = useState(systemPrompt)
   const [showContextModal, setShowContextModal] = useState(false)
@@ -172,11 +172,11 @@ function DionePowersScreen({
 
   const availableContexts = [
     // Direct uploads
-    { id: 'file', label: 'ファイルをアップロード', description: '新しいファイルを添付', category: 'アップロード' },
+    { id: 'file', label: 'Upload File', description: 'Attach a new file', category: 'Upload' },
     // Workspace and Library sources
-    { id: 'workspace-artifacts', label: 'ワークスペースアーティファクト', description: `${scratchpadTabs.length}個のアーティファクトから選択`, category: 'ライブラリ' },
-    { id: 'session-files', label: 'ライブラリドキュメント', description: `${libraries.length}個のドキュメントから選択`, category: 'ライブラリ' },
-    { id: 'dione-knowledge', label: 'ナレッジベース', description: `${documents.length}個のナレッジアイテムから選択`, category: 'ライブラリ' },
+    { id: 'workspace-artifacts', label: 'Workspace Artifacts', description: `Choose from ${scratchpadTabs.length} artifacts`, category: 'Library' },
+    { id: 'session-files', label: 'Library Documents', description: `Choose from ${libraries.length} documents`, category: 'Library' },
+    { id: 'dione-knowledge', label: 'Knowledge Base', description: `Choose from ${documents.length} knowledge items`, category: 'Library' },
   ]
 
   // Handle prompt edit mode
@@ -218,7 +218,7 @@ function DionePowersScreen({
     name: doc.name,
     type: doc.type,
     content: doc.content,
-    category: doc.tags?.category || 'その他',
+    category: doc.tags?.category || 'Other',
   }))
 
   // Handle context selection
@@ -229,7 +229,7 @@ function DionePowersScreen({
       document.getElementById('file-input-dione')?.click()
     } else if (contextType === 'url') {
       // Show URL input
-      const url = prompt('URLを入力してください:')
+      const url = prompt('Enter URL:')
       if (url) {
         setAttachedContext({
           ...attachedContext,
@@ -239,7 +239,7 @@ function DionePowersScreen({
       }
     } else if (contextType === 'notes') {
       // Show notes input
-      const notes = prompt('メモを入力してください:')
+      const notes = prompt('Enter notes:')
       if (notes) {
         setAttachedContext({
           ...attachedContext,
@@ -322,14 +322,14 @@ function DionePowersScreen({
       const dioneMessage = {
         id: Date.now() + 1,
         role: 'dione',
-        content: `ご共有ありがとうございます。${inputValue.slice(0, 30)}...について取り組まれていることが理解できました。
+        content: `Thank you for sharing. I understand you're working on ${inputValue.slice(0, 30)}...
 
-あなたの状況をより良く理解するために、いくつかお尋ねしたいことがあります：
-1. 現在のあなたの役割とチーム構成は何ですか？
-2. 直面している主な課題や痛点は何ですか？
-3. この分野でのあなたにとって成功とはどのような形ですか？
+To better support you, I'd like to ask a few questions:
+1. What is your current role and team composition?
+2. What are the main challenges or pain points you're facing?
+3. What does success look like for you in this area?
 
-教えていただければ、より良くあなたをサポートできます。`,
+With this information, I can better support you.`,
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, dioneMessage])
@@ -365,12 +365,12 @@ function DionePowersScreen({
       >
         {/* Monitor Bezel Header */}
         <div className="monitor-header">
-          <h1 className="monitor-title">ガイドラインの作成</h1>
+          <h1 className="monitor-title">Create Guidelines</h1>
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            title="閉じる"
+            title="Close"
             animated={false}
           >
             <FiX size={24} />
@@ -390,19 +390,19 @@ function DionePowersScreen({
               <div className="avatar-status">
                 <span className={`status-indicator ${dioneState}`}></span>
                 <span className="status-text">
-                  {dioneState === 'thinking' ? 'Dioneが考え中です...' : '聞く準備ができています'}
+                  {dioneState === 'thinking' ? 'Dione is thinking...' : 'Ready to listen'}
                 </span>
               </div>
             </div>
 
             {/* Context Panel */}
             <div className="context-panel">
-              <h3>添付されたコンテキスト</h3>
+              <h3>Attached Context</h3>
               <div className="context-list">
                 {/* Chat History - Always shown */}
                 {attachedContext.chatHistory && (
                   <div className="context-item chat-history">
-                    <span className="context-label">チャット履歴</span>
+                    <span className="context-label">Chat History</span>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -539,20 +539,20 @@ function DionePowersScreen({
                 onClick={() => setShowContextModal(true)}
               >
                 <FiPlus size={16} />
-                コンテキストをもっと追加
+                Add More Context
               </button>
             </div>
 
             {/* System Prompt Display - Title changes based on source */}
             <div className="essence-panel">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h3>{source === 'chat' ? 'ガイドライン' : 'Dioneプロフィール'}</h3>
+                <h3>{source === 'chat' ? 'Guidelines' : 'Dione Profile'}</h3>
                 {!isEditingPrompt && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={handleEditPrompt}
-                    title="編集"
+                    title="Edit"
                     animated={false}
                   >
                     <FiEdit2 size={16} />
@@ -588,7 +588,7 @@ function DionePowersScreen({
                       animated={false}
                     >
                       <FiCheck size={16} />
-                      保存
+                      Save
                     </Button>
                     <Button
                       variant="ghost"
@@ -614,18 +614,18 @@ function DionePowersScreen({
             <div className="conversation-history">
               {messages.length === 0 ? (
                 <div className="welcome-message">
-                  <h2>Dioneパーソナリティ設定へようこそ</h2>
+                  <h2>Welcome to Dione Personality Settings</h2>
                   <p>
-                    あなたユニークな状況、チーム構成、好みを理解するためにここにいます。
-                    私たちの会話を通じて、あなたをより良くサポートする方法を学び、あなたのニーズに合わせてパーソナリティを形作ります。
+                    I'm here to understand your unique situation, team composition, and preferences.
+                    Through our conversation, I'll learn how to better support you and shape my personality to fit your needs.
                   </p>
                   {attachedContext.currentArtifact && artifactInfo && (
                     <p style={{ color: 'rgba(100, 108, 255, 0.8)', fontSize: '13px' }}>
-                      📎 アーティファクトを読み込みました: <strong>{artifactInfo.title}</strong>
+                      📎 Artifact Loaded: <strong>{artifactInfo.title}</strong>
                     </p>
                   )}
                   <p>
-                    まず、現在のプロジェクト、役割、または直面している課題についてお話しください。
+                    Start by telling me about your current project, role, or challenges you're facing.
                   </p>
                 </div>
               ) : (
@@ -648,7 +648,7 @@ function DionePowersScreen({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="あなたの状況、役割、チーム構成、または課題についてお話しください... (Ctrl+Enterで送信)"
+                placeholder="Tell us about your situation, role, team composition, or challenges... (Ctrl+Enter to send)"
                 className="message-input"
                 rows="1"
               />
@@ -658,7 +658,7 @@ function DionePowersScreen({
                 disabled={!inputValue.trim()}
                 animated={false}
               >
-                送信
+                Send
               </Button>
             </div>
           </div>
@@ -700,7 +700,7 @@ function DionePowersScreen({
               transition={{ duration: 0.2 }}
             >
               <div className="context-modal-header">
-                <h3>コンテキストを追加</h3>
+                <h3>Add Context</h3>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -712,7 +712,7 @@ function DionePowersScreen({
               </div>
               <div className="context-modal-content">
                 {/* Group contexts by category */}
-                {['アップロード', 'ライブラリ'].map((category) => (
+                {['Upload', 'Library'].map((category) => (
                   <div key={category} style={{ marginBottom: '16px' }}>
                     <h4 style={{ margin: '0 0 10px 0', fontSize: '12px', fontWeight: '600', color: 'rgba(100, 150, 255, 0.8)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       {category}

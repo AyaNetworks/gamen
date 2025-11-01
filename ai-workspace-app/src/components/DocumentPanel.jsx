@@ -207,23 +207,23 @@ function DocumentPanel({
   return (
     <div className="document-panel">
       <div className="panel-header">
-        <h2>ライブラリ</h2>
+        <h2>Library</h2>
         <a
           href="https://portal.example.com"
           target="_blank"
           rel="noopener noreferrer"
           className="portal-link"
-          title="Portalへ移動"
+          title="Go to Portal"
         >
           <BiLinkExternal />
         </a>
       </div>
 
       <div className="document-content">
-        {/* Dioneナレッジ */}
+        {/* Dione Knowledge */}
         <div className="document-section">
           <div className="list-header">
-            <h3>Dioneナレッジ</h3>
+            <h3>Dione Knowledge</h3>
           </div>
           <motion.div className="document-list">
             <AnimatePresence>
@@ -255,7 +255,7 @@ function DocumentPanel({
                             e.stopPropagation()
                             handleAddToScratchpad(doc)
                           }}
-                          title="Dioneワークスペースに追加"
+                          title="Add to Dione Workspace"
                         >
                           <FiArrowUpLeft size={16} />
                         </Button>
@@ -264,7 +264,7 @@ function DocumentPanel({
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
-                            // ダウンロード機能
+                            // Download functionality
                             const blob = new Blob([doc.content || ''], { type: 'text/plain' })
                             const url = URL.createObjectURL(blob)
                             const a = document.createElement('a')
@@ -275,7 +275,7 @@ function DocumentPanel({
                             document.body.removeChild(a)
                             URL.revokeObjectURL(url)
                           }}
-                          title="ダウンロード"
+                          title="Download"
                         >
                           <FiDownload size={18} />
                         </Button>
@@ -286,7 +286,7 @@ function DocumentPanel({
                             e.stopPropagation()
                             onDeleteDocument(doc.id)
                           }}
-                          title="削除"
+                          title="Delete"
                         >
                           ×
                         </Button>
@@ -315,10 +315,10 @@ function DocumentPanel({
           </motion.div>
         </div>
 
-        {/* アップロードしたドキュメント */}
+        {/* Uploaded Documents */}
         <div className="document-section library-section-wrapper">
           <div className="list-header">
-            <h3>アップロードしたドキュメント</h3>
+            <h3>Uploaded Documents</h3>
           </div>
           <motion.div className="library-list">
             <AnimatePresence>
@@ -349,7 +349,7 @@ function DocumentPanel({
                           e.stopPropagation()
                           handleAddToScratchpad(lib)
                         }}
-                        title="Dioneワークスペースに追加"
+                        title="Add to Dione Workspace"
                       >
                         <FiArrowUpLeft size={16} />
                       </Button>
@@ -360,7 +360,7 @@ function DocumentPanel({
                           e.stopPropagation()
                           onDeleteLibrary(lib.id)
                         }}
-                        title="削除"
+                        title="Delete"
                       >
                         ×
                       </Button>

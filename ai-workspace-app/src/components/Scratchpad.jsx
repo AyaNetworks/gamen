@@ -550,7 +550,7 @@ function Scratchpad({
                             e.stopPropagation()
                             onCloseTab(tab.id)
                           }}
-                          title="閉じる"
+                          title="Close"
                         >
                           ×
                         </Button>
@@ -575,7 +575,7 @@ function Scratchpad({
               setShouldAnimateNewTabBtn(true)
               onNewTab()
             }}
-            title="新しいタブ"
+            title="New Tab"
             animated={false}
             className="new-tab-button"
           >
@@ -593,7 +593,7 @@ function Scratchpad({
             size="md"
             onClick={onUndo}
             disabled={!canUndo}
-            title="元に戻す (Undo)"
+            title="Undo"
           >
             <FiRotateCcw size={18} />
           </Button>
@@ -602,7 +602,7 @@ function Scratchpad({
             size="md"
             onClick={onRedo}
             disabled={!canRedo}
-            title="やり直す (Redo)"
+            title="Redo"
           >
             <FiRotateCw size={18} />
           </Button>
@@ -644,7 +644,7 @@ function Scratchpad({
                     type="button"
                   >
                     <FiCopy size={16} />
-                    <span>{copiedMessage ? 'コピー完了' : 'コピー'}</span>
+                    <span>{copiedMessage ? 'Copied' : 'Copy'}</span>
                   </button>
                 </motion.div>
               )}
@@ -673,7 +673,7 @@ function Scratchpad({
             value={currentTab?.content || ''}
             onChange={handleEditorChange}
             onContextMenu={handleEditorContextMenu}
-            placeholder="Dioneがここに内容を生成します..."
+            placeholder="Dione generates content here..."
           />
         )}
 
@@ -692,7 +692,7 @@ function Scratchpad({
               <Button
                 variant="circular-center"
                 onClick={handleToggleMode}
-                title={isPreviewMode ? '編集モードに切り替え' : 'プレビューモードに切り替え'}
+                title={isPreviewMode ? 'Switch to Edit Mode' : 'Switch to Preview Mode'}
                 className="controller-center"
               >
                 {isPreviewMode ? <FiEdit2 size={18} /> : <FiEye size={18} />}
@@ -714,7 +714,7 @@ function Scratchpad({
               <Button
                 variant="circular"
                 onClick={() => handleDirectionAction('right')}
-                title="右"
+                title="Right"
                 className="controller-button controller-right"
               >
                 <FiChevronRight size={24} />
@@ -722,7 +722,7 @@ function Scratchpad({
               <Button
                 variant="circular"
                 onClick={() => handleDirectionAction('bottom')}
-                title="ドキュメントを添付"
+                title="Attach Document"
                 className="controller-button controller-bottom"
               >
                 <FiPaperclip size={24} />
@@ -730,7 +730,7 @@ function Scratchpad({
               <Button
                 variant="circular"
                 onClick={() => handleDirectionAction('left')}
-                title="左"
+                title="Left"
                 className="controller-button controller-left"
               >
                 <FiChevronLeft size={24} />
@@ -765,7 +765,7 @@ function Scratchpad({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            📎 {currentTab?.title} がチャットに追加されました
+            📎 {currentTab?.title} has been added to chat
           </motion.div>
         )}
       </AnimatePresence>

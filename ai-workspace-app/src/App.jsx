@@ -25,108 +25,108 @@ function App() {
   const [scratchpadTabs, setScratchpadTabs] = useState([
     {
       id: 1,
-      title: 'Q2マーケティング分析レポート',
-      content: `# Q2 マーケティング分析レポート
+      title: 'Q2 Marketing Analysis Report',
+      content: `# Q2 Marketing Analysis Report
 
-## エグゼクティブサマリー
+## Executive Summary
 
-### 主要KPI
-- **総インプレッション数**: 2,500,000
-- **クリック数**: 80,000
-- **クリック率**: 3.2%
-- **コンバージョン数**: 1,440
-- **コンバージョン率**: 1.8%
-- **総広告費用**: $19,600
+### Key KPIs
+- **Total Impressions**: 2,500,000
+- **Clicks**: 80,000
+- **Click-Through Rate**: 3.2%
+- **Conversions**: 1,440
+- **Conversion Rate**: 1.8%
+- **Total Ad Spend**: $19,600
 - **ROI**: 185%
 
 ---
 
-## チャネル別パフォーマンス
+## Channel Performance
 
-### 📧 Email キャンペーン ⭐ **最高パフォーマー**
-- インプレッション: 450,000
-- クリック率: 4.8%
-- コンバージョン率: 2.5%
+### 📧 Email Campaign ⭐ **Top Performer**
+- Impressions: 450,000
+- Click-Through Rate: 4.8%
+- Conversion Rate: 2.5%
 - ROI: **420%**
-- **推奨アクション**: 予算を30%増加
+- **Recommended Action**: Increase budget by 30%
 
 ### 📱 Social Media
-- インプレッション: 1,200,000
-- クリック数: 89,000 (最多)
-- クリック率: 2.1%
-- コンバージョン率: 1.2%
+- Impressions: 1,200,000
+- Clicks: 89,000 (highest)
+- Click-Through Rate: 2.1%
+- Conversion Rate: 1.2%
 - ROI: 150%
 
 ### 📺 Display Ads
-- インプレッション: 850,000
-- CPC: ¥180 (最低)
+- Impressions: 850,000
+- CPC: $180 (lowest)
 - ROI: 120%
 
 ---
 
-## 次四半期への提言
+## Q3 Recommendations
 
-1. **予算最適化**: Email向けを45%、Social向けを40%、Display向けを15%に配分
-2. **パーソナライゼーション**: セグメント別の最適送信時間に合わせたキャンペーン実施
-3. **A/Bテスト**: 件名行と画像パターンのテスト継続
-4. **自動化**: 高エンゲージメントセグメントのドリップキャンペーン設計
+1. **Budget Optimization**: Allocate 45% to Email, 40% to Social, 15% to Display
+2. **Personalization**: Execute campaigns based on optimal send times by segment
+3. **A/B Testing**: Continue testing subject lines and image patterns
+4. **Automation**: Design drip campaigns for high-engagement segments
 
-**期待される成果**: 全体ROI 20-25%向上`,
+**Expected Outcome**: 20-25% improvement in overall ROI`,
       history: [''],
       historyIndex: 0,
     },
     {
       id: 2,
-      title: 'セグメント分析ノート',
-      content: `# 顧客セグメント分析ノート
+      title: 'Customer Segment Analysis Note',
+      content: `# Customer Segment Analysis Note
 
-## VIP層特性 (LTV ¥342,000)
+## VIP Tier Characteristics (LTV $342,000)
 
-### 購買行動
-- 月平均購買: 8.2回
-- 平均注文額: ¥28,500
-- リピート率: 92%
-- チャーンレート: 0.8%/月
+### Purchasing Behavior
+- Monthly Purchase Frequency: 8.2 times
+- Average Order Value: $28,500
+- Repeat Rate: 92%
+- Churn Rate: 0.8%/month
 
-### コミュニケーション選好
-- メール開封率: 76%
-- SMS開封率: 89%
-- プッシュ通知開封率: 71%
+### Communication Preferences
+- Email Open Rate: 76%
+- SMS Open Rate: 89%
+- Push Notification Open Rate: 71%
 
-### 提案
-- VIP専用会員プログラムの立ち上げ
-- 専任コンシェルジュサービス開始
-- 先行商品販売イベント月2回開催
-- カスタマイズされたギフト
-
----
-
-## 標準層最適化戦略
-
-### 目標
-標準層顧客をVIP層へ昇格させる施策
-
-### KPI
-- 昇格率: 現在4% → 目標8%
-- 平均購買額: ¥8,200 → ¥12,500
-- 年間LTV: ¥98,400 → ¥150,000
-
-### アクション
-1. パーソナライズされたレコメンデーション導入
-2. ロイヤリティプログラムのティアシステム
-3. 限定商品へのアクセス権
+### Recommendations
+- Launch VIP-exclusive membership program
+- Implement dedicated concierge service
+- Host premium product previews bi-weekly
+- Provide customized gift offerings
 
 ---
 
-## 休眠顧客の再活性化
+## Standard Tier Optimization Strategy
 
-### 対象
-過去90日間購買なし: 12,400名
+### Objective
+Implement strategies to upgrade standard tier customers to VIP tier
 
-### 施策
-- Win-back キャンペーン (週2回配信)
-- 復帰割引コード (15-25%)
-- パーソナライズされた商品提案`,
+### KPIs
+- Upgrade Rate: Current 4% → Target 8%
+- Average Order Value: $8,200 → $12,500
+- Annual LTV: $98,400 → $150,000
+
+### Action Items
+1. Implement personalized recommendation engine
+2. Establish loyalty program tier system
+3. Grant exclusive product access rights
+
+---
+
+## Dormant Customer Reactivation
+
+### Target Audience
+No purchases in past 90 days: 12,400 customers
+
+### Initiatives
+- Win-back campaigns (2x per week)
+- Return incentive codes (15-25% discount)
+- Personalized product recommendations`,
       history: [''],
       historyIndex: 0,
     },
@@ -137,47 +137,47 @@ function App() {
       id: 1,
       name: 'Email Marketing Best Practices.md',
       type: 'document',
-      content: `# Email Marketing ベストプラクティス
+      content: `# Email Marketing Best Practices
 
-## キャンペーン設計
+## Campaign Design
 
-### 件名行 (Subject Line)
-- **最適な長さ**: 30-50文字
-- **高開封率パターン**: 数字、疑問形、パーソナライゼーション
-- **テスト**: 必ず50/50 A/Bテスト実施
+### Subject Line
+- **Optimal Length**: 30-50 characters
+- **High Open Rate Patterns**: Numbers, questions, personalization
+- **Testing**: Always conduct 50/50 A/B tests
 
-### 送信タイミング
-- 火曜日〜木曜日が最適
-- 午前10時、午後2時がピーク
-- セグメント別タイムゾーン対応
+### Optimal Send Times
+- Tuesday through Thursday perform best
+- Peak windows: 10 AM and 2 PM
+- Apply timezone adjustments per segment
 
-### コンテンツ構成
-1. **プリヘッダー**: 40-50文字で主要なメッセージ
-2. **ヘッダー**: ロゴ + ナビゲーション
-3. **メインコンテンツ**: 画像+テキストの比率 40:60
-4. **CTA**: 1-3個に制限、明確な行動指示
-5. **フッター**: 配信停止リンク（必須）
+### Content Structure
+1. **Preheader**: 40-50 characters with key message
+2. **Header**: Logo + navigation
+3. **Main Content**: Image-to-text ratio 40:60
+4. **Call-to-Action**: Limit to 1-3 CTAs with clear instructions
+5. **Footer**: Unsubscribe link (required)
 
-## セグメンテーション戦略
+## Segmentation Strategy
 
-### 基本セグメント
-- **新規顧客**: ウェルカムシーケンス (5日間)
-- **アクティブ**: 週1-2回配信
-- **休眠**: Win-back キャンペーン
-- **VIP**: 専用コンテンツ + 早期アクセス
+### Core Segments
+- **New Customers**: Welcome sequence (5-day nurture)
+- **Active**: 1-2 sends per week
+- **Dormant**: Win-back campaigns
+- **VIP**: Exclusive content + early access
 
-## メトリクス
+## Metrics
 
-### 主要KPI
-- **Open Rate**: 業界平均 20-25%, 目標 28%+
-- **Click Rate**: 業界平均 2-3%, 目標 4%+
-- **Conversion Rate**: 業界平均 1-2%, 目標 2.5%+
-- **Unsubscribe Rate**: 許容 0.5% 以下
+### Key Performance Indicators
+- **Open Rate**: Industry avg 20-25%, Target 28%+
+- **Click Rate**: Industry avg 2-3%, Target 4%+
+- **Conversion Rate**: Industry avg 1-2%, Target 2.5%+
+- **Unsubscribe Rate**: Acceptable maximum 0.5%
 
-### 計算式
-- **Open Rate** = (開封数 / 配信数) × 100
-- **CTR** = (クリック数 / 開封数) × 100
-- **Conversion Rate** = (コンバージョン数 / 配信数) × 100`,
+### Calculation Formulas
+- **Open Rate** = (Opens / Sends) × 100
+- **CTR** = (Clicks / Opens) × 100
+- **Conversion Rate** = (Conversions / Sends) × 100`,
       filePath: '/knowledge_base/email-marketing.md',
       tags: { category: 'marketing', channel: 'email', expertise: 'high' },
     },
@@ -185,86 +185,86 @@ function App() {
       id: 2,
       name: 'Customer Segmentation Guide.md',
       type: 'document',
-      content: `# 顧客セグメンテーション戦略ガイド
+      content: `# Customer Segmentation Strategy Guide
 
-## セグメント定義
+## Segment Definition
 
-### LTV (ライフタイムバリュー) に基づく分類
+### Classification Based on Lifetime Value (LTV)
 
-#### Segment 1: VIP (LTV ¥300,000+)
-- **特徴**: 高頻度購買、高単価
-- **構成比**: 2-5%
-- **貢献度**: 売上の40-60%
-- **戦略**: パーソナライズ + 専任サポート
-- **施策**: 限定イベント、先行販売
+#### Segment 1: VIP (LTV $300,000+)
+- **Characteristics**: High-frequency purchases, high average order value
+- **Market Share**: 2-5%
+- **Revenue Contribution**: 40-60% of total sales
+- **Strategy**: Personalization + dedicated support
+- **Tactics**: Exclusive events, early product access
 
-#### Segment 2: 成長中 (LTV ¥100,000-300,000)
-- **特徴**: 増加傾向、昇格可能
-- **構成比**: 10-15%
-- **貢献度**: 売上の25-35%
-- **戦略**: エンゲージメント向上
-- **施策**: パーソナライズメール、ロイヤリティ特典
+#### Segment 2: Growth Tier (LTV $100,000-$300,000)
+- **Characteristics**: Increasing spending, promotion potential
+- **Market Share**: 10-15%
+- **Revenue Contribution**: 25-35% of total sales
+- **Strategy**: Enhanced engagement
+- **Tactics**: Personalized emails, loyalty rewards
 
-#### Segment 3: 標準層 (LTV ¥50,000-100,000)
-- **特徴**: 安定購買、基本的なエンゲージ
-- **構成比**: 35-50%
-- **貢献度**: 売上の15-25%
-- **戦略**: 効率的な保持
-- **施策**: 自動化フロー、ニュースレター
+#### Segment 3: Standard Tier (LTV $50,000-$100,000)
+- **Characteristics**: Stable purchasing, baseline engagement
+- **Market Share**: 35-50%
+- **Revenue Contribution**: 15-25% of total sales
+- **Strategy**: Efficient retention
+- **Tactics**: Automated workflows, newsletters
 
-#### Segment 4: 休眠 (LTV ¥10,000-50,000)
-- **特徴**: 購買停止、チャーン寸前
-- **構成比**: 30-40%
-- **貢献度**: 売上の5-10%
-- **戦略**: Win-back キャンペーン
-- **施策**: リターゲティング、割引オファー
+#### Segment 4: Dormant (LTV $10,000-$50,000)
+- **Characteristics**: Purchase discontinuation, churn risk
+- **Market Share**: 30-40%
+- **Revenue Contribution**: 5-10% of total sales
+- **Strategy**: Win-back campaigns
+- **Tactics**: Retargeting, discount offers
 
-## 実装ロードマップ
+## Implementation Roadmap
 
-**フェーズ 1** (1ヶ月): セグメント構築
-**フェーズ 2** (2-3ヶ月): パーソナライゼーション実装
-**フェーズ 3** (4-6ヶ月): 自動化フロー構築`,
+**Phase 1** (1 month): Segment build-out
+**Phase 2** (2-3 months): Personalization implementation
+**Phase 3** (4-6 months): Automated workflow development`,
       filePath: '/knowledge_base/segmentation.md',
       tags: { category: 'strategy', focus: 'segmentation', level: 'advanced' },
     },
     {
       id: 3,
-      name: '2024年 Q2 Marketing Calendar.md',
+      name: '2024 Q2 Marketing Calendar.md',
       type: 'document',
-      content: `# 2024年 Q2 マーケティングカレンダー
+      content: `# 2024 Q2 Marketing Calendar
 
-## キャンペーンスケジュール
+## Campaign Schedule
 
-### 4月 - 春セール準備月
-**テーマ**: 新商品導入 + 既存顧客エンゲージ
+### April - Spring Campaign Launch Month
+**Theme**: New product introduction + existing customer engagement
 
-- **4/1-7**: Spring Preview キャンペーン (VIP)
-- **4/8-14**: アーリーアクセス (成長中層)
-- **4/15-30**: 全顧客向け春セール
+- **4/1-7**: Spring Preview Campaign (VIP segment)
+- **4/8-14**: Early access launch (Growth tier)
+- **4/15-30**: Full-customer spring sale
 
-**期待達成**: 売上 ¥45M
+**Revenue Target**: $4.5M
 
-### 5月 - ゴールデンウィーク特別キャンペーン
-**テーマ**: 家族向け / リラックス提案
+### May - Golden Week Special Campaign
+**Theme**: Family-focused / relaxation offerings
 
-- **4/25-5/2**: GW限定商品 先行販売
-- **5/3-6**: 送料無料キャンペーン
-- **5/7-31**: セール継続 + 夏商品プレビュー
+- **4/25-5/2**: Limited GW products pre-sale
+- **5/3-6**: Free shipping promotion
+- **5/7-31**: Continued promotions + summer collection preview
 
-**期待達成**: 売上 ¥52M
+**Revenue Target**: $5.2M
 
-### 6月 - Summer Collection Launch
-**テーマ**: 夏本番 / 新作コレクション
+### June - Summer Collection Launch
+**Theme**: Summer season / new collection launch
 
 - **6/1-15**: Summer Preview Week
-- **6/16-30**: 本格セール + 限定品
+- **6/16-30**: Full-scale sale + exclusive items
 
-**期待達成**: 売上 ¥55M
+**Revenue Target**: $5.5M
 
 ---
 
-**Q2 売上目標**: ¥152M
-**目標達成率**: 105%`,
+**Q2 Revenue Target**: $15.2M
+**Expected Achievement Rate**: 105%`,
       filePath: '/knowledge_base/marketing-calendar.md',
       tags: { category: 'planning', timeframe: 'q2-2024' },
     },
@@ -438,17 +438,17 @@ function App() {
       let aiResponse = ''
       const lowerMessage = userMessage.toLowerCase()
 
-      if (lowerMessage.includes('スクラッチパッド') || lowerMessage.includes('scratchpad')) {
-        aiResponse = 'スクラッチパッドを更新しました。'
+      if (lowerMessage.includes('scratchpad')) {
+        aiResponse = 'Updated scratchpad.'
         handleScratchpadUpdate(
           scratchpadTabs.find((tab) => tab.id === currentScratchpadTabId)?.content +
             '\n// AI generated content\n' +
             userMessage
         )
-      } else if (lowerMessage.includes('こんにちは') || lowerMessage.includes('hello')) {
-        aiResponse = 'こんにちは！どのようにお手伝いできますか？'
+      } else if (lowerMessage.includes('hello')) {
+        aiResponse = 'Hello! How can I help you?'
       } else {
-        aiResponse = 'ご質問ありがとうございます。シンプルなAIとして、基本的な応答のみ可能です。'
+        aiResponse = 'Thank you for your question. As a simple AI, I can only provide basic responses.'
       }
 
       setChatSessions((prevSessions) =>
@@ -477,7 +477,7 @@ function App() {
   const handleNewChat = () => {
     const newChat = {
       id: Date.now(),
-      title: '新しいチャット',
+      title: 'New Chat',
       messages: [],
       createdAt: new Date().toISOString(),
     }
@@ -496,7 +496,7 @@ function App() {
       // Create a new empty chat if all are deleted
       const newChat = {
         id: Date.now(),
-        title: '新しいチャット',
+        title: 'New Chat',
         messages: [],
         createdAt: new Date().toISOString(),
       }

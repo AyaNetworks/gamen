@@ -84,12 +84,12 @@ function UserPreferencesPanel() {
 
       {/* Response Length */}
       <div className="preference-group">
-        <label className="preference-label">回答の長さ (Response Length)</label>
+        <label className="preference-label">Response Length</label>
         <div className="preference-options">
           {[
-            { value: 'short', label: '短い (Short)' },
-            { value: 'medium', label: '中程度 (Medium)' },
-            { value: 'long', label: '長い (Long)' },
+            { value: 'short', label: 'Short' },
+            { value: 'medium', label: 'Medium' },
+            { value: 'long', label: 'Long' },
           ].map((option) => (
             <button
               key={option.value}
@@ -105,7 +105,7 @@ function UserPreferencesPanel() {
 
       {/* Automatic Guideline Edition Toggle */}
       <div className="preference-group">
-        <label className="preference-label">自動ガイドライン編集 (Automatic Guideline Edition)</label>
+        <label className="preference-label">Automatic Guideline Edition</label>
         <div className="preference-toggle">
           <button
             className={`toggle-switch ${preferences.autoGuidelineEdition ? 'active' : ''}`}
@@ -120,48 +120,48 @@ function UserPreferencesPanel() {
           </button>
           <p className="preference-description">
             {preferences.autoGuidelineEdition
-              ? 'ガイドラインが自動的に編集されます (Guidelines will be edited automatically)'
-              : 'ガイドラインの手動編集が必要です (Manual guideline editing required)'}
+              ? 'Guidelines will be edited automatically'
+              : 'Manual guideline editing required'}
           </p>
         </div>
       </div>
 
       {/* Current Settings Display */}
       <div className="current-settings">
-        <h3>現在の設定 (Current Settings)</h3>
+        <h3>Current Settings</h3>
         <div className="settings-list">
           <div className="setting-item">
-            <span className="setting-key">言語:</span>
+            <span className="setting-key">Language:</span>
             <span className="setting-value">
-              {preferences.language === 'japanese' ? '日本語' : 'English'}
+              {preferences.language === 'japanese' ? 'Japanese' : 'English'}
             </span>
           </div>
           <div className="setting-item">
-            <span className="setting-key">スタイル:</span>
+            <span className="setting-key">Style:</span>
             <span className="setting-value">
-              {preferences.communicationStyle === 'formal' && 'フォーマル'}
-              {preferences.communicationStyle === 'friendly' && 'フレンドリー'}
-              {preferences.communicationStyle === 'casual' && 'カジュアル'}
+              {preferences.communicationStyle === 'formal' && 'Formal'}
+              {preferences.communicationStyle === 'friendly' && 'Friendly'}
+              {preferences.communicationStyle === 'casual' && 'Casual'}
             </span>
           </div>
           <div className="setting-item">
-            <span className="setting-key">詳細:</span>
+            <span className="setting-key">Detail:</span>
             <span className="setting-value">
-              {preferences.detailLevel === 'brief' && '簡潔'}
-              {preferences.detailLevel === 'balanced' && 'バランス'}
-              {preferences.detailLevel === 'detailed' && '詳細'}
+              {preferences.detailLevel === 'brief' && 'Brief'}
+              {preferences.detailLevel === 'balanced' && 'Balanced'}
+              {preferences.detailLevel === 'detailed' && 'Detailed'}
             </span>
           </div>
           <div className="setting-item">
-            <span className="setting-key">回答長:</span>
+            <span className="setting-key">Response Length:</span>
             <span className="setting-value">
-              {preferences.responseLength === 'short' && '短い'}
-              {preferences.responseLength === 'medium' && '中程度'}
-              {preferences.responseLength === 'long' && '長い'}
+              {preferences.responseLength === 'short' && 'Short'}
+              {preferences.responseLength === 'medium' && 'Medium'}
+              {preferences.responseLength === 'long' && 'Long'}
             </span>
           </div>
           <div className="setting-item">
-            <span className="setting-key">自動ガイドライン編集:</span>
+            <span className="setting-key">Auto Guideline Edition:</span>
             <span className="setting-value">
               {preferences.autoGuidelineEdition ? 'ON' : 'OFF'}
             </span>
@@ -171,7 +171,7 @@ function UserPreferencesPanel() {
 
       {/* Save Button */}
       <div className="preference-actions">
-        <Button variant="primary">設定を保存</Button>
+        <Button variant="primary">Save Settings</Button>
       </div>
     </div>
   )

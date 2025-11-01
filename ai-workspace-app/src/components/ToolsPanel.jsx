@@ -7,196 +7,196 @@ function ToolsPanel() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedToolConfig, setSelectedToolConfig] = useState(null)
   const [tools, setTools] = useState([
-    // 検索ツール
+    // Search Tools
     {
       id: 1,
       name: 'Google Search',
-      description: 'Google検索APIを使用したWeb検索',
-      category: '検索',
+      description: 'Web search using Google Search API',
+      category: 'Search',
       enabled: true,
       type: 'builtin',
     },
     {
       id: 2,
       name: 'Bing Search',
-      description: 'Bing Search APIを使用したWeb検索',
-      category: '検索',
+      description: 'Web search using Bing Search API',
+      category: 'Search',
       enabled: true,
       type: 'builtin',
     },
     {
       id: 3,
       name: 'DuckDuckGo Search',
-      description: 'プライバシー重視のWeb検索',
-      category: '検索',
+      description: 'Privacy-focused web search',
+      category: 'Search',
       enabled: false,
       type: 'builtin',
     },
-    // クラウドストレージ
+    // Cloud Storage
     {
       id: 4,
       name: 'Amazon S3',
-      description: 'AWS S3バケットへのアクセスとファイル操作',
-      category: 'クラウドストレージ',
+      description: 'Access and file operations for AWS S3 buckets',
+      category: 'Cloud Storage',
       enabled: false,
       type: 'addon',
     },
     {
       id: 5,
       name: 'Google Cloud Storage',
-      description: 'GCSバケットへのアクセスとファイル管理',
-      category: 'クラウドストレージ',
+      description: 'GCS bucket access and file management',
+      category: 'Cloud Storage',
       enabled: false,
       type: 'addon',
     },
     {
       id: 6,
       name: 'Dropbox',
-      description: 'Dropboxアカウントの接続とファイル操作',
-      category: 'クラウドストレージ',
+      description: 'Dropbox account connection and file operations',
+      category: 'Cloud Storage',
       enabled: false,
       type: 'addon',
     },
-    // データベース
+    // Databases
     {
       id: 7,
       name: 'BigQuery',
-      description: 'Google BigQueryへの接続とデータ分析',
-      category: 'データベース',
+      description: 'Google BigQuery connection and data analysis',
+      category: 'Databases',
       enabled: false,
       type: 'addon',
     },
     {
       id: 8,
       name: 'PostgreSQL',
-      description: 'PostgreSQLデータベースへの接続',
-      category: 'データベース',
+      description: 'PostgreSQL database connection',
+      category: 'Databases',
       enabled: false,
       type: 'addon',
     },
     {
       id: 9,
       name: 'MongoDB',
-      description: 'MongoDBへの接続とドキュメント操作',
-      category: 'データベース',
+      description: 'MongoDB connection and document operations',
+      category: 'Databases',
       enabled: false,
       type: 'addon',
     },
-    // コミュニケーション
+    // Communication
     {
       id: 10,
       name: 'Slack',
-      description: 'Slackワークスペースへのメッセージ送信',
-      category: 'コミュニケーション',
+      description: 'Send messages to Slack workspaces',
+      category: 'Communication',
       enabled: false,
       type: 'addon',
     },
     {
       id: 11,
       name: 'Gmail',
-      description: 'Gmailメール送受信とラベル管理',
-      category: 'コミュニケーション',
+      description: 'Gmail email send/receive and label management',
+      category: 'Communication',
       enabled: false,
       type: 'addon',
     },
     {
       id: 12,
       name: 'Teams',
-      description: 'Microsoft Teamsへのメッセージ送信',
-      category: 'コミュニケーション',
+      description: 'Send messages to Microsoft Teams',
+      category: 'Communication',
       enabled: false,
       type: 'addon',
     },
-    // タスク管理
+    // Task Management
     {
       id: 13,
       name: 'Jira',
-      description: 'Jiraプロジェクトのタスク管理と追跡',
-      category: 'タスク管理',
+      description: 'Jira project task management and tracking',
+      category: 'Task Management',
       enabled: false,
       type: 'addon',
     },
     {
       id: 14,
       name: 'Asana',
-      description: 'Asanaプロジェクトの管理',
-      category: 'タスク管理',
+      description: 'Asana project management',
+      category: 'Task Management',
       enabled: false,
       type: 'addon',
     },
     {
       id: 15,
       name: 'GitHub Issues',
-      description: 'GitHubのIssueとプルリクエスト管理',
-      category: 'タスク管理',
+      description: 'GitHub Issues and pull request management',
+      category: 'Task Management',
       enabled: false,
       type: 'addon',
     },
-    // API・ウェブサービス
+    // APIs & Web Services
     {
       id: 16,
       name: 'OpenWeather API',
-      description: '天気予報と気象データの取得',
-      category: 'API・ウェブサービス',
+      description: 'Weather forecasts and meteorological data retrieval',
+      category: 'APIs & Web Services',
       enabled: false,
       type: 'addon',
     },
     {
       id: 17,
       name: 'REST API',
-      description: 'カスタムREST APIエンドポイントへのアクセス',
-      category: 'API・ウェブサービス',
+      description: 'Access custom REST API endpoints',
+      category: 'APIs & Web Services',
       enabled: false,
       type: 'addon',
     },
     {
       id: 18,
       name: 'GraphQL',
-      description: 'GraphQL APIエンドポイントへのクエリ実行',
-      category: 'API・ウェブサービス',
+      description: 'Query GraphQL API endpoints',
+      category: 'APIs & Web Services',
       enabled: false,
       type: 'addon',
     },
-    // コード実行
+    // Code Execution
     {
       id: 19,
       name: 'Python Executor',
-      description: 'Pythonコードの実行と結果の取得',
-      category: 'コード実行',
+      description: 'Execute Python code and retrieve results',
+      category: 'Code Execution',
       enabled: false,
       type: 'addon',
     },
     {
       id: 20,
       name: 'Node.js Runtime',
-      description: 'JavaScriptコードの実行',
-      category: 'コード実行',
+      description: 'Execute JavaScript code',
+      category: 'Code Execution',
       enabled: false,
       type: 'addon',
     },
-    // 分析・ビジュアライゼーション
+    // Analytics & Visualization
     {
       id: 21,
       name: 'Data Visualization',
-      description: 'データの可視化とグラフ生成',
-      category: '分析・ビジュアライゼーション',
+      description: 'Data visualization and graph generation',
+      category: 'Analytics & Visualization',
       enabled: false,
       type: 'addon',
     },
     {
       id: 22,
       name: 'Analytics',
-      description: 'Google Analyticsのデータ取得',
-      category: '分析・ビジュアライゼーション',
+      description: 'Google Analytics data retrieval',
+      category: 'Analytics & Visualization',
       enabled: false,
       type: 'addon',
     },
-    // MCPサーバー
+    // MCP Servers
     {
       id: 23,
       name: 'MCP: File System',
-      description: 'ファイルシステムへの安全なアクセスと操作',
-      category: 'MCPサーバー',
+      description: 'Safe file system access and operations',
+      category: 'MCP Servers',
       enabled: false,
       type: 'mcp',
       protocol: 'stdio',
@@ -204,8 +204,8 @@ function ToolsPanel() {
     {
       id: 24,
       name: 'MCP: GitHub',
-      description: 'GitHubリポジトリの管理とコード操作',
-      category: 'MCPサーバー',
+      description: 'GitHub repository management and code operations',
+      category: 'MCP Servers',
       enabled: false,
       type: 'mcp',
       protocol: 'stdio',
@@ -213,8 +213,8 @@ function ToolsPanel() {
     {
       id: 25,
       name: 'MCP: PostgreSQL',
-      description: 'PostgreSQLデータベースへの直接クエリ実行',
-      category: 'MCPサーバー',
+      description: 'Direct PostgreSQL database query execution',
+      category: 'MCP Servers',
       enabled: false,
       type: 'mcp',
       protocol: 'stdio',
@@ -222,8 +222,8 @@ function ToolsPanel() {
     {
       id: 26,
       name: 'MCP: Slack',
-      description: 'Slackワークスペースの統合的なアクセス',
-      category: 'MCPサーバー',
+      description: 'Comprehensive Slack workspace access',
+      category: 'MCP Servers',
       enabled: false,
       type: 'mcp',
       protocol: 'stdio',
@@ -231,8 +231,8 @@ function ToolsPanel() {
     {
       id: 27,
       name: 'MCP: Browser',
-      description: 'ウェブブラウザの自動化とスクレイピング',
-      category: 'MCPサーバー',
+      description: 'Web browser automation and web scraping',
+      category: 'MCP Servers',
       enabled: false,
       type: 'mcp',
       protocol: 'stdio',
@@ -240,18 +240,18 @@ function ToolsPanel() {
     {
       id: 28,
       name: 'MCP: Google Drive',
-      description: 'Google Driveのファイルとドキュメントへのアクセス',
-      category: 'MCPサーバー',
+      description: 'Google Drive file and document access',
+      category: 'MCP Servers',
       enabled: false,
       type: 'mcp',
       protocol: 'stdio',
     },
-    // A2Aエージェント
+    // A2A Agents
     {
       id: 29,
       name: 'Research Agent',
-      description: '情報収集と調査を専門とするエージェント',
-      category: 'A2Aエージェント',
+      description: 'Agent specialized in information gathering and research',
+      category: 'A2A Agents',
       enabled: false,
       type: 'a2a',
       agentType: 'research',
@@ -259,8 +259,8 @@ function ToolsPanel() {
     {
       id: 30,
       name: 'Data Analysis Agent',
-      description: 'データ分析と統計処理を行うエージェント',
-      category: 'A2Aエージェント',
+      description: 'Agent for data analysis and statistical processing',
+      category: 'A2A Agents',
       enabled: false,
       type: 'a2a',
       agentType: 'analysis',
@@ -268,8 +268,8 @@ function ToolsPanel() {
     {
       id: 31,
       name: 'Code Assistant Agent',
-      description: 'コード生成とデバッグを支援するエージェント',
-      category: 'A2Aエージェント',
+      description: 'Agent for code generation and debugging support',
+      category: 'A2A Agents',
       enabled: false,
       type: 'a2a',
       agentType: 'coding',
@@ -277,8 +277,8 @@ function ToolsPanel() {
     {
       id: 32,
       name: 'Content Generation Agent',
-      description: 'テキスト、ドキュメント、コンテンツを生成するエージェント',
-      category: 'A2Aエージェント',
+      description: 'Agent for generating text, documents, and content',
+      category: 'A2A Agents',
       enabled: false,
       type: 'a2a',
       agentType: 'content',
@@ -286,8 +286,8 @@ function ToolsPanel() {
     {
       id: 33,
       name: 'Project Manager Agent',
-      description: 'プロジェクト管理とタスク調整を行うエージェント',
-      category: 'A2Aエージェント',
+      description: 'Agent for project management and task coordination',
+      category: 'A2A Agents',
       enabled: false,
       type: 'a2a',
       agentType: 'management',
@@ -295,8 +295,8 @@ function ToolsPanel() {
     {
       id: 34,
       name: 'Quality Assurance Agent',
-      description: 'テストと品質保証を実施するエージェント',
-      category: 'A2Aエージェント',
+      description: 'Agent for testing and quality assurance',
+      category: 'A2A Agents',
       enabled: false,
       type: 'a2a',
       agentType: 'qa',
@@ -304,7 +304,7 @@ function ToolsPanel() {
   ])
   const [activeTab, setActiveTab] = useState('list')
 
-  const categories = ['すべて', ...new Set(tools.map((t) => t.category))]
+  const categories = ['All', ...new Set(tools.map((t) => t.category))]
   const filteredTools = tools.filter((tool) => {
     const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       tool.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -336,7 +336,7 @@ function ToolsPanel() {
             <FiSearch size={20} />
             <input
               type="text"
-              placeholder="ツールを検索..."
+              placeholder="Search tools..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="tools-search-input"
@@ -347,7 +347,7 @@ function ToolsPanel() {
           <div className="tools-list">
             {Object.entries(groupedTools).length === 0 ? (
               <div className="tools-empty">
-                <p>ツールが見つかりません</p>
+                <p>No tools found</p>
               </div>
             ) : (
               Object.entries(groupedTools).map(([category, categoryTools]) => (
@@ -360,7 +360,7 @@ function ToolsPanel() {
                           <h4 className="tool-name">{tool.name}</h4>
                           <p className="tool-description">{tool.description}</p>
                           <div className="tool-badges">
-                            {tool.type === 'addon' && <span className="tool-badge">アドオン</span>}
+                            {tool.type === 'addon' && <span className="tool-badge">Add-on</span>}
                             {tool.type === 'mcp' && <span className="tool-badge mcp-badge">MCP</span>}
                             {tool.type === 'a2a' && <span className="tool-badge a2a-badge">A2A</span>}
                           </div>
@@ -371,7 +371,7 @@ function ToolsPanel() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleToggleTool(tool.id)}
-                            title={tool.enabled ? '無効にする' : '有効にする'}
+                            title={tool.enabled ? 'Disable' : 'Enable'}
                             animated={false}
                           >
                             <FiPower size={24} />
@@ -379,7 +379,7 @@ function ToolsPanel() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            title="設定"
+                            title="Settings"
                             onClick={() => setSelectedToolConfig(tool)}
                             animated={false}
                           >
@@ -390,7 +390,7 @@ function ToolsPanel() {
                               variant="ghost"
                               size="sm"
                               onClick={() => handleDeleteTool(tool.id)}
-                              title="削除"
+                              title="Delete"
                               animated={false}
                             >
                               <FiTrash2 size={24} />
@@ -409,52 +409,52 @@ function ToolsPanel() {
 
       {activeTab === 'add' && (
         <div className="tools-add-form">
-          <h3>新しいツールを追加</h3>
+          <h3>Add New Tool</h3>
           <form>
             <div className="form-group">
-              <label>ツール名</label>
-              <input type="text" placeholder="例: My API Tool" />
+              <label>Tool Name</label>
+              <input type="text" placeholder="Example: My API Tool" />
             </div>
             <div className="form-group">
-              <label>説明</label>
-              <textarea placeholder="ツールの説明を入力してください..." rows="4" />
+              <label>Description</label>
+              <textarea placeholder="Enter tool description..." rows="4" />
             </div>
             <div className="form-group">
-              <label>ツールタイプ</label>
+              <label>Tool Type</label>
               <select>
-                <optgroup label="標準">
+                <optgroup label="Standard">
                   <option value="api">API</option>
                   <option value="webhook">Webhook</option>
                   <option value="rest">REST API</option>
                   <option value="graphql">GraphQL</option>
                 </optgroup>
-                <optgroup label="データ関連">
-                  <option value="database">データベース</option>
-                  <option value="dataprocessing">データ処理</option>
-                  <option value="analytics">分析</option>
+                <optgroup label="Data Related">
+                  <option value="database">Database</option>
+                  <option value="dataprocessing">Data Processing</option>
+                  <option value="analytics">Analytics</option>
                 </optgroup>
-                <optgroup label="統合">
-                  <option value="saas">SaaS統合</option>
-                  <option value="cloud">クラウドサービス</option>
+                <optgroup label="Integration">
+                  <option value="saas">SaaS Integration</option>
+                  <option value="cloud">Cloud Services</option>
                 </optgroup>
-                <optgroup label="プロトコル">
-                  <option value="mcp-server">MCP サーバー</option>
-                  <option value="a2a-agent">A2A エージェント</option>
+                <optgroup label="Protocols">
+                  <option value="mcp-server">MCP Server</option>
+                  <option value="a2a-agent">A2A Agent</option>
                 </optgroup>
-                <optgroup label="実行環境">
-                  <option value="runtime">ランタイム</option>
-                  <option value="code">コード実行</option>
-                  <option value="script">スクリプト</option>
+                <optgroup label="Runtime">
+                  <option value="runtime">Runtime</option>
+                  <option value="code">Code Execution</option>
+                  <option value="script">Script</option>
                 </optgroup>
-                <optgroup label="その他">
-                  <option value="custom">カスタム</option>
-                  <option value="plugin">プラグイン</option>
-                  <option value="other">その他</option>
+                <optgroup label="Other">
+                  <option value="custom">Custom</option>
+                  <option value="plugin">Plugin</option>
+                  <option value="other">Other</option>
                 </optgroup>
               </select>
             </div>
             <div className="form-actions">
-              <Button variant="primary">ツールを追加</Button>
+              <Button variant="primary">Add Tool</Button>
             </div>
           </form>
         </div>
@@ -464,16 +464,16 @@ function ToolsPanel() {
         <div className="tool-config-modal-overlay" onClick={() => setSelectedToolConfig(null)}>
           <div className="tool-config-modal" onClick={(e) => e.stopPropagation()}>
             <div className="tool-config-header">
-              <h3>{selectedToolConfig.name} - 設定</h3>
+              <h3>{selectedToolConfig.name} - Settings</h3>
               <Button variant="ghost" size="sm" onClick={() => setSelectedToolConfig(null)} animated={false}>
                 ×
               </Button>
             </div>
             <div className="tool-config-content">
               <div className="config-section">
-                <h4>基本設定</h4>
+                <h4>Basic Settings</h4>
                 <div className="form-group">
-                  <label>有効/無効</label>
+                  <label>Enable/Disable</label>
                   <div className="config-toggle">
                     <input
                       type="checkbox"
@@ -487,19 +487,19 @@ function ToolsPanel() {
                         setSelectedToolConfig({ ...selectedToolConfig, enabled: e.target.checked })
                       }}
                     />
-                    <span>{selectedToolConfig.enabled ? '有効' : '無効'}</span>
+                    <span>{selectedToolConfig.enabled ? 'Enabled' : 'Disabled'}</span>
                   </div>
                 </div>
               </div>
 
               <div className="config-section">
-                <h4>認証設定</h4>
+                <h4>Authentication</h4>
                 <div className="form-group">
-                  <label>APIキー / トークン</label>
-                  <input type="password" placeholder="APIキーを入力..." />
+                  <label>API Key / Token</label>
+                  <input type="password" placeholder="Enter API key..." />
                 </div>
                 <div className="form-group">
-                  <label>認証方式</label>
+                  <label>Authentication Method</label>
                   <select>
                     <option>API Key</option>
                     <option>Bearer Token</option>
@@ -511,54 +511,54 @@ function ToolsPanel() {
               </div>
 
               <div className="config-section">
-                <h4>接続設定</h4>
+                <h4>Connection Settings</h4>
                 <div className="form-group">
-                  <label>ベースURL / エンドポイント</label>
+                  <label>Base URL / Endpoint</label>
                   <input type="text" placeholder="https://api.example.com" />
                 </div>
                 <div className="form-group">
-                  <label>タイムアウト（秒）</label>
+                  <label>Timeout (seconds)</label>
                   <input type="number" placeholder="30" defaultValue="30" />
                 </div>
                 <div className="form-group">
-                  <label>リトライ回数</label>
+                  <label>Retry Count</label>
                   <input type="number" placeholder="3" defaultValue="3" />
                 </div>
               </div>
 
               <div className="config-section">
-                <h4>レート制限</h4>
+                <h4>Rate Limiting</h4>
                 <div className="form-group">
-                  <label>1時間あたりのリクエスト制限</label>
+                  <label>Requests per Hour</label>
                   <input type="number" placeholder="1000" defaultValue="1000" />
                 </div>
                 <div className="form-group">
-                  <label>バースト制限（秒）</label>
+                  <label>Burst Limit (seconds)</label>
                   <input type="number" placeholder="100" defaultValue="100" />
                 </div>
               </div>
 
               <div className="config-section">
-                <h4>ログ・デバッグ</h4>
+                <h4>Logging & Debug</h4>
                 <div className="form-group">
                   <label>
                     <input type="checkbox" defaultChecked={false} />
-                    {' '}詳細ログを有効にする
+                    {' '}Enable verbose logging
                   </label>
                 </div>
                 <div className="form-group">
                   <label>
                     <input type="checkbox" defaultChecked={false} />
-                    {' '}リクエスト/レスポンスのログを保存
+                    {' '}Save request/response logs
                   </label>
                 </div>
               </div>
 
               {selectedToolConfig.type === 'mcp' && (
                 <div className="config-section">
-                  <h4>MCP サーバー設定</h4>
+                  <h4>MCP Server Settings</h4>
                   <div className="form-group">
-                    <label>プロトコル</label>
+                    <label>Protocol</label>
                     <select defaultValue={selectedToolConfig.protocol || 'stdio'}>
                       <option value="stdio">Standard Input/Output</option>
                       <option value="http">HTTP</option>
@@ -580,7 +580,7 @@ function ToolsPanel() {
                   <div className="form-group">
                     <label>
                       <input type="checkbox" defaultChecked={true} />
-                      {' '}自動再接続を有効にする
+                      {' '}Enable Auto-reconnect
                     </label>
                   </div>
                 </div>
@@ -602,8 +602,8 @@ function ToolsPanel() {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label>エージェント説明</label>
-                    <textarea placeholder="このエージェントの役割と能力を説明..." rows="3" />
+                    <label>Agent Description</label>
+                    <textarea placeholder="Describe this agent's role and capabilities..." rows="3" />
                   </div>
                   <div className="form-group">
                     <label>通信プロトコル</label>
@@ -625,7 +625,7 @@ function ToolsPanel() {
                   <div className="form-group">
                     <label>
                       <input type="checkbox" defaultChecked={false} />
-                      {' '}エージェント間の直接通信を許可
+                      {' '}Allow direct communication between agents
                     </label>
                   </div>
                 </div>

@@ -455,18 +455,18 @@ Please provide a detailed, clear, and actionable response.`
   const handleTaskSelection = (task) => {
     // Create a detailed task reference with all information
     const getPriorityLabel = (priority) => {
-      const labels = { high: '高', medium: '中', low: '低' }
+      const labels = { high: 'High', medium: 'Medium', low: 'Low' }
       return labels[priority] || priority
     }
 
     const getStatusLabel = (status) => {
-      const labels = { in_progress: '進行中', not_started: '未着手', completed: '完了' }
+      const labels = { in_progress: 'In Progress', not_started: 'Not Started', completed: 'Completed' }
       return labels[status] || status
     }
 
-    const taskInfo = `【タスク】${task.title}
-優先度: ${getPriorityLabel(task.priority)} | ステータス: ${getStatusLabel(task.status)}
-説明: ${task.description}`
+    const taskInfo = `[Task] ${task.title}
+Priority: ${getPriorityLabel(task.priority)} | Status: ${getStatusLabel(task.status)}
+Description: ${task.description}`
 
     // Replace @ and query with detailed task reference
     const beforeMention = inputValue.substring(0, taskMentionCursorPos)
@@ -752,12 +752,12 @@ Please provide a detailed, clear, and actionable response.`
     const diffHours = Math.floor(diffMs / 3600000)
     const diffDays = Math.floor(diffMs / 86400000)
 
-    if (diffMins < 1) return '今'
-    if (diffMins < 60) return `${diffMins}分前`
-    if (diffHours < 24) return `${diffHours}時間前`
-    if (diffDays < 7) return `${diffDays}日前`
+    if (diffMins < 1) return 'now'
+    if (diffMins < 60) return `${diffMins}m ago`
+    if (diffHours < 24) return `${diffHours}h ago`
+    if (diffDays < 7) return `${diffDays}d ago`
 
-    return date.toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' })
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
 
   const formatDateCompact = (dateString) => {
@@ -768,12 +768,12 @@ Please provide a detailed, clear, and actionable response.`
     const diffHours = Math.floor(diffMs / 3600000)
     const diffDays = Math.floor(diffMs / 86400000)
 
-    if (diffMins < 1) return '今'
+    if (diffMins < 1) return 'now'
     if (diffMins < 60) return `${diffMins}m`
     if (diffHours < 24) return `${diffHours}h`
     if (diffDays < 7) return `${diffDays}d`
 
-    return date.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' })
+    return date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' })
   }
 
   const getDioneIcon = (message) => {
@@ -946,7 +946,7 @@ Please provide a detailed, clear, and actionable response.`
         onMouseLeave={() => setIsScrollable(false)}
       >
         <div className="chat-history-header">
-          <h3>チャット履歴</h3>
+          <h3>Chat History</h3>
           <div className="chat-history-header-buttons">
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
               <Button
@@ -954,7 +954,7 @@ Please provide a detailed, clear, and actionable response.`
                 size="md"
                 onClick={() => setShowProjectInput(!showProjectInput)}
                 title={
-                  showProjectInput ? 'プロジェクト作成をキャンセル' : '新しいプロジェクトを作成'
+                  showProjectInput ? 'Cancel Project Creation' : 'Create New Project'
                 }
                 className="project-toggle-button"
               >
@@ -974,7 +974,7 @@ Please provide a detailed, clear, and actionable response.`
                   setShouldAnimateNewChatBtn(true)
                   createNewChat()
                 }}
-                title="新しいチャット"
+                title="New Chat"
                 animated={false}
                 className="new-chat-button"
               >
@@ -998,7 +998,7 @@ Please provide a detailed, clear, and actionable response.`
                     setProjectInputValue('')
                   }
                 }}
-                placeholder="プロジェクト名を入力..."
+                placeholder="Enter project name..."
                 className="project-name-input"
                 autoFocus
               />
@@ -1006,7 +1006,7 @@ Please provide a detailed, clear, and actionable response.`
                 variant="surface"
                 size="md"
                 onClick={handleCreateProjectSubmit}
-                title="プロジェクトを作成"
+                title="Create Project"
               >
                 ✓
               </Button>
@@ -1050,7 +1050,7 @@ Please provide a detailed, clear, and actionable response.`
                             type="button"
                             animate={{ rotate: isExpanded ? 0 : -90 }}
                             transition={{ duration: 0.2 }}
-                            title={isExpanded ? 'プロジェクトを閉じる' : 'プロジェクトを開く'}
+                            title={isExpanded ? 'Close Project' : 'Open Project'}
                           >
                             <FiChevronDown size={16} />
                           </motion.button>
@@ -1099,7 +1099,7 @@ Please provide a detailed, clear, and actionable response.`
                                   <div className="chat-history-content">
                                     <div className="chat-history-title">{chat.title}</div>
                                     <div className="chat-history-meta">
-                                      <span className="chat-message-count">{chat.messages.length}件</span>
+                                      <span className="chat-message-count">{chat.messages.length} messages</span>
                                       <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
                                     </div>
                                   </div>
@@ -1110,7 +1110,7 @@ Please provide a detailed, clear, and actionable response.`
                                       e.stopPropagation()
                                       deleteChat(chat.id)
                                     }}
-                                    title="削除"
+                                    title="Delete"
                                     className="chat-delete-button"
                                   >
                                     ×
@@ -1135,7 +1135,7 @@ Please provide a detailed, clear, and actionable response.`
               onDragLeave={handleUngroupedDragLeave}
               onDrop={handleRemoveFromProjectDrop}
             >
-              <span className="ungrouped-label">PJ外のチャット</span>
+              <span className="ungrouped-label">Chats without projects</span>
             </div>
             {chatSessions
               .filter((chat) => !chat.projectId)
@@ -1167,7 +1167,7 @@ Please provide a detailed, clear, and actionable response.`
                     <div className="chat-history-content">
                       <div className="chat-history-title">{chat.title}</div>
                       <div className="chat-history-meta">
-                        <span className="chat-message-count">{chat.messages.length}件</span>
+                        <span className="chat-message-count">{chat.messages.length} messages</span>
                         <span className="chat-timestamp">{formatDate(chat.createdAt)}</span>
                       </div>
                     </div>
@@ -1178,7 +1178,7 @@ Please provide a detailed, clear, and actionable response.`
                         e.stopPropagation()
                         deleteChat(chat.id)
                       }}
-                      title="削除"
+                      title="Delete"
                       className="chat-delete-button"
                     >
                       ×
@@ -1209,13 +1209,13 @@ Please provide a detailed, clear, and actionable response.`
         </motion.button>
 
         <div className="chat-header">
-          <h2>チャット</h2>
+          <h2>Chat</h2>
           <div className="chat-header-buttons">
             <Button
               variant="surface"
               size="md"
               onClick={() => setOpenConfigModal('user')}
-              title="ユーザー設定"
+              title="User Settings"
             >
               <FiSettings size={20} />
             </Button>
@@ -1223,7 +1223,7 @@ Please provide a detailed, clear, and actionable response.`
               variant="surface"
               size="md"
               onClick={() => setOpenConfigModal('tool')}
-              title="ツール設定"
+              title="Tool Settings"
             >
               <FiStar size={20} />
             </Button>
@@ -1231,7 +1231,7 @@ Please provide a detailed, clear, and actionable response.`
               variant="surface"
               size="md"
               onClick={() => setOpenConfigModal('task')}
-              title="タスク設定"
+              title="Task Settings"
             >
               <FiCheckSquare size={20} />
             </Button>
@@ -1239,7 +1239,7 @@ Please provide a detailed, clear, and actionable response.`
               variant="surface"
               size="md"
               onClick={toggleTheme}
-              title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               animated={false}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -1336,7 +1336,7 @@ Please provide a detailed, clear, and actionable response.`
                   {message.replyingTo && (
                     <div className="message-reply-context">
                       <FiCornerDownLeft size={12} className="reply-context-icon" />
-                      <span className="reply-context-label">返信:</span>
+                      <span className="reply-context-label">Reply:</span>
                       <span className="reply-context-preview">
                         {message.replyingTo.substring(0, 60)}
                         {message.replyingTo.length > 60 ? '...' : ''}
@@ -1349,7 +1349,7 @@ Please provide a detailed, clear, and actionable response.`
                       {message.attachedWorkspaces.map((workspace, idx) => (
                         <div key={idx} className="message-attachment-context">
                           <FiPaperclip size={12} className="attachment-context-icon" />
-                          <span className="attachment-context-label">添付:</span>
+                          <span className="attachment-context-label">Attachment:</span>
                           <span className="attachment-context-name">{workspace.title}</span>
                         </div>
                       ))}
@@ -1385,7 +1385,7 @@ Please provide a detailed, clear, and actionable response.`
                             e.stopPropagation()
                             handleReplyMessage(message.content, index)
                           }}
-                          title="返信"
+                          title="Reply"
                         >
                           <FiCornerDownLeft size={14} />
                         </Button>
@@ -1397,7 +1397,7 @@ Please provide a detailed, clear, and actionable response.`
                             handleCopyMessage(message.content, index)
                           }}
                           title={
-                            copiedMessageIndex === index ? 'コピーしました！' : 'メッセージをコピー'
+                            copiedMessageIndex === index ? 'Copied!' : 'Copy Message'
                           }
                         >
                           {copiedMessageIndex === index ? (
@@ -1435,7 +1435,7 @@ Please provide a detailed, clear, and actionable response.`
                     variant="destructive"
                     size="sm"
                     onClick={() => handleRemoveFile(index)}
-                    title="削除"
+                    title="Delete"
                   >
                     ×
                   </Button>
@@ -1450,7 +1450,7 @@ Please provide a detailed, clear, and actionable response.`
               <div className="reply-indicator-content">
                 <FiCornerDownLeft size={16} className="reply-indicator-icon" />
                 <div className="reply-indicator-text">
-                  <span className="reply-label">返信:</span>
+                  <span className="reply-label">Reply:</span>
                   <span className="reply-preview">
                     {replyingToContent?.substring(0, 50)}
                     {replyingToContent?.length > 50 ? '...' : ''}
@@ -1462,7 +1462,7 @@ Please provide a detailed, clear, and actionable response.`
                 variant="ghost"
                 size="sm"
                 onClick={handleClearReply}
-                title="返信をキャンセル"
+                title="Cancel Reply"
               >
                 <FiX size={16} />
               </Button>
@@ -1477,7 +1477,7 @@ Please provide a detailed, clear, and actionable response.`
                   <div className="attachment-indicator-content">
                     <FiPaperclip size={16} className="attachment-indicator-icon" />
                     <div className="attachment-indicator-text">
-                      <span className="attachment-label">添付:</span>
+                      <span className="attachment-label">Attachment:</span>
                       <span className="attachment-name">{workspace.title}</span>
                     </div>
                   </div>
@@ -1486,7 +1486,7 @@ Please provide a detailed, clear, and actionable response.`
                     variant="ghost"
                     size="sm"
                     onClick={() => removeAttachment(index)}
-                    title="この添付をキャンセル"
+                    title="Cancel this attachment"
                   >
                     <FiX size={16} />
                   </Button>
@@ -1509,7 +1509,7 @@ Please provide a detailed, clear, and actionable response.`
               variant="soft"
               size="md"
               onClick={handleAttachClick}
-              title="ファイルを添付"
+              title="Attach files"
               animated={false}
             >
               <FiPaperclip size={20} />
@@ -1526,7 +1526,7 @@ Please provide a detailed, clear, and actionable response.`
                 }
               }}
               onKeyDown={handleKeyDown}
-              placeholder={sendConfirmationMode ? "Tab で最適化 / Ctrl+Enter で送信" : "Dioneと何をしますか？ (Ctrl+Enter で送信)"}
+              placeholder={sendConfirmationMode ? "Press Tab to optimize / Ctrl+Enter to send" : "What would you like to do with Dione? (Ctrl+Enter to send)"}
               className="chat-input"
               rows="1"
             />
@@ -1538,7 +1538,7 @@ Please provide a detailed, clear, and actionable response.`
                   variant="soft"
                   size="md"
                   onClick={handleAugmentMessage}
-                  title="メッセージを最適化"
+                  title="Augment Message"
                   className="augment-option-button"
                 >
                   <FiZap size={20} />
@@ -1592,10 +1592,10 @@ Please provide a detailed, clear, and actionable response.`
                           }}
                         >
                           {task.priority === 'high'
-                            ? '高'
+                            ? 'High'
                             : task.priority === 'medium'
-                            ? '中'
-                            : '低'}
+                            ? 'Medium'
+                            : 'Low'}
                         </span>
                       </div>
                     </div>

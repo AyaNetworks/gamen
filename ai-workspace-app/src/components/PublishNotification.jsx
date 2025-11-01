@@ -101,8 +101,8 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                       <FiShare2 size={24} />
                     </motion.div>
                   </div>
-                  <div className="notification-title">ドキュメントを共有中</div>
-                  <Button variant="ghost" size="sm" onClick={onClose} title="閉じる">
+                  <div className="notification-title">Document is Shared</div>
+                  <Button variant="ghost" size="sm" onClick={onClose} title="Close">
                     <FiX size={18} />
                   </Button>
                 </div>
@@ -114,7 +114,7 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                   animate="animate"
                 >
                   <p className="notification-message">
-                    このリンクを使用して、ドキュメントを共有できます。プライベートにしたい場合はいつでもトグルできます。
+                    Use this link to share the document. You can toggle it to private anytime.
                   </p>
 
                   <div className="share-url-container">
@@ -124,7 +124,7 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                         variant="action"
                         size="md"
                         onClick={handleCopyUrl}
-                        title={copied ? 'コピーしました！' : 'URLをコピー'}
+                        title={copied ? 'Copied!' : 'Copy URL'}
                         animated={false}
                       >
                         <motion.div
@@ -154,8 +154,8 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                       <FiLock size={24} />
                     </motion.div>
                   </div>
-                  <div className="notification-title">非公開に設定</div>
-                  <Button variant="ghost" size="sm" onClick={onClose} title="閉じる">
+                  <div className="notification-title">Set to Private</div>
+                  <Button variant="ghost" size="sm" onClick={onClose} title="Close">
                     <FiX size={18} />
                   </Button>
                 </div>
@@ -167,10 +167,10 @@ function PublishNotification({ isOpen, isPublished, tabId, onClose }) {
                   animate="animate"
                 >
                   <p className="notification-message">
-                    このドキュメントの共有URLは期限切れになりました。プライベートなままになります。
+                    The sharing URL for this document has expired. It remains private.
                   </p>
                   <p className="notification-submessage">
-                    再度共有したい場合は、公開トグルをクリックしてください。
+                    Click the publish toggle to share again.
                   </p>
                 </motion.div>
               </>

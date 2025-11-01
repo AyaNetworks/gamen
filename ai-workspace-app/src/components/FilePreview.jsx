@@ -37,7 +37,7 @@ function FilePreview({ item }) {
           }
         } catch (error) {
           console.error('Error fetching file:', error)
-          setError('ファイルの読み込みに失敗しました。')
+          setError('Failed to load the file.')
           setLoading(false)
           return
         }
@@ -66,8 +66,8 @@ function FilePreview({ item }) {
         }
       } catch (error) {
         console.error('Error parsing file:', error)
-        setError('ファイルの解析に失敗しました。')
-        setParsedContent('<p>ファイルの解析に失敗しました。</p>')
+        setError('Failed to parse the file.')
+        setParsedContent('<p>Failed to parse the file.</p>')
       } finally {
         setLoading(false)
       }
@@ -104,13 +104,13 @@ function FilePreview({ item }) {
       return (
         <div className="preview-error">
           <p>{error}</p>
-          <p className="error-detail">ファイル名: {item.name}</p>
+          <p className="error-detail">File name: {item.name}</p>
         </div>
       )
     }
 
     if (loading) {
-      return <div className="preview-loading">PDFを読み込んでいます...</div>
+      return <div className="preview-loading">Loading PDF...</div>
     }
 
     if (pdfUrl || item.filePath) {
@@ -124,14 +124,14 @@ function FilePreview({ item }) {
 
   if (fileType === 'excel') {
     if (loading) {
-      return <div className="preview-loading">Excelファイルを読み込んでいます...</div>
+      return <div className="preview-loading">Loading Excel file...</div>
     }
     return <div className="preview-excel" dangerouslySetInnerHTML={{ __html: parsedContent }} />
   }
 
   if (fileType === 'word') {
     if (loading) {
-      return <div className="preview-loading">Wordファイルを読み込んでいます...</div>
+      return <div className="preview-loading">Loading Word file...</div>
     }
     return <div className="preview-word" dangerouslySetInnerHTML={{ __html: parsedContent }} />
   }
@@ -152,22 +152,22 @@ function FilePreview({ item }) {
     return (
       <div className="preview-unsupported">
         <div className="unsupported-icon">📽️</div>
-        <h3>PowerPointファイル</h3>
+        <h3>PowerPoint File</h3>
         <p className="unsupported-message">
-          PowerPointファイルのプレビューは現在対応していません。
+          PowerPoint file preview is not currently supported.
         </p>
         <div className="file-info">
           <p>
-            <strong>ファイル名:</strong> {item.name}
+            <strong>File name:</strong> {item.name}
           </p>
           {file && (
             <p>
-              <strong>サイズ:</strong> {(file.size / 1024).toFixed(2)} KB
+              <strong>Size:</strong> {(file.size / 1024).toFixed(2)} KB
             </p>
           )}
         </div>
         <p className="unsupported-note">
-          ファイルをダウンロードして、PowerPointアプリで開いてください。
+          Please download the file and open it with PowerPoint.
         </p>
       </div>
     )

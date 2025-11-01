@@ -59,12 +59,12 @@ function TasksPanel() {
   }
 
   const getPriorityLabel = (priority) => {
-    const labels = { high: '優先度: 高', medium: '優先度: 中', low: '優先度: 低' }
+    const labels = { high: 'Priority: High', medium: 'Priority: Medium', low: 'Priority: Low' }
     return labels[priority] || priority
   }
 
   const getStatusLabel = (status) => {
-    const labels = { in_progress: '進行中', not_started: '未着手', completed: '完了' }
+    const labels = { in_progress: 'In Progress', not_started: 'Not Started', completed: 'Completed' }
     return labels[status] || status
   }
 
@@ -78,7 +78,7 @@ function TasksPanel() {
               <FiSearch size={20} />
               <input
                 type="text"
-                placeholder="タスクを検索..."
+                placeholder="Search tasks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="tasks-search-input"
@@ -91,10 +91,10 @@ function TasksPanel() {
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="tasks-filter-select"
               >
-                <option value="all">すべてのステータス</option>
-                <option value="in_progress">進行中</option>
-                <option value="not_started">未着手</option>
-                <option value="completed">完了</option>
+                <option value="all">All Status</option>
+                <option value="in_progress">In Progress</option>
+                <option value="not_started">Not Started</option>
+                <option value="completed">Completed</option>
               </select>
 
               <select
@@ -102,10 +102,10 @@ function TasksPanel() {
                 onChange={(e) => setFilterPriority(e.target.value)}
                 className="tasks-filter-select"
               >
-                <option value="all">すべての優先度</option>
-                <option value="high">高</option>
-                <option value="medium">中</option>
-                <option value="low">低</option>
+                <option value="all">All Priority</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
               </select>
             </div>
           </div>
@@ -114,7 +114,7 @@ function TasksPanel() {
           <div className="tasks-list">
             {sortedTasks.length === 0 ? (
               <div className="tasks-empty">
-                <p>タスクが見つかりません</p>
+                <p>No tasks found</p>
               </div>
             ) : (
               sortedTasks.map((task) => (
@@ -142,9 +142,9 @@ function TasksPanel() {
 
                   <div className="task-footer">
                     <div className="task-meta">
-                      <span className="task-date">作成: {task.createdAt}</span>
+                      <span className="task-date">Created: {task.createdAt}</span>
                       {task.scope === 'project' && (
-                        <span className="task-scope">プロジェクト</span>
+                        <span className="task-scope">Project</span>
                       )}
                     </div>
 
@@ -155,10 +155,10 @@ function TasksPanel() {
                         onClick={() => handleToggleStatus(task.id)}
                         title={
                           task.status === 'not_started'
-                            ? '進行中にする'
+                            ? 'Mark In Progress'
                             : task.status === 'in_progress'
-                            ? '完了にする'
-                            : '未着手にする'
+                            ? 'Mark Completed'
+                            : 'Mark Not Started'
                         }
                         animated={false}
                       >
@@ -179,7 +179,7 @@ function TasksPanel() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeleteTask(task.id)}
-                        title="削除"
+                        title="Delete"
                         animated={false}
                       >
                         <FiTrash2 size={20} />
@@ -195,28 +195,28 @@ function TasksPanel() {
 
       {activeTab === 'add' && (
         <div className="tasks-add-form">
-          <h3>新しいタスクを追加</h3>
+          <h3>Add New Task</h3>
           <form>
             <div className="form-group">
-              <label>タスクのタイトル</label>
-              <input type="text" placeholder="タスクのタイトルを入力してください" />
+              <label>Task Title</label>
+              <input type="text" placeholder="Enter task title" />
             </div>
             <div className="form-group">
-              <label>タスクの詳細説明</label>
-              <textarea placeholder="タスクの詳細説明を入力してください..." rows="6" />
+              <label>Task Details</label>
+              <textarea placeholder="Enter task details..." rows="6" />
             </div>
             <div className="form-row">
               <div className="form-group">
-                <label>優先度</label>
+                <label>Priority</label>
                 <select>
-                  <option>高</option>
-                  <option>中</option>
-                  <option>低</option>
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
                 </select>
               </div>
             </div>
             <div className="form-actions">
-              <Button variant="primary">タスクを追加</Button>
+              <Button variant="primary">Add Task</Button>
             </div>
           </form>
         </div>
@@ -226,14 +226,14 @@ function TasksPanel() {
         <div className="task-edit-modal-overlay" onClick={() => setSelectedTaskEdit(null)}>
           <div className="task-edit-modal" onClick={(e) => e.stopPropagation()}>
             <div className="task-edit-header">
-              <h3>タスクを編集</h3>
+              <h3>Edit Task</h3>
               <Button variant="ghost" size="sm" onClick={() => setSelectedTaskEdit(null)} animated={false}>
                 ×
               </Button>
             </div>
             <div className="task-edit-content">
               <div className="form-group">
-                <label>タイトル</label>
+                <label>Title</label>
                 <input
                   type="text"
                   defaultValue={selectedTaskEdit.title}
@@ -241,7 +241,7 @@ function TasksPanel() {
                 />
               </div>
               <div className="form-group">
-                <label>詳細説明</label>
+                <label>Details</label>
                 <textarea
                   defaultValue={selectedTaskEdit.description}
                   onChange={(e) => setSelectedTaskEdit({ ...selectedTaskEdit, description: e.target.value })}
@@ -250,25 +250,25 @@ function TasksPanel() {
               </div>
               <div className="form-row">
                 <div className="form-group">
-                  <label>優先度</label>
+                  <label>Priority</label>
                   <select
                     defaultValue={selectedTaskEdit.priority}
                     onChange={(e) => setSelectedTaskEdit({ ...selectedTaskEdit, priority: e.target.value })}
                   >
-                    <option value="high">高</option>
-                    <option value="medium">中</option>
-                    <option value="low">低</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>ステータス</label>
+                  <label>Status</label>
                   <select
                     defaultValue={selectedTaskEdit.status}
                     onChange={(e) => setSelectedTaskEdit({ ...selectedTaskEdit, status: e.target.value })}
                   >
-                    <option value="not_started">未着手</option>
-                    <option value="in_progress">進行中</option>
-                    <option value="completed">完了</option>
+                    <option value="not_started">Not Started</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
                   </select>
                 </div>
               </div>
@@ -281,10 +281,10 @@ function TasksPanel() {
                     setSelectedTaskEdit(null)
                   }}
                 >
-                  保存
+                  Save
                 </Button>
                 <Button variant="ghost" onClick={() => setSelectedTaskEdit(null)} animated={false}>
-                  キャンセル
+                  Cancel
                 </Button>
               </div>
             </div>

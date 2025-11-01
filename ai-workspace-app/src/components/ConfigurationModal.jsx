@@ -52,13 +52,13 @@ function ConfigurationModal({ configType, onClose, theme, currentChatHistory, on
   const getModalTitle = () => {
     switch (configType) {
       case 'user':
-        return 'ユーザー設定'
+        return 'User Settings'
       case 'tool':
-        return 'ツール設定'
+        return 'Tool Settings'
       case 'task':
-        return 'タスク設定'
+        return 'Task Settings'
       default:
-        return '設定'
+        return 'Settings'
     }
   }
 
@@ -66,26 +66,26 @@ function ConfigurationModal({ configType, onClose, theme, currentChatHistory, on
     switch (configType) {
       case 'dione':
         return [
-          { name: '基本設定', id: 'basic' },
-          { name: 'パーソナリティ', id: 'personality' },
-          { name: '詳細設定', id: 'advanced' },
+          { name: 'Basic', id: 'basic' },
+          { name: 'Personality', id: 'personality' },
+          { name: 'Advanced', id: 'advanced' },
         ]
       case 'tool':
         return [
-          { name: 'ツール一覧', id: 'list' },
-          { name: 'ツール追加', id: 'add' },
-          { name: 'ツール詳細', id: 'details' },
+          { name: 'Tool List', id: 'list' },
+          { name: 'Add Tool', id: 'add' },
+          { name: 'Tool Details', id: 'details' },
         ]
       case 'task':
         return [
-          { name: 'タスク定義', id: 'define' },
-          { name: 'タスク管理', id: 'manage' },
-          { name: 'タスク実行', id: 'execute' },
+          { name: 'Task Definition', id: 'define' },
+          { name: 'Task Management', id: 'manage' },
+          { name: 'Task Execution', id: 'execute' },
         ]
       case 'user':
         return [
-          { name: 'ユーザー設定', id: 'preferences' },
-          { name: 'ガイドラインの編集', id: 'guideline' },
+          { name: 'User Preferences', id: 'preferences' },
+          { name: 'Edit Guidelines', id: 'guideline' },
         ]
       default:
         return []
@@ -104,9 +104,9 @@ function ConfigurationModal({ configType, onClose, theme, currentChatHistory, on
             {currentTab && currentTab.id === 'guideline' && (
               <div className="guideline-tab-content">
                 <div className="config-section">
-                  <h4>ガイドラインの編集</h4>
-                  <p>Dioneのパーソナリティを定義するガイドラインを作成・編集します。</p>
-                  <p style={{ marginTop: '1rem' }}>下のボタンをクリックしてガイドラインエディタを開きます。</p>
+                  <h4>Edit Guidelines</h4>
+                  <p>Create and edit guidelines that define Dione's personality.</p>
+                  <p style={{ marginTop: '1rem' }}>Click the button below to open the guidelines editor.</p>
                 </div>
                 <div style={{ marginTop: '1.5rem' }}>
                   <Button
@@ -118,7 +118,7 @@ function ConfigurationModal({ configType, onClose, theme, currentChatHistory, on
                       }
                     }}
                   >
-                    ガイドラインを編集する
+                    Edit Guidelines
                   </Button>
                 </div>
               </div>
@@ -130,20 +130,20 @@ function ConfigurationModal({ configType, onClose, theme, currentChatHistory, on
           <div className="tab-content">
             {currentTab.id === 'basic' && (
               <div className="config-section">
-                <h4>基本設定</h4>
-                <p>Dioneの名前、言語、タイムゾーンなどの基本的な設定をここで行えます。</p>
+                <h4>Basic Settings</h4>
+                <p>Configure Dione's basic settings such as name, language, and timezone here.</p>
               </div>
             )}
             {currentTab.id === 'personality' && (
               <div className="config-section">
-                <h4>パーソナリティ</h4>
-                <p>Dioneの性格、トーン、応答スタイルをカスタマイズできます。</p>
+                <h4>Personality</h4>
+                <p>Customize Dione's personality, tone, and response style.</p>
               </div>
             )}
             {currentTab.id === 'advanced' && (
               <div className="config-section">
-                <h4>詳細設定</h4>
-                <p>高度な設定やAPIキー、統合オプションを設定できます。</p>
+                <h4>Advanced Settings</h4>
+                <p>Configure advanced settings, API keys, and integration options.</p>
               </div>
             )}
           </div>
@@ -155,7 +155,7 @@ function ConfigurationModal({ configType, onClose, theme, currentChatHistory, on
       default:
         return (
           <div className="tab-content">
-            <p>設定内容</p>
+            <p>Settings</p>
           </div>
         )
     }
