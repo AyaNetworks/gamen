@@ -582,7 +582,7 @@
 }
 
 .light-theme .list-header h3 {
-  color: #666;
+  color: #222;
 }
 
 .light-theme .portal-link,
@@ -615,7 +615,7 @@
 .light-theme .document-name,
 .light-theme .library-name,
 .light-theme .document-filepath {
-  color: #555;
+  color: #222;
 }
 
 .light-theme .document-add-to-workspace-button,
@@ -639,7 +639,7 @@
 .light-theme .tag {
   background-color: rgba(240, 245, 255, 0.9);
   border: 1px solid rgba(100, 108, 255, 0.4);
-  color: #555;
+  color: #222;
 }
 
 .light-theme .preview-modal {
@@ -649,21 +649,30 @@
 }
 
 .light-theme .preview-content {
-  background-color: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(100, 108, 255, 0.2);
+  background-color: rgba(42, 42, 42, 0.9);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(100, 108, 255, 0.3);
 }
 
 .light-theme .preview-header {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(37, 37, 37, 0.5);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(100, 108, 255, 0.15);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
 }
 
 .light-theme .preview-header h3 {
-  color: #333;
+  color: #fff;
+}
+
+.light-theme .close-button {
+  color: #666;
+}
+
+.light-theme .close-button:hover {
+  background-color: #e0e0e0;
+  color: #222;
 }
 
 .light-theme .upload-button-bottom {

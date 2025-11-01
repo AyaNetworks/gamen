@@ -114,7 +114,7 @@ function LibrarySelectionModal({ selectionType, items, onSelect, onClose, theme 
           onClick={onClose}
           animated={false}
         >
-          キャンセル
+          Cancel
         </Button>
         <Button
           variant="primary"
@@ -596,7 +596,7 @@ With this information, I can better support you.`,
                       onClick={handleCancelEdit}
                       animated={false}
                     >
-                      キャンセル
+                      Cancel
                     </Button>
                   </div>
                 </div>

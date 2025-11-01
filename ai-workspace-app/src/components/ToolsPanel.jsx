@@ -639,10 +639,10 @@ function ToolsPanel() {
                     setSelectedToolConfig(null)
                   }}
                 >
-                  保存
+                  Save
                 </Button>
                 <Button variant="ghost" onClick={() => setSelectedToolConfig(null)} animated={false}>
-                  キャンセル
+                  Cancel
                 </Button>
               </div>
             </div>
