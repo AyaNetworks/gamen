@@ -106,15 +106,35 @@
   line-height: 1.4;
 }
 
+.tool-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
 .tool-badge {
   display: inline-block;
   padding: 2px 8px;
-  margin-top: 8px;
   background-color: rgba(100, 108, 255, 0.2);
   border-radius: 3px;
   font-size: 0.7rem;
   font-weight: 600;
   color: rgba(100, 150, 255, 0.9);
+}
+
+.tool-badge.mcp-badge {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: rgba(59, 180, 255, 0.95);
+  border-left: 2px solid rgba(59, 180, 255, 0.5);
+  padding-left: 6px;
+}
+
+.tool-badge.a2a-badge {
+  background-color: rgba(168, 85, 247, 0.2);
+  color: rgba(196, 120, 255, 0.95);
+  border-left: 2px solid rgba(196, 120, 255, 0.5);
+  padding-left: 6px;
 }
 
 .tool-actions {
@@ -353,6 +373,34 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
+.tool-config-content select,
+.tool-config-content textarea {
+  padding: 10px 12px;
+  border: 1px solid rgba(100, 108, 255, 0.25);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.tool-config-content select:focus,
+.tool-config-content textarea:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.tool-config-content select option {
+  background-color: rgba(26, 26, 46, 0.95);
+  color: #fff;
+}
+
+.tool-config-content textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
 /* Dark theme number input spinners */
 .tool-config-content input[type="number"]::-webkit-outer-spin-button,
 .tool-config-content input[type="number"]::-webkit-inner-spin-button {
@@ -475,6 +523,29 @@
   border-color: rgba(100, 108, 255, 0.2);
 }
 
+/* Light theme select and textarea */
+.light-theme .tool-config-content select,
+.light-theme .tool-config-content textarea {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+  border-color: rgba(100, 108, 255, 0.2);
+}
+
+.light-theme .tool-config-content select:focus,
+.light-theme .tool-config-content textarea:focus {
+  border-color: rgba(100, 108, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .tool-config-content select option {
+  background-color: #fff;
+  color: #333;
+}
+
+.light-theme .tool-config-content textarea::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
 /* Light theme - Tool Toggle Button */
 .light-theme .tool-toggle-btn {
   color: rgba(100, 108, 255, 0.5) !important;
@@ -496,4 +567,17 @@
 
 .light-theme .tool-toggle-btn.disabled:hover {
   color: rgba(220, 38, 38, 0.7) !important;
+}
+
+/* Light theme badges */
+.light-theme .tool-badge.mcp-badge {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: rgba(37, 99, 235, 0.95);
+  border-left-color: rgba(37, 99, 235, 0.5);
+}
+
+.light-theme .tool-badge.a2a-badge {
+  background-color: rgba(168, 85, 247, 0.15);
+  color: rgba(147, 51, 234, 0.95);
+  border-left-color: rgba(147, 51, 234, 0.5);
 }

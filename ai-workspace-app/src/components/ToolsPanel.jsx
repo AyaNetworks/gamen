@@ -191,6 +191,116 @@ function ToolsPanel() {
       enabled: false,
       type: 'addon',
     },
+    // MCPサーバー
+    {
+      id: 23,
+      name: 'MCP: File System',
+      description: 'ファイルシステムへの安全なアクセスと操作',
+      category: 'MCPサーバー',
+      enabled: false,
+      type: 'mcp',
+      protocol: 'stdio',
+    },
+    {
+      id: 24,
+      name: 'MCP: GitHub',
+      description: 'GitHubリポジトリの管理とコード操作',
+      category: 'MCPサーバー',
+      enabled: false,
+      type: 'mcp',
+      protocol: 'stdio',
+    },
+    {
+      id: 25,
+      name: 'MCP: PostgreSQL',
+      description: 'PostgreSQLデータベースへの直接クエリ実行',
+      category: 'MCPサーバー',
+      enabled: false,
+      type: 'mcp',
+      protocol: 'stdio',
+    },
+    {
+      id: 26,
+      name: 'MCP: Slack',
+      description: 'Slackワークスペースの統合的なアクセス',
+      category: 'MCPサーバー',
+      enabled: false,
+      type: 'mcp',
+      protocol: 'stdio',
+    },
+    {
+      id: 27,
+      name: 'MCP: Browser',
+      description: 'ウェブブラウザの自動化とスクレイピング',
+      category: 'MCPサーバー',
+      enabled: false,
+      type: 'mcp',
+      protocol: 'stdio',
+    },
+    {
+      id: 28,
+      name: 'MCP: Google Drive',
+      description: 'Google Driveのファイルとドキュメントへのアクセス',
+      category: 'MCPサーバー',
+      enabled: false,
+      type: 'mcp',
+      protocol: 'stdio',
+    },
+    // A2Aエージェント
+    {
+      id: 29,
+      name: 'Research Agent',
+      description: '情報収集と調査を専門とするエージェント',
+      category: 'A2Aエージェント',
+      enabled: false,
+      type: 'a2a',
+      agentType: 'research',
+    },
+    {
+      id: 30,
+      name: 'Data Analysis Agent',
+      description: 'データ分析と統計処理を行うエージェント',
+      category: 'A2Aエージェント',
+      enabled: false,
+      type: 'a2a',
+      agentType: 'analysis',
+    },
+    {
+      id: 31,
+      name: 'Code Assistant Agent',
+      description: 'コード生成とデバッグを支援するエージェント',
+      category: 'A2Aエージェント',
+      enabled: false,
+      type: 'a2a',
+      agentType: 'coding',
+    },
+    {
+      id: 32,
+      name: 'Content Generation Agent',
+      description: 'テキスト、ドキュメント、コンテンツを生成するエージェント',
+      category: 'A2Aエージェント',
+      enabled: false,
+      type: 'a2a',
+      agentType: 'content',
+    },
+    {
+      id: 33,
+      name: 'Project Manager Agent',
+      description: 'プロジェクト管理とタスク調整を行うエージェント',
+      category: 'A2Aエージェント',
+      enabled: false,
+      type: 'a2a',
+      agentType: 'management',
+    },
+    {
+      id: 34,
+      name: 'Quality Assurance Agent',
+      description: 'テストと品質保証を実施するエージェント',
+      category: 'A2Aエージェント',
+      enabled: false,
+      type: 'a2a',
+      agentType: 'qa',
+    },
   ])
   const [activeTab, setActiveTab] = useState('list')
 
@@ -249,7 +359,11 @@ function ToolsPanel() {
                         <div className="tool-item-content">
                           <h4 className="tool-name">{tool.name}</h4>
                           <p className="tool-description">{tool.description}</p>
-                          {tool.type === 'addon' && <span className="tool-badge">アドオン</span>}
+                          <div className="tool-badges">
+                            {tool.type === 'addon' && <span className="tool-badge">アドオン</span>}
+                            {tool.type === 'mcp' && <span className="tool-badge mcp-badge">MCP</span>}
+                            {tool.type === 'a2a' && <span className="tool-badge a2a-badge">A2A</span>}
+                          </div>
                         </div>
                         <div className="tool-actions">
                           <Button
@@ -322,7 +436,10 @@ function ToolsPanel() {
                 <optgroup label="統合">
                   <option value="saas">SaaS統合</option>
                   <option value="cloud">クラウドサービス</option>
-                  <option value="mcp">MCP</option>
+                </optgroup>
+                <optgroup label="プロトコル">
+                  <option value="mcp-server">MCP サーバー</option>
+                  <option value="a2a-agent">A2A エージェント</option>
                 </optgroup>
                 <optgroup label="実行環境">
                   <option value="runtime">ランタイム</option>
@@ -436,6 +553,83 @@ function ToolsPanel() {
                   </label>
                 </div>
               </div>
+
+              {selectedToolConfig.type === 'mcp' && (
+                <div className="config-section">
+                  <h4>MCP サーバー設定</h4>
+                  <div className="form-group">
+                    <label>プロトコル</label>
+                    <select defaultValue={selectedToolConfig.protocol || 'stdio'}>
+                      <option value="stdio">Standard Input/Output</option>
+                      <option value="http">HTTP</option>
+                      <option value="websocket">WebSocket</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>実行コマンド</label>
+                    <input type="text" placeholder="例: python -m mcp.server.file_system" />
+                  </div>
+                  <div className="form-group">
+                    <label>環境変数</label>
+                    <textarea placeholder="KEY=VALUE&#10;KEY2=VALUE2" rows="3" />
+                  </div>
+                  <div className="form-group">
+                    <label>初期化タイムアウト（秒）</label>
+                    <input type="number" placeholder="10" defaultValue="10" />
+                  </div>
+                  <div className="form-group">
+                    <label>
+                      <input type="checkbox" defaultChecked={true} />
+                      {' '}自動再接続を有効にする
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {selectedToolConfig.type === 'a2a' && (
+                <div className="config-section">
+                  <h4>A2A エージェント設定</h4>
+                  <div className="form-group">
+                    <label>エージェント種別</label>
+                    <select defaultValue={selectedToolConfig.agentType || 'custom'}>
+                      <option value="research">リサーチ</option>
+                      <option value="analysis">データ分析</option>
+                      <option value="coding">コード支援</option>
+                      <option value="content">コンテンツ生成</option>
+                      <option value="management">プロジェクト管理</option>
+                      <option value="qa">品質保証</option>
+                      <option value="custom">カスタム</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>エージェント説明</label>
+                    <textarea placeholder="このエージェントの役割と能力を説明..." rows="3" />
+                  </div>
+                  <div className="form-group">
+                    <label>通信プロトコル</label>
+                    <select>
+                      <option value="rest">REST API</option>
+                      <option value="grpc">gRPC</option>
+                      <option value="websocket">WebSocket</option>
+                      <option value="mqtt">MQTT</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>エージェント ID / エンドポイント</label>
+                    <input type="text" placeholder="https://agent-service/agents/agent-id" />
+                  </div>
+                  <div className="form-group">
+                    <label>最大並行タスク</label>
+                    <input type="number" placeholder="5" defaultValue="5" />
+                  </div>
+                  <div className="form-group">
+                    <label>
+                      <input type="checkbox" defaultChecked={false} />
+                      {' '}エージェント間の直接通信を許可
+                    </label>
+                  </div>
+                </div>
+              )}
 
               <div className="config-actions">
                 <Button
