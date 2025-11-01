@@ -10,6 +10,7 @@ export interface User {
   passwordLastUpdated?: string
   createdAt?: string
   preferences?: Record<string, any>
+  password?: string // For mock auth only
 }
 
 interface AuthStoreState {
@@ -18,6 +19,7 @@ interface AuthStoreState {
   refreshToken: string | null
   isLoading: boolean
   error: string | null
+  mockUsers: User[] // Mock user database
 
   // Actions
   login: (email: string, password: string) => Promise<void>
@@ -27,7 +29,34 @@ interface AuthStoreState {
   clearError: () => void
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'
+// Mock initial users
+const initialMockUsers: User[] = [
+  {
+    id: 1,
+    email: 'demo@example.com',
+    displayName: 'Demo User',
+    password: 'demo123',
+    theme: 'dark',
+    role: 'user',
+    createdAt: new Date().toISOString(),
+    preferences: {},
+  },
+  {
+    id: 2,
+    email: 'admin@example.com',
+    displayName: 'Admin User',
+    password: 'admin123',
+    theme: 'dark',
+    role: 'admin',
+    createdAt: new Date().toISOString(),
+    preferences: {},
+  },
+]
+
+// Generate mock tokens
+const generateMockToken = (userId: number | string): string => {
+  return `mock_token_${userId}_${Date.now()}`
+}
 
 export const useAuthStore = create<AuthStoreState>()(
   devtools(
@@ -38,27 +67,31 @@ export const useAuthStore = create<AuthStoreState>()(
         refreshToken: null,
         isLoading: false,
         error: null,
+        mockUsers: initialMockUsers,
 
         login: async (email: string, password: string) => {
           set({ isLoading: true, error: null })
-          try {
-            const response = await fetch(`${API_URL}/auth/login`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ email, password }),
-            })
 
-            if (!response.ok) {
-              throw new Error('Failed to login')
+          // Simulate network delay
+          await new Promise((resolve) => setTimeout(resolve, 500))
+
+          try {
+            const { mockUsers } = get()
+            const user = mockUsers.find((u) => u.email === email && u.password === password)
+
+            if (!user) {
+              throw new Error('Invalid email or password')
             }
 
-            const data = await response.json()
+            // Remove password from returned user object
+            const { password: _, ...userWithoutPassword } = user
+            const accessToken = generateMockToken(user.id)
+            const refreshToken = generateMockToken(`refresh_${user.id}`)
+
             set({
-              user: data.user,
-              accessToken: data.access_token,
-              refreshToken: data.refresh_token,
+              user: userWithoutPassword,
+              accessToken,
+              refreshToken,
               isLoading: false,
             })
           } catch (error) {
@@ -70,26 +103,44 @@ export const useAuthStore = create<AuthStoreState>()(
 
         signup: async (email: string, password: string, displayName: string) => {
           set({ isLoading: true, error: null })
-          try {
-            const response = await fetch(`${API_URL}/auth/signup`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                email,
-                password,
-                display_name: displayName,
-              }),
-            })
 
-            if (!response.ok) {
-              throw new Error('Failed to signup')
+          // Simulate network delay
+          await new Promise((resolve) => setTimeout(resolve, 500))
+
+          try {
+            const { mockUsers } = get()
+
+            // Check if user already exists
+            if (mockUsers.find((u) => u.email === email)) {
+              throw new Error('Email already registered')
             }
 
-            const data = await response.json()
+            // Create new user
+            const newUser: User = {
+              id: Math.max(...mockUsers.map((u) => (typeof u.id === 'number' ? u.id : 0))) + 1,
+              email,
+              displayName,
+              password,
+              theme: 'dark',
+              role: 'user',
+              createdAt: new Date().toISOString(),
+              preferences: {},
+            }
+
+            // Add to mock users
+            set((state) => ({
+              mockUsers: [...state.mockUsers, newUser],
+            }))
+
+            // Auto-login after signup
+            const { password: _, ...userWithoutPassword } = newUser
+            const accessToken = generateMockToken(newUser.id)
+            const refreshToken = generateMockToken(`refresh_${newUser.id}`)
+
             set({
-              user: data,
+              user: userWithoutPassword,
+              accessToken,
+              refreshToken,
               isLoading: false,
             })
           } catch (error) {
@@ -99,22 +150,7 @@ export const useAuthStore = create<AuthStoreState>()(
           }
         },
 
-        logout: async () => {
-          const state = get()
-          if (state.refreshToken) {
-            try {
-              await fetch(`${API_URL}/auth/logout`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${state.accessToken}`,
-                },
-                body: JSON.stringify({ refresh_token: state.refreshToken }),
-              })
-            } catch (error) {
-              console.error('Logout request failed:', error)
-            }
-          }
+        logout: () => {
           set({ user: null, accessToken: null, refreshToken: null })
         },
 
@@ -132,6 +168,7 @@ export const useAuthStore = create<AuthStoreState>()(
           user: state.user,
           accessToken: state.accessToken,
           refreshToken: state.refreshToken,
+          mockUsers: state.mockUsers,
         }),
       }
     )

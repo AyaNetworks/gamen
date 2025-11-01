@@ -1,16 +1,90 @@
-# React + Vite
+# Dione Workspace - Frontend Mockup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered collaborative workspace application built with React and Vite. This is a frontend mockup with mock authentication and data - no backend server required.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Authentication**: Frontend-only mock authentication (no backend required)
+- **Chat Sessions**: Create, manage, and organize multiple chat conversations
+- **Team Collaboration**: Invite collaborators, display team members, and remove members from chats
+- **Message Features**:
+  - Message augmentation: Enhance messages before sending
+  - Reply context: Quote and respond to specific messages
+  - System notifications: Join/leave messages for team activities
+- **UI/UX**:
+  - Dark theme with modern design
+  - Smooth animations with Framer Motion
+  - Responsive design for various screen sizes
+  - Keyboard shortcuts for power users
 
-## React Compiler
+## Demo Accounts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The application comes with two pre-configured demo accounts for testing:
 
-## Expanding the ESLint configuration
+### Regular User Account
+- **Email**: `demo@example.com`
+- **Password**: `demo123`
+- **Role**: User
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Admin Account
+- **Email**: `admin@example.com`
+- **Password**: `admin123`
+- **Role**: Admin
+
+You can also create new accounts by signing up - all data is stored locally in your browser.
+
+## Getting Started
+
+### Prerequisites
+- Node.js 16+ and npm
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+## Keyboard Shortcuts
+
+- **Ctrl + Enter**: Enter message confirmation mode (shows augment option) or send message
+- **Tab**: Augment message text (while in confirmation mode)
+- **Escape**: Clear error messages
+
+## Technology Stack
+
+- **Frontend Framework**: React 18
+- **Build Tool**: Vite
+- **State Management**: Zustand with persist middleware
+- **Animations**: Framer Motion
+- **Icons**: React Icons
+- **Styling**: CSS with CSS variables for theming
+- **Language**: TypeScript & JavaScript
+
+## Project Structure
+
+```
+src/
+├── components/        # React components (ChatPanel, LoginScreen, Modals, etc.)
+├── store/            # Zustand state management stores
+├── types/            # TypeScript type definitions
+├── styles/           # Global styles
+└── App.jsx           # Main application component
+```
+
+## Notes
+
+This is a **frontend mockup** with mock data and authentication:
+- All user accounts and chat data are stored in browser localStorage
+- Authentication is simulated on the frontend
+- No backend API calls are made
+- Perfect for UI/UX testing, demos, and prototyping
+
+## License
+
+MIT
