@@ -30,6 +30,7 @@ import DionePowersScreen from './DionePowersScreen'
 import MessageDetailModal from './MessageDetailModal'
 import AccountModal from './AccountModal'
 import InviteCollaboratorModal from './InviteCollaboratorModal'
+import MemberDetailsModal from './MemberDetailsModal'
 import Button from './ui/Button'
 import './ChatPanel.css'
 
@@ -88,6 +89,7 @@ function ChatPanel({
   // Zustand stores - replace all props!
   const chatSessions = useChatStore((state) => state.chatSessions)
   const currentChatId = useChatStore((state) => state.currentChatId)
+  const getCurrentChat = useChatStore((state) => state.getCurrentChat)
   const getMessages = useChatStore((state) => state.getCurrentMessages)
 
   // Memoize currentMessages to avoid Zustand snapshot caching issues
@@ -112,6 +114,8 @@ function ChatPanel({
   const deleteProject = useProjectStore((state) => state.deleteProject)
   const renameProject = useProjectStore((state) => state.renameProject)
 
+  const removeChatMember = useChatStore((state) => state.removeChatMember)
+
   const attachedWorkspaces = useWorkspaceStore((state) => state.attachedWorkspaces)
   const removeAttachment = useWorkspaceStore((state) => state.removeAttachment)
   const clearAllAttachments = useWorkspaceStore((state) => state.clearAllAttachments)
@@ -131,6 +135,7 @@ function ChatPanel({
   const [showDionePowersScreen, setShowDionePowersScreen] = useState(false) // For guideline editor
   const [showAccountModal, setShowAccountModal] = useState(false) // For account modal
   const [showInviteModal, setShowInviteModal] = useState(false) // For invite collaborator modal
+  const [selectedMember, setSelectedMember] = useState(null) // For member details modal
   const [prevChatCount, setPrevChatCount] = useState(0) // Track previous chat count
   const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
@@ -649,7 +654,35 @@ Please provide a detailed, clear, and actionable response.`
   const handleInviteCollaborators = (invitedUsers) => {
     // In a real app, this would send invitations via API
     console.log('Invited users:', invitedUsers)
-    // You could show a success message here
+
+    // Add members and system messages for each invited user joining the chat
+    invitedUsers.forEach((user, index) => {
+      setTimeout(() => {
+        // Add member to chat
+        useChatStore.getState().addChatMember(currentChatId, {
+          id: user.id,
+          displayName: user.displayName,
+          email: user.email,
+          role: user.role,
+        })
+        // Add system message
+        useChatStore.getState().addSystemMessage(user.displayName, 'join')
+      }, index * 300) // Stagger the notifications
+    })
+  }
+
+  const handleRemoveMember = (chatId, memberId) => {
+    // Find the member being removed to get their name
+    const currentChat = useChatStore.getState().getCurrentChat()
+    const member = currentChat?.members?.find((m) => m.id === memberId)
+
+    if (member) {
+      // Add system message for member leaving
+      useChatStore.getState().addSystemMessage(member.displayName, 'leave')
+    }
+
+    // Remove the member
+    removeChatMember(chatId, memberId)
   }
 
   const formatFileSize = (bytes) => {
@@ -670,6 +703,14 @@ Please provide a detailed, clear, and actionable response.`
     if (fileType.includes('powerpoint') || fileType.includes('presentation')) return '📊'
     if (fileType.includes('zip') || fileType.includes('rar') || fileType.includes('7z')) return '📦'
     return '📎'
+  }
+
+  const getMemberInitials = (name) => {
+    const names = name.split(' ')
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase()
+    }
+    return name.substring(0, 2).toUpperCase()
   }
 
   const formatDate = (dateString) => {
@@ -1189,6 +1230,26 @@ Please provide a detailed, clear, and actionable response.`
           </div>
         </div>
 
+        {/* Chat Members Display */}
+        {getCurrentChat()?.members && getCurrentChat()?.members.length > 0 && (
+          <div className="chat-members-section">
+            <div className="chat-members-header">Members ({getCurrentChat().members.length})</div>
+            <div className="chat-members-list">
+              {getCurrentChat().members.map((member) => (
+                <motion.div
+                  key={member.id}
+                  className="chat-member-avatar"
+                  title={`${member.displayName} - ${member.email}`}
+                  whileHover={{ scale: 1.15 }}
+                  onClick={() => setSelectedMember(member)}
+                >
+                  <div className="member-avatar-circle">{getMemberInitials(member.displayName)}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="chat-messages" ref={messagesContainerRef}>
           {/* Scroll Progress Indicator */}
           <motion.div
@@ -1202,6 +1263,16 @@ Please provide a detailed, clear, and actionable response.`
             const hasDetails =
               message.role === 'ai' &&
               (message.trace || message.traceback || message.toolArgs || message.toolResults)
+
+            // Render system messages (join/leave notifications)
+            if (message.role === 'system') {
+              return (
+                <div key={index} className="system-message">
+                  <p className="system-message-text">{message.content}</p>
+                </div>
+              )
+            }
+
             return (
               <div
                 key={index}
@@ -1529,6 +1600,15 @@ Please provide a detailed, clear, and actionable response.`
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
         onInvite={handleInviteCollaborators}
+      />
+
+      {/* Member Details Modal */}
+      <MemberDetailsModal
+        member={selectedMember}
+        isOpen={!!selectedMember}
+        onClose={() => setSelectedMember(null)}
+        onRemove={handleRemoveMember}
+        currentChatId={currentChatId}
       />
     </div>
   )

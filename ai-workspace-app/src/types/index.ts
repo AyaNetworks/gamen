@@ -1,15 +1,23 @@
 // Core data types for the application
 
 export interface Message {
-  role: 'user' | 'ai'
+  role: 'user' | 'ai' | 'system'
   content: string
   timestamp: string
-  type?: 'dione' | 'claude'
+  type?: 'dione' | 'claude' | 'join' | 'leave'
   status?: 'success' | 'error' | 'pending'
   trace?: string
   replyingTo?: string
   attachedWorkspaces?: Workspace[]
   attachments?: Attachment[]
+  userName?: string
+}
+
+export interface ChatMember {
+  id: number | string
+  displayName: string
+  email: string
+  role?: string
 }
 
 export interface ChatSession {
@@ -18,6 +26,7 @@ export interface ChatSession {
   messages: Message[]
   createdAt: string
   projectId?: number
+  members?: ChatMember[]
 }
 
 export interface Project {

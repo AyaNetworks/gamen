@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import type { ChatSession, Message, Attachment, Workspace, ReplyContext } from '../types'
+import type { ChatSession, Message, Attachment, Workspace, ReplyContext, ChatMember } from '../types'
 
 const initialChatSessions: ChatSession[] = [
   {
@@ -165,6 +165,9 @@ interface ChatStoreState {
   updateChatTitle: (chatId: number, newTitle: string) => void
   addChatToProject: (chatId: number, projectId: number) => void
   removeChatFromProject: (chatId: number) => void
+  addSystemMessage: (userName: string, type: 'join' | 'leave') => void
+  addChatMember: (chatId: number, member: ChatMember) => void
+  removeChatMember: (chatId: number, memberId: number | string) => void
 }
 
 export const useChatStore = create<ChatStoreState>()(
@@ -294,6 +297,53 @@ export const useChatStore = create<ChatStoreState>()(
           set((state) => ({
             chatSessions: state.chatSessions.map((chat) =>
               chat.id === chatId ? { ...chat, projectId: undefined } : chat
+            ),
+          })),
+
+        addSystemMessage: (userName, type) =>
+          set((state) => {
+            const messageText =
+              type === 'join'
+                ? `--- ${userName} has joined the chat ---`
+                : `--- ${userName} has left the chat ---`
+
+            const systemMessage: Message = {
+              role: 'system',
+              type,
+              content: messageText,
+              timestamp: new Date().toISOString(),
+              userName,
+            }
+
+            return {
+              chatSessions: state.chatSessions.map((chat) =>
+                chat.id === state.currentChatId
+                  ? { ...chat, messages: [...chat.messages, systemMessage] }
+                  : chat
+              ),
+            }
+          }),
+
+        addChatMember: (chatId, member) =>
+          set((state) => ({
+            chatSessions: state.chatSessions.map((chat) => {
+              if (chat.id === chatId) {
+                const members = chat.members || []
+                // Avoid duplicate members
+                if (!members.find((m) => m.id === member.id)) {
+                  return { ...chat, members: [...members, member] }
+                }
+              }
+              return chat
+            }),
+          })),
+
+        removeChatMember: (chatId, memberId) =>
+          set((state) => ({
+            chatSessions: state.chatSessions.map((chat) =>
+              chat.id === chatId
+                ? { ...chat, members: (chat.members || []).filter((m) => m.id !== memberId) }
+                : chat
             ),
           })),
       }),

@@ -2301,11 +2301,97 @@ button.radix-button.project-toggle-button {
   color: rgba(100, 108, 255, 0.8);
 }
 
+/* System Messages (Join/Leave Notifications) */
+.system-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.system-message-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin: 0;
+  text-align: center;
+  font-style: italic;
+}
+
+.light-theme .system-message-text {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* Chat Members Section */
+.chat-members-section {
+  padding: 0.6rem 1.5rem;
+  border-bottom: 1px solid rgba(100, 108, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.chat-members-header {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.5rem;
+}
+
+.chat-members-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.chat-member-avatar {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.member-avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+.chat-member-avatar:hover .member-avatar-circle {
+  box-shadow: 0 6px 16px rgba(100, 108, 255, 0.5);
+  transform: scale(1.05);
+}
+
+/* Light theme */
+.light-theme .chat-members-section {
+  background: rgba(100, 108, 255, 0.02);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.08);
+}
+
+.light-theme .chat-members-header {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.light-theme .member-avatar-circle {
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+}
+
 /* Invite Collaborator Floating Button */
 .invite-collaborator-floating-button {
   position: fixed;
   left: 80px;
-  bottom: 100px;
+  bottom: 150px;
   transform: translateY(0);
   width: 56px;
   height: 56px;
