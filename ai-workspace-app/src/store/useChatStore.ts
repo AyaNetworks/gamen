@@ -457,14 +457,14 @@ export const useChatStore = create<ChatStoreState>()(
       }),
       {
         name: 'chat-storage', // localStorage key
-        version: 2,
+        version: 3,
         partialize: (state) => ({
           chatSessions: state.chatSessions,
           currentChatId: state.currentChatId,
         }),
         migrate: (persistedState: any, version: number) => {
-          // If persisted state is empty or old version, reset to initial chats
-          if (version < 2 || !persistedState?.chatSessions || persistedState.chatSessions.length === 0) {
+          // Always reset to initial chats when version changes to load new sample data
+          if (version < 3) {
             return {
               chatSessions: initialChatSessions,
               currentChatId: 1,
