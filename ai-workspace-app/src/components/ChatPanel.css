@@ -2300,3 +2300,39 @@ button.radix-button.project-toggle-button {
 .light-theme .task-mention-scope {
   color: rgba(100, 108, 255, 0.8);
 }
+
+/* Invite Collaborator Floating Button */
+.invite-collaborator-floating-button {
+  position: fixed;
+  left: 80px;
+  bottom: 100px;
+  transform: translateY(0);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(100, 108, 255, 0.4),
+              0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 20;
+}
+
+.invite-collaborator-floating-button:hover {
+  background: linear-gradient(135deg, #535bf2 0%, #4248d6 100%);
+  box-shadow: 0 12px 32px rgba(100, 108, 255, 0.5),
+              0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px) scale(1.1);
+}
+
+.invite-collaborator-floating-button:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.4),
+              0 2px 8px rgba(0, 0, 0, 0.2);
+}
+

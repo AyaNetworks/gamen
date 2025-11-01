@@ -11,14 +11,15 @@ import {
   FiMoon,
   FiPaperclip,
   FiSend,
+  FiSettings,
   FiStar,
   FiSun,
   FiTool,
   FiUser,
+  FiUserPlus,
   FiX,
   FiZap,
 } from 'react-icons/fi'
-import { GiSaturn } from 'react-icons/gi'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import remarkBreaks from 'remark-breaks'
@@ -28,6 +29,7 @@ import ConfigurationModal from './ConfigurationModal'
 import DionePowersScreen from './DionePowersScreen'
 import MessageDetailModal from './MessageDetailModal'
 import AccountModal from './AccountModal'
+import InviteCollaboratorModal from './InviteCollaboratorModal'
 import Button from './ui/Button'
 import './ChatPanel.css'
 
@@ -128,6 +130,7 @@ function ChatPanel({
   const [openConfigModal, setOpenConfigModal] = useState(null) // 'user', 'tool', 'task', or null
   const [showDionePowersScreen, setShowDionePowersScreen] = useState(false) // For guideline editor
   const [showAccountModal, setShowAccountModal] = useState(false) // For account modal
+  const [showInviteModal, setShowInviteModal] = useState(false) // For invite collaborator modal
   const [prevChatCount, setPrevChatCount] = useState(0) // Track previous chat count
   const [animatingChatId, setAnimatingChatId] = useState(null) // Currently animating
   const [pendingAnimationId, setPendingAnimationId] = useState(null) // Queued for animation
@@ -643,6 +646,12 @@ Please provide a detailed, clear, and actionable response.`
     setHoveredProjectId(null)
   }
 
+  const handleInviteCollaborators = (invitedUsers) => {
+    // In a real app, this would send invitations via API
+    console.log('Invited users:', invitedUsers)
+    // You could show a success message here
+  }
+
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
@@ -1107,6 +1116,17 @@ Please provide a detailed, clear, and actionable response.`
 
       {/* Main Chat Area */}
       <div className="chat-main">
+        {/* Invite Collaborator Floating Button */}
+        <motion.button
+          className="invite-collaborator-floating-button"
+          onClick={() => setShowInviteModal(true)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          title="Invite Collaborators"
+        >
+          <FiUserPlus size={24} />
+        </motion.button>
+
         <div className="chat-header">
           <h2>チャット</h2>
           <div className="chat-header-buttons">
@@ -1116,7 +1136,7 @@ Please provide a detailed, clear, and actionable response.`
               onClick={() => setOpenConfigModal('user')}
               title="ユーザー設定"
             >
-              <GiSaturn size={20} />
+              <FiSettings size={20} />
             </Button>
             <Button
               variant="surface"
@@ -1503,6 +1523,13 @@ Please provide a detailed, clear, and actionable response.`
           onClose={() => setShowAccountModal(false)}
         />
       )}
+
+      {/* Invite Collaborator Modal */}
+      <InviteCollaboratorModal
+        isOpen={showInviteModal}
+        onClose={() => setShowInviteModal(false)}
+        onInvite={handleInviteCollaborators}
+      />
     </div>
   )
 }
