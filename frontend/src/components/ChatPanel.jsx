@@ -123,6 +123,12 @@ function ChatPanel({
   const tasks = useTaskStore((state) => state.tasks)
   const getSortedTasks = useTaskStore((state) => state.getSortedTasks)
 
+  const connectToSession = useChatStore((state) => state.connectToSession)
+
+  useEffect(() => {
+    connectToSession()
+  }, [connectToSession])
+
   // Local UI state (these stay as useState since they're component-specific)
   const [inputValue, setInputValue] = useState('')
   const [showTaskMention, setShowTaskMention] = useState(false)
